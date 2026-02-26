@@ -45,6 +45,25 @@ abbrev Qsqrtd (d : ℤ) : Type := QuadraticAlgebra ℚ (d : ℚ) 0
 
 namespace Qsqrtd
 
+/-- `ℚ(√d) ≃ₐ[ℚ] ℚ(√(a²d))` via `⟨r, s⟩ ↦ ⟨r, s·a⁻¹⟩`.
+This shows that rescaling `d` by a nonzero rational square does not change
+the quadratic field, which is why we may restrict to squarefree parameters. -/
+def rescale (d : ℚ) (a : ℚ) (ha : a ≠ 0) :
+    QuadraticAlgebra ℚ d 0 ≃ₐ[ℚ] QuadraticAlgebra ℚ (a ^ 2 * d) 0 := by
+  have h1d : (1 : QuadraticAlgebra ℚ d 0) = ⟨1, 0⟩ := by ext <;> rfl
+  have h1a : (1 : QuadraticAlgebra ℚ (a ^ 2 * d) 0) = ⟨1, 0⟩ := by
+    ext <;> rfl
+  exact AlgEquiv.ofLinearEquiv
+    { toFun := fun x => ⟨x.re, x.im * a⁻¹⟩
+      invFun := fun y => ⟨y.re, y.im * a⟩
+      map_add' := by intro x y; ext <;> simp [add_mul]
+      map_smul' := by intro c x; ext <;> simp [mul_assoc]
+      left_inv := by
+        intro x; ext <;> simp [mul_assoc, inv_mul_cancel₀ ha]
+      right_inv := by
+        intro y; ext <;> simp [mul_assoc, mul_inv_cancel₀ ha] }
+    (by simp [h1d, h1a])
+    (by intro x y; ext <;> simp <;> field_simp)
 
 /-- Norm on `Qsqrtd d` with dot notation `x.norm`. -/
 abbrev norm {d : ℤ} (x : Qsqrtd d) : ℚ := QuadraticAlgebra.norm x
