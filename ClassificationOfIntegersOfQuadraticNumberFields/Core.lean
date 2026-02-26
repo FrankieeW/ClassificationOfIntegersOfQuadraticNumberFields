@@ -218,4 +218,126 @@ theorem quadratic_fields_not_iso
 
 end Qsqrtd
 
+/-!
+## §2.1 Exercise 2.7 — mod 4 case analysis
+
+The key step in classifying the ring of integers 𝒪_d of ℚ(√d) is
+determining when `4 ∣ a'² - d·b'²` for integers `a', b'`.
+
+When `d` is squarefree, `d % 4 ≠ 0`, so `d % 4 ∈ {1, 2, 3}`.
+A mod-4 analysis then shows that `4 ∣ a'² - d·b'²` exactly when
+* `a'` and `b'` are both even, **or**
+* `a'` and `b'` are both odd **and** `d ≡ 1 (mod 4)`.
+
+This is the heart of the d ≡ 1 (mod 4) vs d ≢ 1 (mod 4) dichotomy.
+-/
+
+section Exercise_2_7
+
+/-- A squarefree integer is not divisible by 4. -/
+lemma squarefree_int_not_dvd_four (d : ℤ) (hd : Squarefree d) : ¬ (4 : ℤ) ∣ d := by
+  intro h
+  have h22 : (2 : ℤ) * 2 ∣ d := by
+    obtain ⟨k, hk⟩ := h; exact ⟨k, by omega⟩
+  have hunit : IsUnit (2 : ℤ) := hd 2 h22
+  exact absurd (Int.isUnit_iff.mp hunit) (by omega)
+
+/-- A squarefree integer has `d % 4 ∈ {1, 2, 3}`. -/
+lemma squarefree_int_emod_four (d : ℤ) (hd : Squarefree d) :
+    d % 4 = 1 ∨ d % 4 = 2 ∨ d % 4 = 3 := by
+  have hnd : ¬ (4 : ℤ) ∣ d := squarefree_int_not_dvd_four d hd
+  omega
+
+/-- The square of an even integer is 0 mod 4. -/
+lemma Int.sq_emod_four_of_even (n : ℤ) (h : 2 ∣ n) : n ^ 2 % 4 = 0 := by
+  obtain ⟨k, rfl⟩ := h
+  ring_nf
+  omega
+
+/-- The square of an odd integer is 1 mod 4. -/
+lemma Int.sq_emod_four_of_odd (n : ℤ) (h : ¬ 2 ∣ n) : n ^ 2 % 4 = 1 := by
+  set k := n / 2
+  have hk : n = 2 * k + 1 := by omega
+  rw [hk]; ring_nf; omega
+
+/-- Auxiliary: reduce `(a'^2 - d * b'^2) % 4` to residues of `a'`, `b'`, `d` mod 4.
+    This uses `ring_nf` to expand and `Int.emod_emod_of_dvd` to push `% 4` inward. -/
+private lemma div4_iff_mod (a' b' d : ℤ) :
+    4 ∣ (a' ^ 2 - d * b' ^ 2) ↔ (a' ^ 2 - d * b' ^ 2) % 4 = 0 := by omega
+
+/-- **Exercise 2.7** (Boxer §2.1). For squarefree `d`, `4 ∣ a'² - d·b'²` iff
+either both `a', b'` are even, or both are odd and `d ≡ 1 (mod 4)`. -/
+theorem exercise_2_7 (d a' b' : ℤ) (hd : Squarefree d) :
+    4 ∣ (a' ^ 2 - d * b' ^ 2) ↔
+      (2 ∣ a' ∧ 2 ∣ b') ∨ (¬ 2 ∣ a' ∧ ¬ 2 ∣ b' ∧ d % 4 = 1) := by
+  have hd4 := squarefree_int_emod_four d hd
+  constructor
+  · intro hdvd
+    by_cases ha : 2 ∣ a' <;> by_cases hb : 2 ∣ b'
+    · exact Or.inl ⟨ha, hb⟩
+    · -- a' even, b' odd: impossible
+      exfalso
+      obtain ⟨p, rfl⟩ := ha
+      -- b' = 2q + 1 for some q
+      have hbr : b' % 2 = 1 := by omega
+      have hb_eq : b' = 2 * (b' / 2) + 1 := by omega
+      rw [hb_eq] at hdvd; ring_nf at hdvd
+      -- now hdvd : 4 ∣ (some expression involving p, b'/2, d)
+      -- reduce d mod 4
+      have hd_eq : d = 4 * (d / 4) + d % 4 := by omega
+      rw [hd_eq] at hdvd; ring_nf at hdvd
+      rcases hd4 with hd1 | hd2 | hd3 <;> omega
+    · -- a' odd, b' even: impossible
+      exfalso
+      obtain ⟨q, rfl⟩ := hb
+      have har : a' % 2 = 1 := by omega
+      have ha_eq : a' = 2 * (a' / 2) + 1 := by omega
+      rw [ha_eq] at hdvd; ring_nf at hdvd
+      have hd_eq : d = 4 * (d / 4) + d % 4 := by omega
+      rw [hd_eq] at hdvd; ring_nf at hdvd
+      rcases hd4 with hd1 | hd2 | hd3 <;> omega
+    · -- a' odd, b' odd: must have d ≡ 1 (mod 4)
+      right; refine ⟨ha, hb, ?_⟩
+      have ha_eq : a' = 2 * (a' / 2) + 1 := by omega
+      have hb_eq : b' = 2 * (b' / 2) + 1 := by omega
+      rw [ha_eq, hb_eq] at hdvd; ring_nf at hdvd
+      have hd_eq : d = 4 * (d / 4) + d % 4 := by omega
+      rw [hd_eq] at hdvd; ring_nf at hdvd
+      rcases hd4 with hd1 | hd2 | hd3 <;> omega
+  · intro h
+    rcases h with ⟨ha, hb⟩ | ⟨ha, hb, hd1⟩
+    · -- Both even
+      obtain ⟨p, rfl⟩ := ha
+      obtain ⟨q, rfl⟩ := hb
+      exact ⟨p ^ 2 - d * q ^ 2, by ring⟩
+    · -- Both odd, d ≡ 1 (mod 4)
+      have ha_eq : a' = 2 * (a' / 2) + 1 := by omega
+      have hb_eq : b' = 2 * (b' / 2) + 1 := by omega
+      rw [ha_eq, hb_eq]; ring_nf
+      have hd_eq : d = 4 * (d / 4) + 1 := by omega
+      rw [hd_eq]; ring_nf
+      omega
+
+/-- When `d ≢ 1 (mod 4)`, `4 ∣ a'² - d·b'²` forces both `a', b'` even. -/
+theorem exercise_2_7_not_one_mod_four (d a' b' : ℤ) (hd : Squarefree d)
+    (hd4 : d % 4 ≠ 1) (h : 4 ∣ (a' ^ 2 - d * b' ^ 2)) :
+    2 ∣ a' ∧ 2 ∣ b' := by
+  rcases (exercise_2_7 d a' b' hd).mp h with hab | ⟨_, _, hd1⟩
+  · exact hab
+  · exact absurd hd1 hd4
+
+/-- When `d ≡ 1 (mod 4)`, `4 ∣ a'² - d·b'²` iff `a' ≡ b' (mod 2)`. -/
+theorem exercise_2_7_one_mod_four (d a' b' : ℤ) (hd : Squarefree d)
+    (hd4 : d % 4 = 1) :
+    4 ∣ (a' ^ 2 - d * b' ^ 2) ↔ a' % 2 = b' % 2 := by
+  rw [exercise_2_7 d a' b' hd]
+  constructor
+  · rintro (⟨ha, hb⟩ | ⟨ha, hb, _⟩) <;> omega
+  · intro h
+    by_cases ha : 2 ∣ a'
+    · left; exact ⟨ha, by omega⟩
+    · right; exact ⟨ha, by omega, hd4⟩
+
+end Exercise_2_7
+
 end ClassificationOfIntegersOfQuadraticNumberFields
