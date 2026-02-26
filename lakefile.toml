@@ -1,0 +1,18 @@
+name = "ClassificationOfIntegersOfQuadraticNumberFields"
+version = "0.1.0"
+keywords = ["math", "number-theory", "quadratic-fields"]
+defaultTargets = ["ClassificationOfIntegersOfQuadraticNumberFields"]
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.29.0-rc2"
+
+[[lean_lib]]
+name = "ClassificationOfIntegersOfQuadraticNumberFields"
