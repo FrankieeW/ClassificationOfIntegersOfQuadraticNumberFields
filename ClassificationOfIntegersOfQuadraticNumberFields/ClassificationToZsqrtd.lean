@@ -11,7 +11,8 @@ namespace Qsqrtd
 /-- The canonical embedding `ℤ√d → Q(√d)` into the rational quadratic algebra model. -/
 def zsqrtdToQsqrtd (d : ℤ) : ℤ√d →+* Qsqrtd d where
   toFun := fun z => ⟨(z.re : ℚ), (z.im : ℚ)⟩
-  map_one' := by ext <;> simp
+  map_one' := by
+    ext <;> rfl
   map_mul' := by
     intro z w
     ext <;> simp [mul_assoc, mul_comm, mul_left_comm]
