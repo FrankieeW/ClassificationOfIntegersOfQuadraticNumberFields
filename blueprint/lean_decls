@@ -1,6 +1,13 @@
 ../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean
-../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean
 ../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean
 ../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean
 ../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean
 ../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean

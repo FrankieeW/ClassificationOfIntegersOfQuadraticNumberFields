@@ -1,0 +1,97 @@
+\chapter{Current Formalization (Completed)}
+
+\section{Parameterization and Ambient Field}
+
+\begin{definition}[Quadratic parameter]\label{def:isQuadraticParam}
+A parameter $d \in \Z$ is admissible when $d \neq 0$, $d \neq 1$, and $d$ is squarefree.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+\leanok
+\end{definition}
+
+\begin{definition}[Ambient quadratic algebra]\label{def:Qsqrtd}
+For admissible $d$, we work in $\Q(\sqrt{d})$ modeled by `QuadraticAlgebra`.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+\leanok
+\uses{def:isQuadraticParam}
+\end{definition}
+
+\begin{lemma}[Nonsquare transfer]\label{lem:not_isSquare_int}
+Squarefree admissible parameters are not integer squares.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+\leanok
+\uses{def:isQuadraticParam}
+\end{lemma}
+
+\section{Trace, Norm, and Half-Integral Coordinates}
+
+\begin{theorem}[Trace formula]\label{thm:trace_eq_two_re}
+For $x \in \Q(\sqrt{d})$, $\Tr(x)=2\,\mathrm{re}(x)$.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
+\leanok
+\end{theorem}
+
+\begin{theorem}[Norm formula]\label{thm:norm_eq_sqr_minus_d_sqr}
+For $x \in \Q(\sqrt{d})$, $\Nm(x)=\mathrm{re}(x)^2-d\,\mathrm{im}(x)^2$.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
+\leanok
+\end{theorem}
+
+\begin{definition}[Half-integral point]\label{def:halfInt}
+Define $\frac{a' + b'\sqrt d}{2}$ as an element of $\Q(\sqrt d)$.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
+\leanok
+\end{definition}
+
+\begin{theorem}[Trace and norm of half-integral elements]\label{thm:trace_norm_halfInt}
+The project proves explicit trace and norm formulas for `halfInt`.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
+\leanok
+\uses{def:halfInt, thm:trace_eq_two_re, thm:norm_eq_sqr_minus_d_sqr}
+\end{theorem}
+
+\section{Parity and Mod-$4$ Criteria}
+
+\begin{theorem}[Main mod-$4$ dichotomy]\label{thm:mod4_dichotomy}
+$4 \mid a'^2 - d b'^2$ iff either both numerators are even, or both odd with $d \equiv 1 \pmod 4$.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+\leanok
+\end{theorem}
+
+\begin{corollary}[Non-$1$ mod $4$ branch]\label{cor:mod4_ne_one}
+If $d \not\equiv 1 \pmod 4$, then $4 \mid a'^2 - d b'^2$ iff $a',b'$ are both even.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+\leanok
+\uses{thm:mod4_dichotomy}
+\end{corollary}
+
+\section{Embedding from $\Z[\sqrt d]$ and Completed Classification Branch}
+
+\begin{definition}[Canonical embedding]\label{def:zsqrtdToQsqrtd}
+The ring map $\Z[\sqrt d] \to \Q(\sqrt d)$ is defined and shown injective.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+\leanok
+\end{definition}
+
+\begin{theorem}[Image criterion for `halfInt`]\label{thm:halfInt_range_even_even}
+A half-integral element lies in the image of $\Z[\sqrt d]$ iff both numerators are even.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+\leanok
+\uses{def:halfInt, def:zsqrtdToQsqrtd}
+\end{theorem}
+
+\begin{theorem}[Completed branch of integrality classification]\label{thm:classification_ne_one_mod_four}
+For squarefree $d \not\equiv 1 \pmod 4$, the divisibility condition is equivalent to representability from $\Z[\sqrt d]$.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+\leanok
+\uses{cor:mod4_ne_one, thm:halfInt_range_even_even}
+\end{theorem}
+
+\section{Field Isomorphism Rigidity}
+
+\begin{theorem}[Distinct parameters give non-isomorphic fields]\label{thm:quadratic_fields_not_iso}
+For distinct admissible squarefree parameters $d_1 \neq d_2$, one has
+$\Q(\sqrt{d_1}) \not\simeq_{\Q} \Q(\sqrt{d_2})$.
+\lean{../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean}
+\leanok
+\uses{def:isQuadraticParam}
+\end{theorem}

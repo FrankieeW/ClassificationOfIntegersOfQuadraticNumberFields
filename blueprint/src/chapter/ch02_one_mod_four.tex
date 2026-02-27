@@ -1,0 +1,23 @@
+\chapter{Roadmap I: The $d \equiv 1 \pmod 4$ Branch}
+
+\begin{definition}[Planned: half-integer order generator]\label{def:plan_half_order}
+Introduce the order generator $\omega_d := \frac{1+\sqrt d}{2}$ in $\Q(\sqrt d)$ and formalize
+its basic arithmetic interface.
+\notready
+\uses{def:Qsqrtd, def:halfInt}
+\end{definition}
+
+\begin{theorem}[Planned: same-parity membership criterion]\label{thm:plan_same_parity_membership}
+For $d \equiv 1 \pmod 4$, characterize representability in
+$\Z[\omega_d]$ by the same-parity condition on numerators.
+\notready
+\uses{thm:mod4_dichotomy, def:plan_half_order}
+\end{theorem}
+
+\begin{theorem}[Planned: completed $1$-mod-$4$ classification branch]\label{thm:plan_one_mod_four_branch}
+Complete the branch currently left as TODO: express integrality via
+$\Z\!\left[\frac{1+\sqrt d}{2}\right]$ when $d \equiv 1 \pmod 4$.
+\notready
+\uses{thm:plan_same_parity_membership}
+\discussion{This is the missing branch mentioned in `ClassificationToZsqrtd.lean`.}
+\end{theorem}
