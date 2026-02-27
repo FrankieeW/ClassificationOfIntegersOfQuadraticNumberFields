@@ -20,23 +20,23 @@
 \contentsline {subsection}{\numberline {4.3}Lemma 4.3}{7}{subsection.4.3}%
 \contentsline {subsection}{\numberline {4.4}Theorem 4.4 (distinct parameters give non-isomorphic fields)}{8}{subsection.4.4}%
 \contentsline {section}{\numberline {5}Half-integral normal form (HalfInt.lean)}{9}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Definition 5.1}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.1}Definition 5.1}{10}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Theorem 5.2 (trace of half-integral element)}{10}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Theorem 5.3 (norm of half-integral element)}{10}{subsection.5.3}%
 \contentsline {section}{\numberline {6}Mod-4 analysis and parity classification (ModFourCriteria.lean)}{10}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Lemma 6.1}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.1}Lemma 6.1}{11}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Lemma 6.2}{11}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Lemma 6.3}{11}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Lemma 6.4}{11}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}Lemma 6.5 (internal equivalence)}{11}{subsection.6.5}%
-\contentsline {subsection}{\numberline {6.6}Theorem 6.6 (main mod-4 criterion)}{11}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.5}Lemma 6.5 (internal equivalence)}{12}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}Theorem 6.6 (main mod-4 criterion)}{12}{subsection.6.6}%
 \contentsline {subsection}{\numberline {6.7}Theorem 6.7 (forcing even--even when $d\not \equiv 1\bmod 4$)}{13}{subsection.6.7}%
 \contentsline {subsection}{\numberline {6.8}Theorem 6.8 (equivalence in non-$1\bmod 4$ branch)}{13}{subsection.6.8}%
-\contentsline {subsection}{\numberline {6.9}Theorem 6.9 (equivalence in $1\bmod 4$ branch)}{13}{subsection.6.9}%
+\contentsline {subsection}{\numberline {6.9}Theorem 6.9 (equivalence in $1\bmod 4$ branch)}{14}{subsection.6.9}%
 \contentsline {section}{\numberline {7}Embedding into $\mathbb {Q}(\sqrt d)$ and image characterization (ClassificationToZsqrtd.lean)}{14}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Definition 7.1 (canonical embedding)}{14}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Theorem 7.2 (injectivity)}{14}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.2}Theorem 7.2 (injectivity)}{15}{subsection.7.2}%
 \contentsline {subsection}{\numberline {7.3}Definition 7.3 (equivalence with image)}{15}{subsection.7.3}%
 \contentsline {subsection}{\numberline {7.4}Theorem 7.4 (half-integral image criterion)}{15}{subsection.7.4}%
-\contentsline {subsection}{\numberline {7.5}Theorem 7.5 (classification in $d\not \equiv 1\bmod 4$ branch)}{15}{subsection.7.5}%
+\contentsline {subsection}{\numberline {7.5}Theorem 7.5 (classification in $d\not \equiv 1\bmod 4$ branch)}{16}{subsection.7.5}%
 \contentsline {section}{\numberline {8}Progress and remaining work}{16}{section.8}%

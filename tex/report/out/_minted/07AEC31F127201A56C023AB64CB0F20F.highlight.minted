@@ -2,54 +2,92 @@
 \PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{Mathlib}
 \PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}\PYG{n+nb+bp}{.}\PYG{n}{Base}
 
+\PYG{c}{/\PYGZhy{}}\PYG{c+cm}{!}
+\PYG{c+cm}{\PYGZsh{} Non\PYGZhy{}isomorphism of quadratic fields with distinct parameters}
+
+\PYG{c+cm}{This file proves that two quadratic fields `ℚ(√d₁)` and `ℚ(√d₂)` are not}
+\PYG{c+cm}{isomorphic (as `ℚ`\PYGZhy{}algebras) whenever `d₁ ≠ d₂` and both are squarefree}
+\PYG{c+cm}{nonzero integers.}
+
+\PYG{c+cm}{The proof strategy is:}
+\PYG{c+cm}{1. Suppose an isomorphism `e : ℚ(√d₁) ≃ₐ[ℚ] ℚ(√d₂)` exists.}
+\PYG{c+cm}{2. The image `x = e(√d₁)` satisfies `x² = d₁` inside `ℚ(√d₂)`.}
+\PYG{c+cm}{3. Expanding in the basis `\PYGZob{}1, √d₂\PYGZcb{}`, the imaginary part equation forces}
+\PYG{c+cm}{   `x.re * x.im = 0`, giving two cases.}
+\PYG{c+cm}{4. In either case we derive that `d₁/d₂` is a square in `ℚ`.}
+\PYG{c+cm}{5. A denominator argument using squarefreeness shows `d₂ ∣ d₁` and `d₁ ∣ d₂`,}
+\PYG{c+cm}{   so `d₁` and `d₂` are associates in `ℤ`.}
+\PYG{c+cm}{6. Associates in `ℤ` means `d₁ = d₂` or `d₁ = \PYGZhy{}d₂`; the former contradicts}
+\PYG{c+cm}{   `d₁ ≠ d₂`, and the latter implies `\PYGZhy{}1` is a square in `ℚ`, a contradiction.}
+\PYG{c+cm}{\PYGZhy{}/}
+
 \PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}
 \PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{Qsqrtd}
 
-\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} `\PYGZhy{}1` is not a square in `ℚ`. \PYGZhy{}/}
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} `\PYGZhy{}1` is not a square in `ℚ`. Any rational square `r * r` is nonneg, but `\PYGZhy{}1 \PYGZlt{} 0`. \PYGZhy{}/}
 \PYG{k+kn}{lemma}\PYG{+w}{ }\PYG{n}{not\PYGZus{}isSquare\PYGZus{}neg\PYGZus{}one\PYGZus{}rat}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n+nb+bp}{¬}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{(}\PYG{n+nb+bp}{\PYGZhy{}}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{  }\PYG{n}{rintro}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{r}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hr}\PYG{n+nb+bp}{⟩}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hnonneg}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n+nb+bp}{≤}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{sq\PYGZus{}nonneg}\PYG{+w}{ }\PYG{n}{r}
 \PYG{+w}{  }\PYG{n}{nlinarith}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hr}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hnonneg}\PYG{o}{]}
 
-\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} If `m : ℕ` is squarefree as an integer and is a square in `ℤ`, then `m = 1`. \PYGZhy{}/}
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} If `m : ℕ` is squarefree as an integer and is a square in `ℤ`, then `m = 1`.}
+\PYG{l+s+sd}{    A squarefree integer that is also a perfect square must be a unit. \PYGZhy{}/}
 \PYG{k+kn}{lemma}\PYG{+w}{ }\PYG{n}{nat\PYGZus{}eq\PYGZus{}one\PYGZus{}of\PYGZus{}squarefree\PYGZus{}intcast\PYGZus{}of\PYGZus{}isSquare}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℕ}\PYG{o}{)}
 \PYG{+w}{    }\PYG{o}{(}\PYG{n}{hsm}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hsq}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{  }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{hsq}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{z}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hz}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Case split: is the square root `z` a unit (i.e. ±1)?}
 \PYG{+w}{  }\PYG{n}{by\PYGZus{}cases}\PYG{+w}{ }\PYG{n}{huz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsUnit}\PYG{+w}{ }\PYG{n}{z}
-\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{Int}\PYG{n+nb+bp}{.}\PYG{n}{isUnit\PYGZus{}iff}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{huz}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n}{hz1}\PYG{+w}{ }\PYG{n+nb+bp}{|}\PYG{+w}{ }\PYG{n}{hz1}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} If z is a unit, then m = z * z = (±1)² = 1.}
+\PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{Int}\PYG{n+nb+bp}{.}\PYG{n}{isUnit\PYGZus{}iff}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{huz}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n}{hz1}\PYG{+w}{ }\PYG{n+nb+bp}{|}\PYG{+w}{ }\PYG{n}{hz1}
 \PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hmz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz1}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hz}
 \PYG{+w}{      }\PYG{n}{norm\PYGZus{}num}\PYG{+w}{ }\PYG{k}{at}\PYG{+w}{ }\PYG{n}{hmz}
 \PYG{+w}{      }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hmz}
 \PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hmz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz1}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hz}
 \PYG{+w}{      }\PYG{n}{norm\PYGZus{}num}\PYG{+w}{ }\PYG{k}{at}\PYG{+w}{ }\PYG{n}{hmz}
 \PYG{+w}{      }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hmz}
-\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsqz2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{pow\PYGZus{}two}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hsm}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} If z is not a unit, then z² being squarefree is impossible}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (squarefree means every factor appears at most once, but z appears twice).}
+\PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsqz2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{pow\PYGZus{}two}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hsm}
 \PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{h01}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℕ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n+nb+bp}{∨}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℕ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}
 \PYG{+w}{      }\PYG{n}{Squarefree}\PYG{n+nb+bp}{.}\PYG{n}{eq\PYGZus{}zero\PYGZus{}or\PYGZus{}one\PYGZus{}of\PYGZus{}pow\PYGZus{}of\PYGZus{}not\PYGZus{}isUnit}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{z}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{)}\PYG{+w}{ }\PYG{n}{hsqz2}\PYG{+w}{ }\PYG{n}{huz}
 \PYG{+w}{    }\PYG{n}{norm\PYGZus{}num}\PYG{+w}{ }\PYG{k}{at}\PYG{+w}{ }\PYG{n}{h01}
 
-\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} If `d₂` is squarefree/nonzero and `d₁ / d₂` is a square in `ℚ`, then `d₂ ∣ d₁`. \PYGZhy{}/}
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} If `d₂` is squarefree and nonzero, and `d₁ / d₂` is a square in `ℚ`, then `d₂ ∣ d₁`.}
+
+\PYG{l+s+sd}{    The key idea: write `d₁/d₂` in lowest terms as `p/q`. The denominator `q` divides `d₂`,}
+\PYG{l+s+sd}{    so `q` is also squarefree. But `d₁/d₂` being a square forces `q` to be a square as well.}
+\PYG{l+s+sd}{    A squarefree square must be 1, meaning `d₂` divides `d₁`. \PYGZhy{}/}
 \PYG{k+kn}{lemma}\PYG{+w}{ }\PYG{n}{int\PYGZus{}dvd\PYGZus{}of\PYGZus{}ratio\PYGZus{}square}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d₁}\PYG{+w}{ }\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hd₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d₂}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{o}{)}
 \PYG{+w}{    }\PYG{o}{(}\PYG{n}{hsq\PYGZus{}d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{n}{d₂}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hr}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{((}\PYG{n}{d₁}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)))}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d₂}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{d₁}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The denominator of d₁/d₂ (in lowest terms) is a square.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsq\PYGZus{}den\PYGZus{}nat}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{(((}\PYG{n}{d₁}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{n+nb+bp}{.}\PYG{n}{den}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Rat}\PYG{n+nb+bp}{.}\PYG{n}{isSquare\PYGZus{}iff}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{hr}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{l+m}{2}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Lift the squareness to ℤ.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsq\PYGZus{}den\PYGZus{}int}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{((((}\PYG{n}{d₁}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{n+nb+bp}{.}\PYG{n}{den}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{hsq\PYGZus{}den\PYGZus{}nat}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{n}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hn}\PYG{n+nb+bp}{⟩}
 \PYG{+w}{    }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{o}{(}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{),}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{exact\PYGZus{}mod\PYGZus{}cast}\PYG{+w}{ }\PYG{n}{hn}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The denominator of d₁/d₂ divides d₂.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hden\PYGZus{}dvd}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{((((}\PYG{n}{d₁}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{n+nb+bp}{.}\PYG{n}{den}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{))}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{    }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n+nb+bp}{←}\PYG{+w}{ }\PYG{n}{Rat}\PYG{n+nb+bp}{.}\PYG{n}{divInt\PYGZus{}eq\PYGZus{}div}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Rat}\PYG{n+nb+bp}{.}\PYG{n}{den\PYGZus{}dvd}\PYG{+w}{ }\PYG{n}{d₁}\PYG{+w}{ }\PYG{n}{d₂}\PYG{o}{)}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Since it divides the squarefree d₂, the denominator is itself squarefree.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsqf\PYGZus{}den\PYGZus{}int}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{o}{((((}\PYG{n}{d₁}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{n+nb+bp}{.}\PYG{n}{den}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:=}
 \PYG{+w}{    }\PYG{n}{Squarefree}\PYG{n+nb+bp}{.}\PYG{n}{squarefree\PYGZus{}of\PYGZus{}dvd}\PYG{+w}{ }\PYG{n}{hden\PYGZus{}dvd}\PYG{+w}{ }\PYG{n}{hsq\PYGZus{}d₂}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Squarefree + square ⟹ denominator = 1, so d₂ ∣ d₁.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hden1\PYGZus{}nat}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{((}\PYG{n}{d₁}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d₂}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{n+nb+bp}{.}\PYG{n}{den}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}
 \PYG{+w}{    }\PYG{n}{nat\PYGZus{}eq\PYGZus{}one\PYGZus{}of\PYGZus{}squarefree\PYGZus{}intcast\PYGZus{}of\PYGZus{}isSquare}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZus{}}\PYG{+w}{ }\PYG{n}{hsqf\PYGZus{}den\PYGZus{}int}\PYG{+w}{ }\PYG{n}{hsq\PYGZus{}den\PYGZus{}int}
 \PYG{+w}{  }\PYG{n}{exact}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Rat}\PYG{n+nb+bp}{.}\PYG{n}{den\PYGZus{}div\PYGZus{}intCast\PYGZus{}eq\PYGZus{}one\PYGZus{}iff}\PYG{+w}{ }\PYG{n}{d₁}\PYG{+w}{ }\PYG{n}{d₂}\PYG{+w}{ }\PYG{n}{hd₂}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{l+m}{1}\PYG{+w}{ }\PYG{n}{hden1\PYGZus{}nat}
 
-\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Distinct squarefree parameters define non\PYGZhy{}isomorphic quadratic fields. \PYGZhy{}/}
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} **Main theorem**: Distinct squarefree parameters define non\PYGZhy{}isomorphic quadratic fields.}
+
+\PYG{l+s+sd}{    If `d₁ ≠ d₂` are both squarefree nonzero integers, then there is no `ℚ`\PYGZhy{}algebra}
+\PYG{l+s+sd}{    isomorphism `ℚ(√d₁) ≃ₐ[ℚ] ℚ(√d₂)`. \PYGZhy{}/}
 \PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{quadratic\PYGZus{}fields\PYGZus{}not\PYGZus{}iso}
 \PYG{+w}{    }\PYG{o}{(}\PYG{n}{d1}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{n}{d1}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{]}
 \PYG{+w}{    }\PYG{o}{(}\PYG{n}{hneq}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
 \PYG{+w}{    }\PYG{n+nb+bp}{¬}\PYG{+w}{ }\PYG{n}{Nonempty}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{n+nb+bp}{≃ₐ}\PYG{o}{[}\PYG{n}{ℚ}\PYG{o}{]}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{  }\PYG{n}{rintro}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{e}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Let x = e(√d₁) ∈ ℚ(√d₂). Write x = a + b√d₂ for some a, b ∈ ℚ.}
 \PYG{+w}{  }\PYG{k}{let}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{e}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{l+m+mi}{0}\PYG{o}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Since e is a ring homomorphism and (√d₁)² = d₁, we get x² = d₁ in ℚ(√d₂).}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hx}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{    }\PYG{n}{change}\PYG{+w}{ }\PYG{n}{e}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{l+m+mi}{0}\PYG{o}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{n+nb+bp}{⟩}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{e}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{l+m+mi}{0}\PYG{o}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{n+nb+bp}{⟩}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{)}
 \PYG{+w}{    }\PYG{k}{calc}
@@ -60,15 +98,19 @@
 \PYG{+w}{        }\PYG{n}{congr}\PYG{+w}{ }\PYG{l+m+mi}{1}
 \PYG{+w}{        }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Qsqrtd}\PYG{o}{]}
 \PYG{+w}{      }\PYG{n+nb+bp}{\PYGZus{}}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simp}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Expanding x² = (a + b√d₂)² = (a² + b²d₂) + 2ab√d₂, the imaginary part gives 2ab = 0.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{him0}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{him}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{congrArg}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n}{hx}
 \PYG{+w}{    }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Qsqrtd}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{him}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsum}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{+}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{    }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Qsqrtd}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}assoc}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}comm}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}left\PYGZus{}comm}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{him0}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} So either a = 0 or b = 0.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hprod}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{nlinarith}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hsum}\PYG{o}{]}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} In either case, d₁/d₂ is a perfect square in ℚ.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hratio}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{((}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}eq\PYGZus{}zero}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{hprod}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n}{hre}\PYG{+w}{ }\PYG{n+nb+bp}{|}\PYG{+w}{ }\PYG{n}{him}
-\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}⟩}
+\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Case a = 0: then x = b√d₂, so x² = b²d₂ = d₁, giving d₁/d₂ = b².}
+\PYG{+w}{      }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}⟩}
 \PYG{+w}{      }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hre0}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{        }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hre\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{congrArg}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n}{hx}
 \PYG{+w}{        }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Qsqrtd}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hre\PYGZsq{}}
@@ -80,15 +122,18 @@
 \PYG{+w}{        }\PYG{o}{(}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{o}{(((}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{))}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hmain}\PYG{o}{]}
 \PYG{+w}{        }\PYG{n+nb+bp}{\PYGZus{}}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{field\PYGZus{}simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hd2Q}\PYG{o}{]}
 \PYG{+w}{        }\PYG{n+nb+bp}{\PYGZus{}}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{ring}
-\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{exfalso}
+\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Case b = 0: then x = a ∈ ℚ, so x² = a² = d₁, contradicting d₁ nonsquare.}
+\PYG{+w}{      }\PYG{n}{exfalso}
 \PYG{+w}{      }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hre0}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{        }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hre\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{congrArg}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n}{hx}
 \PYG{+w}{        }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Qsqrtd}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hre\PYGZsq{}}
 \PYG{+w}{      }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hmain}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{        }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Qsqrtd}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{him}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{pow\PYGZus{}two}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}assoc}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}comm}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}left\PYGZus{}comm}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hre0}
 \PYG{+w}{      }\PYG{n}{exact}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{IsNonsquareRat}\PYG{n+nb+bp}{.}\PYG{n}{nonsquare}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d1}\PYG{o}{)}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{o}{)}\PYG{+w}{ }\PYG{n}{hmain}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now use the squarefreeness argument to derive d₂ ∣ d₁ and d₁ ∣ d₂.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hd1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{IsQuadraticParam}\PYG{n+nb+bp}{.}\PYG{n}{ne\PYGZus{}zero}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d1}\PYG{o}{)}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hd2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{IsQuadraticParam}\PYG{n+nb+bp}{.}\PYG{n}{ne\PYGZus{}zero}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{)}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} d₁/d₂ is a square ⟹ d₂/d₁ is also a square (take inverse of the witness).}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hratio\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{((}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{hratio}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{r}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hr}\PYG{n+nb+bp}{⟩}
 \PYG{+w}{    }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{r}\PYG{n+nb+bp}{⁻¹}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}⟩}
@@ -100,14 +145,18 @@
 \PYG{+w}{      }\PYG{o}{((}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{o}{(((}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)))}\PYG{n+nb+bp}{⁻¹}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{        }\PYG{n}{field\PYGZus{}simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hd1Q}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hd2Q}\PYG{o}{]}
 \PYG{+w}{      }\PYG{n+nb+bp}{\PYGZus{}}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{r}\PYG{n+nb+bp}{⁻¹}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{r}\PYG{n+nb+bp}{⁻¹}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{h1}\PYG{n+nb+bp}{.}\PYG{n}{symm}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} By the denominator lemma: d₂ ∣ d₁ and d₁ ∣ d₂.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hd21}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:=}
 \PYG{+w}{    }\PYG{n}{int\PYGZus{}dvd\PYGZus{}of\PYGZus{}ratio\PYGZus{}square}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{n}{hd2}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{IsQuadraticParam}\PYG{n+nb+bp}{.}\PYG{n}{squarefree}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d2}\PYG{o}{))}\PYG{+w}{ }\PYG{n}{hratio}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hd12}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:=}
 \PYG{+w}{    }\PYG{n}{int\PYGZus{}dvd\PYGZus{}of\PYGZus{}ratio\PYGZus{}square}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{n}{hd1}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{IsQuadraticParam}\PYG{n+nb+bp}{.}\PYG{n}{squarefree}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d1}\PYG{o}{))}\PYG{+w}{ }\PYG{n}{hratio\PYGZsq{}}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Mutual divisibility ⟹ d₁ and d₂ are associates, i.e. d₁ = ±d₂.}
 \PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hassoc}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Associated}\PYG{+w}{ }\PYG{n}{d1}\PYG{+w}{ }\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{associated\PYGZus{}of\PYGZus{}dvd\PYGZus{}dvd}\PYG{+w}{ }\PYG{n}{hd12}\PYG{+w}{ }\PYG{n}{hd21}
 \PYG{+w}{  }\PYG{n}{rcases}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Int}\PYG{n+nb+bp}{.}\PYG{n}{associated\PYGZus{}iff}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{hassoc}\PYG{o}{)}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n}{hEq}\PYG{+w}{ }\PYG{n+nb+bp}{|}\PYG{+w}{ }\PYG{n}{hNeg}
-\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hneq}\PYG{+w}{ }\PYG{n}{hEq}
-\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hd2Q}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{exact\PYGZus{}mod\PYGZus{}cast}\PYG{+w}{ }\PYG{n}{hd2}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} d₁ = d₂ contradicts our hypothesis d₁ ≠ d₂.}
+\PYG{+w}{    }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hneq}\PYG{+w}{ }\PYG{n}{hEq}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} d₁ = \PYGZhy{}d₂ means d₁/d₂ = \PYGZhy{}1, so \PYGZhy{}1 is a square in ℚ — contradiction.}
+\PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hd2Q}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{exact\PYGZus{}mod\PYGZus{}cast}\PYG{+w}{ }\PYG{n}{hd2}
 \PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hratio\PYGZus{}neg1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{((}\PYG{n}{d1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{))}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{n+nb+bp}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
 \PYG{+w}{      }\PYG{n}{rw}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hNeg}\PYG{o}{]}
 \PYG{+w}{      }\PYG{n}{simp}
