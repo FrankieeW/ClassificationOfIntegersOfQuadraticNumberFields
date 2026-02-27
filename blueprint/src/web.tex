@@ -5,8 +5,20 @@
 \usepackage[capitalize]{cleveref}
 \usepackage[showmore,dep_graph, project=../..]{blueprint}
 
-\input{macro/common}
-\input{macro/web}
+% Shared macros (inlined for CI stability)
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Qs}{\Q(\sqrt{d})}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Nm}{Nm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
 
 \github{https://github.com/fwmbam4/ClassificationOfIntegersOfQuadraticNumberFields}
 \dochome{https://fwmbam4.github.io/ClassificationOfIntegersOfQuadraticNumberFields/docs}

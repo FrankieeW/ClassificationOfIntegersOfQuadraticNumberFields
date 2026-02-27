@@ -5,8 +5,27 @@
 \usepackage[pdfencoding=auto, psdextra]{hyperref}
 \usepackage[nameinlink, capitalize]{cleveref}
 
-\input{macro/common}
-\input{macro/print}
+% Shared macros (inlined for CI stability)
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Qs}{\Q(\sqrt{d})}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Nm}{Nm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\uses}[1]{}
+\newcommand{\proves}[1]{}
+\newcommand{\discussion}[1]{}
+\newcommand{\lean}[1]{}
+\newcommand{\leanok}{}
+\newcommand{\mathlibok}{}
+\newcommand{\notready}{}
 
 \title{Classification of Integers of Quadratic Number Fields}
 \author{Formalization Project}
