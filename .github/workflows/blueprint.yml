@@ -53,7 +53,8 @@ jobs:
         run: |
           cd blueprint
           source .venv/bin/activate
-          leanblueprint web
+          cd src
+          plastex --config=plastex.cfg web.tex
 
       - name: Debug generated site
         run: |
