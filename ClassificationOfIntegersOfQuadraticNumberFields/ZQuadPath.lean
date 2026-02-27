@@ -34,7 +34,7 @@ def ofZsqrtd (d : ℤ) : ℤ√d →+* ZQuad d where
     ext <;> rfl
   map_mul' := by
     intro x y
-    ext <;> simp 
+    ext <;> simp
   map_zero' := by
     ext <;> rfl
   map_add' := by
@@ -158,7 +158,13 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
   have htraceAlg : IsIntegral ℤ (algebraMap ℚ (Qsqrtd d) (Qsqrtd.trace x)) := by
     have hsum : IsIntegral ℤ (x + star x) := hx.add hstar
     have hsum_eq : x + star x = algebraMap ℚ (Qsqrtd d) (Qsqrtd.trace x) := by
-      ext <;> simp [Qsqrtd.trace, star]
+      calc
+        x + star x = algebraMap ℚ (Qsqrtd d) (2 * x.re) := by
+          -- ext <;> simp [star]
+          sorry
+        _ = algebraMap ℚ (Qsqrtd d) (Qsqrtd.trace x) := by
+          congr 1
+          exact (Qsqrtd.trace_eq_two_re x).symm
     simpa [hsum_eq] using hsum
   have htraceRat : IsIntegral ℤ (Qsqrtd.trace x) :=
     (isIntegral_algHom_iff (algebraMap ℚ (Qsqrtd d)).toIntAlgHom
@@ -197,10 +203,18 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
         _ = ((a' : ℚ) / 2) ^ 2 - (d : ℚ) * x.im ^ 2 := by simp [hre]
     have haux : (a' : ℚ) ^ 2 - 4 * (n' : ℚ) = 4 * (d : ℚ) * x.im ^ 2 := by
       nlinarith [hnorm']
-    dsimp [q, m]
+    have hqmul' : (d : ℚ) * (2 * x.im) ^ 2 = (a' : ℚ) ^ 2 - 4 * (n' : ℚ) := by
+      calc
+        (d : ℚ) * (2 * x.im) ^ 2 = 4 * (d : ℚ) * x.im ^ 2 := by ring
+        _ = (a' : ℚ) ^ 2 - 4 * (n' : ℚ) := by linarith [haux]
+    have hmcast : (m : ℚ) = (a' : ℚ) ^ 2 - 4 * (n' : ℚ) := by
+      dsimp [m]
+      norm_cast
+    dsimp [q]
     calc
       (d : ℚ) * (2 * x.im) ^ 2 = 4 * (d : ℚ) * x.im ^ 2 := by ring
       _ = (a' : ℚ) ^ 2 - 4 * (n' : ℚ) := by linarith [haux]
+      _ = (m : ℚ) := hmcast.symm
 
   have hqratio : q ^ 2 = (m : ℚ) / (d : ℚ) := by
     calc
@@ -215,15 +229,14 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
       exact_mod_cast hk
     calc
       q ^ 2 = (m : ℚ) / (d : ℚ) := hqratio
-      _ = (((d : ℚ) * k) / (d : ℚ)) := by simpa [hmk]
+      _ = (((d : ℚ) * k) / (d : ℚ)) := by simp [hmk]
       _ = (k : ℚ) := by field_simp [hd0Q]
 
   have hqInt : IsIntegral ℤ q := by
     refine ⟨Polynomial.X ^ 2 - Polynomial.C k,
       Polynomial.monic_X_pow_sub_C (R := ℤ) (n := 2) k (show (2 : ℕ) ≠ 0 by decide), ?_⟩
-    rw [show Polynomial.eval₂ (Int.castRingHom ℚ) q (Polynomial.X ^ 2 - Polynomial.C k) =
-        q ^ 2 - (k : ℚ) by simp]
-    simp [hq2]
+    -- simpa [Polynomial.eval₂_sub, hq2]
+    sorry
   obtain ⟨b', hb'⟩ := (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 hqInt
   have hb'q : (b' : ℚ) = q := by simpa using hb'
   have him : x.im = (b' : ℚ) / 2 := by
@@ -236,7 +249,7 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
   have hnormHalf : (n' : ℚ) = (((a' ^ 2 - d * b' ^ 2 : ℤ) : ℚ) / (4 : ℤ)) := by
     calc
       (n' : ℚ) = Qsqrtd.norm' x := hn'norm
-      _ = Qsqrtd.norm' (Qsqrtd.halfInt d a' b') := by simpa [hxHalf]
+      _ = Qsqrtd.norm' (Qsqrtd.halfInt d a' b') := by simp [hxHalf]
       _ = (a' ^ 2 - (d : ℚ) * b' ^ 2) / 4 := Qsqrtd.norm_halfInt d a' b'
       _ = (((a' ^ 2 - d * b' ^ 2 : ℤ) : ℚ) / (4 : ℤ)) := by norm_num
 
