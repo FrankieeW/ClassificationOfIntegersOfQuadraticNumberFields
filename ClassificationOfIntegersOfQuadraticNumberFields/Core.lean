@@ -1,4 +1,3 @@
-import Mathlib
 import ClassificationOfIntegersOfQuadraticNumberFields.Base
 import ClassificationOfIntegersOfQuadraticNumberFields.NonIso
 import ClassificationOfIntegersOfQuadraticNumberFields.MinimalPolynomial

@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+\usepackage{blueprint}
+
+\title{Classification of Integers of Quadratic Number Fields}
+\author{Formalization Project}
+
+\begin{document}
+
+\maketitle
+
+\section{Definitions}
+
+\begindefinition{IsQuadraticParam}{def:isQuadraticParam}
+  Typeclass encoding admissible quadratic parameters.
+  \lean{../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+\enddefinition
+
+\begindefinition{halfInt}{def:halfInt}
+  The element $\frac{a' + b'\sqrt{d}}{2}$ in $\mathbb{Q}(\sqrt{d})$.
+  \lean{../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
+\enddefinition
+
+\section{Main Theorems}
+
+\begintheorem{quadratic_fields_not_iso}{thm:quadratic_fields_not_iso}
+  Distinct squarefree parameters define non-isomorphic quadratic fields.
+  \lean{../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean}
+  \leanok
+\endtheorem
+
+\begintheorem{dvd_four_sub_sq_iff_same_parity}{thm:mod_four_criterion}
+  A mod-$4$ criterion characterizing integrality parity constraints.
+  \lean{../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+  \leanok
+\endtheorem
+
+\begintheorem{classification_to_zsqrtd}{thm:classification_to_zsqrtd}
+  Classification of integral elements in terms of $\mathbb{Z}[\sqrt{d}]$.
+  \lean{../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+  \leanok
+\endtheorem
+
+\section{Auxiliary Results}
+
+\beginlemma{trace_eq_two_re}{lem:trace_eq_two_re}
+  Formula for the trace of an element in $\mathbb{Q}(\sqrt{d})$.
+  \lean{../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
+  \leanok
+\endlemma
+
+\beginlemma{norm_halfInt}{lem:norm_halfInt}
+  Closed expression for the norm of $\frac{a' + b'\sqrt{d}}{2}$.
+  \lean{../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
+  \leanok
+\endlemma
+
+\end{document}

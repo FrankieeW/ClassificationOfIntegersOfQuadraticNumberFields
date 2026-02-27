@@ -1,0 +1,8 @@
+.venv/
+src/web/
+web/
+*.paux
+*.aux
+*.log
+*.toc
+*.out

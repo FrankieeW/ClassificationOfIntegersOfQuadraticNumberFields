@@ -1,0 +1,6 @@
+../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean
+../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean

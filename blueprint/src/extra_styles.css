@@ -1,0 +1,11 @@
+div.theorem_thmcontent {
+  border-left: 0.12rem solid black;
+}
+
+div.lemma_thmcontent {
+  border-left: 0.1rem solid black;
+}
+
+div.proof_content {
+  border-left: 0.08rem solid #666;
+}
