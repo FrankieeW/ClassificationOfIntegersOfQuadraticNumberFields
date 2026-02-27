@@ -167,9 +167,7 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
   have hc_inj : Function.Injective cHom := by
     intro r s hrs
     exact (QuadraticAlgebra.C_inj (R := ℚ) (a := (d : ℚ)) (b := (0 : ℚ))).1 hrs
-
   have hstar : IsIntegral ℤ (star x) := map_isIntegral_int (starRingEnd (Qsqrtd d)) hx
-
   have htraceAlg :
       IsIntegral ℤ (QuadraticAlgebra.C (a := (d : ℚ)) (b := (0 : ℚ)) (Qsqrtd.trace x)) := by
     have hsum : IsIntegral ℤ (x + star x) := hx.add hstar
@@ -183,7 +181,6 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
     (isIntegral_algHom_iff cHom.toIntAlgHom hc_inj).1 htraceAlg
   obtain ⟨a', ha'⟩ := (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 htraceRat
   have ha'trace : (a' : ℚ) = Qsqrtd.trace x := by simpa using ha'
-
   have hnormAlg : IsIntegral ℤ (algebraMap ℚ (Qsqrtd d) (Qsqrtd.norm' x)) := by
     have hmul : algebraMap ℚ (Qsqrtd d) (Qsqrtd.norm' x) = x * star x := by
       simpa [Qsqrtd.norm', mul_comm] using
@@ -195,10 +192,8 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
       (algebraMap ℚ (Qsqrtd d)).injective).1 hnormAlg
   obtain ⟨n', hn'⟩ := (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 hnormRat
   have hn'norm : (n' : ℚ) = Qsqrtd.norm' x := by simpa using hn'
-
   let q : ℚ := 2 * x.im
   let m : ℤ := a' ^ 2 - 4 * n'
-
   have hre : x.re = (a' : ℚ) / 2 := by
     have htr : 2 * x.re = (a' : ℚ) := by
       calc
@@ -227,12 +222,10 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
       (d : ℚ) * (2 * x.im) ^ 2 = 4 * (d : ℚ) * x.im ^ 2 := by ring
       _ = (a' : ℚ) ^ 2 - 4 * (n' : ℚ) := by linarith [haux]
       _ = (m : ℚ) := hmcast.symm
-
   have hqratio : q ^ 2 = (m : ℚ) / (d : ℚ) := by
     calc
       q ^ 2 = ((d : ℚ) * q ^ 2) / (d : ℚ) := by field_simp [hd0Q]
       _ = (m : ℚ) / (d : ℚ) := by simp [hqmul]
-
   have hsqratio : IsSquare ((m : ℚ) / (d : ℚ)) := ⟨q, by simpa [pow_two] using hqratio.symm⟩
   have hdm : d ∣ m := Qsqrtd.int_dvd_of_ratio_square m d hd0 hd hsqratio
   rcases hdm with ⟨k, hk⟩
@@ -243,7 +236,6 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
       q ^ 2 = (m : ℚ) / (d : ℚ) := hqratio
       _ = (((d : ℚ) * k) / (d : ℚ)) := by simp [hmk]
       _ = (k : ℚ) := by field_simp [hd0Q]
-
   have hqInt : IsIntegral ℤ q := by
     refine ⟨Polynomial.X ^ 2 - Polynomial.C k,
       Polynomial.monic_X_pow_sub_C (R := ℤ) (n := 2) k (show (2 : ℕ) ≠ 0 by decide), ?_⟩
@@ -260,17 +252,14 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
   have him : x.im = (b' : ℚ) / 2 := by
     have : (b' : ℚ) = 2 * x.im := by simpa [q] using hb'q
     nlinarith [this]
-
   have hxHalf : x = Qsqrtd.halfInt d a' b' := by
     ext <;> simp [Qsqrtd.halfInt, hre, him]
-
   have hnormHalf : (n' : ℚ) = (((a' ^ 2 - d * b' ^ 2 : ℤ) : ℚ) / (4 : ℤ)) := by
     calc
       (n' : ℚ) = Qsqrtd.norm' x := hn'norm
       _ = Qsqrtd.norm' (Qsqrtd.halfInt d a' b') := by simp [hxHalf]
       _ = (a' ^ 2 - (d : ℚ) * b' ^ 2) / 4 := Qsqrtd.norm_halfInt d a' b'
       _ = (((a' ^ 2 - d * b' ^ 2 : ℤ) : ℚ) / (4 : ℤ)) := by norm_num
-
   have hhalf : (((a' ^ 2 - d * b' ^ 2 : ℤ) : ℚ) / (4 : ℤ)) = (n' : ℚ) := by
     simpa using hnormHalf.symm
   have hden : ((((a' ^ 2 - d * b' ^ 2 : ℤ) : ℚ) / (4 : ℤ)).den = 1) := by
@@ -278,7 +267,6 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
     simp
   have hdiv : (4 : ℤ) ∣ (a' ^ 2 - d * b' ^ 2) :=
     (Rat.den_div_intCast_eq_one_iff (a' ^ 2 - d * b' ^ 2) 4 (by norm_num)).1 hden
-
   rcases exists_zquad_image_of_dvd_four_sub_sq_of_ne_one_mod_four d a' b' hd hd4 hdiv with ⟨z, hz⟩
   refine ⟨z, ?_⟩
   simpa [hxHalf] using hz
