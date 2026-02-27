@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.2.12)  27 FEB 2026 05:47
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.2.12)  27 FEB 2026 15:25
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1483,12 +1483,12 @@ File: ./figures/Imperial_College_London_new_logo.png Graphic file (type bmp)
 \pydata@fh@0=\write8
 \openout8 = `_E98D2F001DA5678B39482EFBDF5770DC.data.minted'.
 
-runsystem(latexminted config  --timestamp 20260227054719Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
+runsystem(latexminted config  --timestamp 20260227152537Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
 
  (out/_E98D2F001DA5678B39482EFBDF5770DC.config.minted)
-runsystem(latexminted cleanconfig  --timestamp 20260227054719Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
+runsystem(latexminted cleanconfig  --timestamp 20260227152537Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
 
- (./out/_minted/default.style.minted) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted [3]) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) [4] (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) (./out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted) [5] (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) [6] (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted) (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted) (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted [7]) (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted [8]) (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) [9] (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) [10] (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [11] [12]) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [13]) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) [14] (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) [15] (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) [16] 
+ (./out/_minted/default.style.minted) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted [3]) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) [4] (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) (./out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted) [5] (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) [6] (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted) (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted) (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted [7]) (./out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted [8]) (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) [9] (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) [10] (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [11] [12]) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [13]) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) [14] (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) [15] (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) [16] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (out/report.aux)
  ***********
@@ -1504,10 +1504,10 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 Here is how much of TeX's memory you used:
  56603 strings out of 468174
  1310053 string characters out of 5433150
- 2425872 words of memory out of 5000000
+ 2425873 words of memory out of 5000000
  84398 multiletter control sequences out of 15000+600000
  638733 words of font info for 114 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  114i,13n,122p,1289b,4912s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/report.xdv (16 pages, 618220 bytes).
+Output written on out/report.xdv (16 pages, 617620 bytes).

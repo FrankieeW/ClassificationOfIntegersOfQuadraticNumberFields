@@ -1,18 +1,18 @@
 # Fdb version 4
-["biber out/report"] 1772171211.61491 "out/report.bcf" "out/report.bbl" "out/report" 1772171243.35753 0
-  "out/report.bcf" 1772171242.24734 109169 51ec04d280bb9e0ee1f33e77f23a0308 "xelatex"
+["biber out/report"] 1772205653.24178 "out/report.bcf" "out/report.bbl" "out/report" 1772205941.26951 0
+  "out/report.bcf" 1772205940.18584 109169 51ec04d280bb9e0ee1f33e77f23a0308 "xelatex"
   "references.bib" 1772170872.70461 681 d5fb63704471c38f7599789e255ca63f ""
   (generated)
   "out/report.bbl"
   "out/report.blg"
   (rewritten before read)
-["xdvipdfmx"] 1772171242.31189 "out/report.xdv" "out/report.pdf" "out/report" 1772171243.36 0
-  "out/report.xdv" 1772171242.24874 618220 cc7b38a4f732f201a3a6a2b3a4c49c19 "xelatex"
+["xdvipdfmx"] 1772205940.2552 "out/report.xdv" "out/report.pdf" "out/report" 1772205941.27172 0
+  "out/report.xdv" 1772205940.18722 617620 381b3d6b55f7e3247ba4aa1f5740e859 "xelatex"
   (generated)
   "out/report.pdf"
   (rewritten before read)
-["xelatex"] 1772171239.72579 "/Users/fwmbam4/CodeHub/Frankie/ClassificationOfIntegersOfQuadraticNumberFields/tex/report/report.tex" "out/report.xdv" "report" 1772171243.35762 0
-  "../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean" 1772151702.99804 3932 228170ba7ee3adaca1d47b3ba4db922a ""
+["xelatex"] 1772205937.11742 "/Users/fwmbam4/CodeHub/Frankie/ClassificationOfIntegersOfQuadraticNumberFields/tex/report/report.tex" "out/report.xdv" "report" 1772205941.26957 0
+  "../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean" 1772205933.80204 4072 0e31b403f5baa96714c5bb0f9b47993a ""
   "../../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean" 1772165251.30658 5831 5060596be1a750fbdc5f241a2a5d4360 ""
   "../../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean" 1772151750.80516 861 0112a23e9c865ed0628ff767065546c4 ""
   "../../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean" 1772151750.79882 990 8d6160c50c7d4f1267356e7626abd9e6 ""
@@ -300,17 +300,17 @@
   "figures/Imperial_College_London_new_logo.png" 1772154639.24142 147431 74c918d0c01df93452e2bdc57e1fdd19 ""
   "out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted" 1772167658.66034 30314 72daf54ef27bb4767e45cbfcbae4bc97 ""
   "out/_minted/619BE766474FF543398CB35052475523.highlight.minted" 1772167656.2757 4315 0417dc2f801080c0749f8a911ef71219 ""
+  "out/_minted/79395C94869F69E75C9668A7BDFE9F4B.highlight.minted" 1772205935.47529 16717 d3edeacdd97514301101229de74be021 ""
   "out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted" 1772167662.23233 23056 8a019dacf9386a49b710ab2c6e44a304 ""
-  "out/_minted/CF33F45DA0170ACCB5C4DEA158E09F35.highlight.minted" 1772167426.18308 16164 5ffb49ac9eec66e7a5e6ab0608082285 ""
   "out/_minted/DC82E39EB7067FF046417E412ABE931A.highlight.minted" 1772167545.82808 27609 465555c0cfadd7a50f0215def4dd88b8 ""
   "out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted" 1772167657.56327 4243 6108095df6a6d8f9a03bd899054aa26b ""
-  "out/_minted/_E98D2F001DA5678B39482EFBDF5770DC.index.minted" 1772170217.92499 550 b6689457aa873ad380cf0b45cbf1f0b9 ""
+  "out/_minted/_E98D2F001DA5678B39482EFBDF5770DC.index.minted" 1772205937.03412 550 656caf2c0d22046dc75bb1a4dc823cde ""
   "out/_minted/default.style.minted" 1772170216.76982 6426 e1fb43a91491f41b33310478eee48cdb ""
-  "out/report.aux" 1772171242.24302 8559 601fff5b6ec2b183d020eea349a9a78b "xelatex"
-  "out/report.bbl" 1772171213.22013 2767 0124e98e4c0a37745562d843d85465e2 "biber out/report"
-  "out/report.out" 1772171242.24658 10514 cd388c6ed28a9d859dd79c08065a4631 "xelatex"
-  "out/report.run.xml" 1772171242.24846 2354 a7cf01a6e35385315e3a81683d560f71 "xelatex"
-  "out/report.toc" 1772171242.24859 4235 1d0b3d69216eaf02aba2656562a139ef "xelatex"
+  "out/report.aux" 1772205940.17658 8559 703bfaf3bf115ca9ab58ab111e6ee364 "xelatex"
+  "out/report.bbl" 1772205654.79384 2767 0124e98e4c0a37745562d843d85465e2 "biber out/report"
+  "out/report.out" 1772205940.18402 10514 cd388c6ed28a9d859dd79c08065a4631 "xelatex"
+  "out/report.run.xml" 1772205940.18692 2354 a7cf01a6e35385315e3a81683d560f71 "xelatex"
+  "out/report.toc" 1772205940.18715 4235 1d0b3d69216eaf02aba2656562a139ef "xelatex"
   "report.tex" 1772171196.28189 23392 231e953e597e0c8747bf314226903606 ""
   (generated)
   "out/report.aux"

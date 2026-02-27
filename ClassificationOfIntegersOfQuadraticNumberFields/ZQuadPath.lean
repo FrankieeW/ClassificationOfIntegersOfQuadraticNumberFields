@@ -200,7 +200,6 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
         2 * x.re = Qsqrtd.trace x := (Qsqrtd.trace_eq_two_re x).symm
         _ = (a' : ℚ) := ha'trace.symm
     nlinarith
-
   have hqmul : (d : ℚ) * q ^ 2 = (m : ℚ) := by
     have hnorm' :
         (n' : ℚ) = ((a' : ℚ) / 2) ^ 2 - (d : ℚ) * x.im ^ 2 := by

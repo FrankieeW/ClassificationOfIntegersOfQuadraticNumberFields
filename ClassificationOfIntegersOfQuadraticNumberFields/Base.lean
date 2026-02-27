@@ -88,7 +88,7 @@ instance (d : ℤ) [IsQuadraticParam d] : IsNonsquareRat d := by
 instance {d : ℤ} [IsNonsquareRat d] : Field (Qsqrtd d) := by
   letI : Fact (∀ r : ℚ, r ^ 2 ≠ (d : ℚ) + 0 * r) := ⟨by
     intro r hr
-    exact (IsNonsquareRat.nonsquare (d := d) r) (by simpa [zero_mul, add_zero] using hr)
+    exact (IsNonsquareRat.nonsquare (d := d) r) (by simp [hr])
   ⟩
   infer_instance
 
