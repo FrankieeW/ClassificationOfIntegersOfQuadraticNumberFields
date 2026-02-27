@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.2.12)  27 FEB 2026 15:38
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.2.12)  27 FEB 2026 15:54
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1483,12 +1483,12 @@ File: ./figures/Imperial_College_London_new_logo.png Graphic file (type bmp)
 \pydata@fh@0=\write8
 \openout8 = `_E98D2F001DA5678B39482EFBDF5770DC.data.minted'.
 
-runsystem(latexminted config  --timestamp 20260227153818Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
+runsystem(latexminted config  --timestamp 20260227155410Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
 
  (out/_E98D2F001DA5678B39482EFBDF5770DC.config.minted)
-runsystem(latexminted cleanconfig  --timestamp 20260227153818Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
+runsystem(latexminted cleanconfig  --timestamp 20260227155410Z E98D2F001DA5678B39482EFBDF5770DC)...executed.
 
- (./out/_minted/default.style.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted [3]) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) [4] (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) [5] (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) [6] (./out/_minted/07AEC31F127201A56C023AB64CB0F20F.highlight.minted) (./out/_minted/07AEC31F127201A56C023AB64CB0F20F.highlight.minted) (./out/_minted/07AEC31F127201A56C023AB64CB0F20F.highlight.minted [7]) (./out/_minted/07AEC31F127201A56C023AB64CB0F20F.highlight.minted
+ (./out/_minted/default.style.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted [3]) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) [4] (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) (./out/_minted/EADC4A63F431D60E79D9251B89FC391E.highlight.minted) [5] (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) (./out/_minted/619BE766474FF543398CB35052475523.highlight.minted) [6] (./out/_minted/095D7A5DBEA8CED18891F6915D5051E3.highlight.minted) (./out/_minted/095D7A5DBEA8CED18891F6915D5051E3.highlight.minted) (./out/_minted/095D7A5DBEA8CED18891F6915D5051E3.highlight.minted [7]) (./out/_minted/095D7A5DBEA8CED18891F6915D5051E3.highlight.minted
 Missing character: There is no ⟹ (U+27F9) in font FreeMono Oblique/OT:script=latn;language=dflt;!
 Missing character: There is no ⟹ (U+27F9) in font FreeMono Oblique/OT:script=latn;language=dflt;!
 [8]) [9] (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) (./out/_minted/F19DC085BC513490BEAE2F5518F71397.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [10]) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [11]) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [12]) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted [13]) (./out/_minted/33497F9F50AC50AF0E4C6C32D3DAE240.highlight.minted) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted [14]) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted [15]) (./out/_minted/C06C463C74748703D0A29694DFDCB5ED.highlight.minted) [16] [17] 
@@ -1507,10 +1507,10 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 Here is how much of TeX's memory you used:
  56603 strings out of 468174
  1310053 string characters out of 5433150
- 2418873 words of memory out of 5000000
+ 2419873 words of memory out of 5000000
  84398 multiletter control sequences out of 15000+600000
  638733 words of font info for 114 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  114i,13n,122p,1289b,4912s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/report.xdv (17 pages, 601972 bytes).
+Output written on out/report.xdv (17 pages, 601388 bytes).

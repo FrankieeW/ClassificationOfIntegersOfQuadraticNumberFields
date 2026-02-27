@@ -38,10 +38,8 @@ lemma nat_eq_one_of_squarefree_intcast_of_isSquare (m : ℕ)
   by_cases huz : IsUnit z
   · -- If z is a unit, then m = z * z = (±1)² = 1.
     rcases Int.isUnit_iff.mp huz with hz1 | hz1
-    · have hmz : (m : ℤ) = 1 := by simpa [hz1] using hz
-      norm_num at hmz
-      exact hmz
-    · have hmz : (m : ℤ) = 1 := by simpa [hz1] using hz
+    all_goals
+      have hmz : (m : ℤ) = 1 := by simpa [hz1] using hz
       norm_num at hmz
       exact hmz
   · -- If z is not a unit, then z² being squarefree is impossible

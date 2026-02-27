@@ -39,10 +39,8 @@
 \PYG{+w}{  }\PYG{n}{by\PYGZus{}cases}\PYG{+w}{ }\PYG{n}{huz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsUnit}\PYG{+w}{ }\PYG{n}{z}
 \PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} If z is a unit, then m = z * z = (±1)² = 1.}
 \PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{Int}\PYG{n+nb+bp}{.}\PYG{n}{isUnit\PYGZus{}iff}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{huz}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n}{hz1}\PYG{+w}{ }\PYG{n+nb+bp}{|}\PYG{+w}{ }\PYG{n}{hz1}
-\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hmz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz1}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hz}
-\PYG{+w}{      }\PYG{n}{norm\PYGZus{}num}\PYG{+w}{ }\PYG{k}{at}\PYG{+w}{ }\PYG{n}{hmz}
-\PYG{+w}{      }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hmz}
-\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hmz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz1}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hz}
+\PYG{+w}{    }\PYG{n}{all\PYGZus{}goals}
+\PYG{+w}{      }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hmz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz1}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hz}
 \PYG{+w}{      }\PYG{n}{norm\PYGZus{}num}\PYG{+w}{ }\PYG{k}{at}\PYG{+w}{ }\PYG{n}{hmz}
 \PYG{+w}{      }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hmz}
 \PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} If z is not a unit, then z² being squarefree is impossible}
