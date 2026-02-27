@@ -55,6 +55,12 @@ jobs:
           source .venv/bin/activate
           leanblueprint web
 
+      - name: Verify generated pages
+        run: |
+          test -f blueprint/web/index.html
+          test -f blueprint/web/dep_graph_document.html
+          test -f blueprint/web/sect0001.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
