@@ -55,6 +55,20 @@ jobs:
           source .venv/bin/activate
           leanblueprint web
 
+      - name: Debug generated site
+        run: |
+          echo "== source files =="
+          sed -n '1,120p' blueprint/src/web.tex
+          sed -n '1,80p' blueprint/src/content.tex
+          echo "== generated files =="
+          ls -la blueprint/web || true
+          find blueprint/web -maxdepth 2 -type f | sort || true
+          if [ -f blueprint/web/index.html ]; then
+            echo "== index head =="
+            wc -c blueprint/web/index.html
+            sed -n '1,200p' blueprint/web/index.html
+          fi
+
       - name: Verify generated pages
         run: |
           test -f blueprint/web/index.html
