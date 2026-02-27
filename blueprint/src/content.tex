@@ -95,70 +95,67 @@ $\Q(\sqrt{d_1}) \not\simeq_{\Q} \Q(\sqrt{d_2})$.
 \leanok
 \uses{def:isQuadraticParam}
 \end{theorem}
-\chapter{Roadmap I: The $d \equiv 1 \pmod 4$ Branch}
+\chapter{Roadmap I: `ClassificationToZsqrtd.lean` TODO List}
 
-\begin{definition}[Planned: half-integer order generator]\label{def:plan_half_order}
-Introduce the order generator $\omega_d := \frac{1+\sqrt d}{2}$ in $\Q(\sqrt d)$ and formalize
-its basic arithmetic interface.
+\begin{theorem}[Future theorem `halfInt_mem_range_halfOrder_iff_same_parity`]\label{thm:future_halfInt_mem_range_halfOrder_iff_same_parity}
+For $d \equiv 1 \pmod 4$, characterize when `halfInt d a' b'` lies in the image of
+$\Z\!\left[\frac{1+\sqrt d}{2}\right]$ by the parity condition $a' \equiv b' \pmod 2$.
 \notready
-\uses{def:Qsqrtd, def:halfInt}
-\end{definition}
-
-\begin{theorem}[Planned: same-parity membership criterion]\label{thm:plan_same_parity_membership}
-For $d \equiv 1 \pmod 4$, characterize representability in
-$\Z[\omega_d]$ by the same-parity condition on numerators.
-\notready
-\uses{thm:mod4_dichotomy, def:plan_half_order}
+\uses{thm:mod4_dichotomy, def:halfInt}
+\discussion{Planned target in `ClassificationToZsqrtd.lean` for the missing $d \equiv 1 \pmod 4$ branch.}
 \end{theorem}
 
-\begin{theorem}[Planned: completed $1$-mod-$4$ classification branch]\label{thm:plan_one_mod_four_branch}
-Complete the branch currently left as TODO: express integrality via
-$\Z\!\left[\frac{1+\sqrt d}{2}\right]$ when $d \equiv 1 \pmod 4$.
+\begin{theorem}[Future theorem `dvd_four_sub_sq_iff_exists_halfOrder_image_of_one_mod_four`]\label{thm:future_dvd_four_sub_sq_iff_exists_halfOrder_image_of_one_mod_four}
+Complete the one-mod-four branch by expressing
+$4 \mid (a'^2 - d b'^2)$ iff representability via $\Z\!\left[\frac{1+\sqrt d}{2}\right]$.
 \notready
-\uses{thm:plan_same_parity_membership}
-\discussion{This is the missing branch mentioned in `ClassificationToZsqrtd.lean`.}
-\end{theorem}
-\chapter{Roadmap II: Global Ring-of-Integers Classification}
-
-\begin{theorem}[Planned: unified statement of $\mathcal O_{\Q(\sqrt d)}$]\label{thm:plan_global_classification}
-Combine the $d \not\equiv 1 \pmod 4$ and $d \equiv 1 \pmod 4$ branches into a single theorem
-classifying integral elements of quadratic fields for squarefree admissible parameters.
-\notready
-\uses{thm:classification_ne_one_mod_four, thm:plan_one_mod_four_branch}
+\uses{thm:future_halfInt_mem_range_halfOrder_iff_same_parity}
 \end{theorem}
 
-\begin{corollary}[Planned: explicit basis and membership test]\label{cor:plan_explicit_basis}
-Extract a practical basis-and-membership API for $\mathcal O_{\Q(\sqrt d)}$ from the unified theorem.
+\begin{theorem}[Future theorem `dvd_four_sub_sq_iff_exists_integral_model_image`]\label{thm:future_dvd_four_sub_sq_iff_exists_integral_model_image}
+Unify both branches into one image-theoretic criterion matching the full ring-of-integers classification model.
 \notready
-\uses{thm:plan_global_classification}
-\end{corollary}
-\chapter{Roadmap III: Transport, Normalization, and Isomorphism Interfaces}
+\uses{thm:classification_ne_one_mod_four, thm:future_dvd_four_sub_sq_iff_exists_halfOrder_image_of_one_mod_four}
+\end{theorem}
 
-\begin{proposition}[Planned: transport of integrality along rescaling]\label{prop:plan_rescale_transport}
-Use the existing rescaling equivalence $\Q(\sqrt d) \simeq \Q(\sqrt{a^2 d})$ to transport integrality
-and classification results to normalized representatives.
-\notready
-\uses{thm:plan_global_classification}
-\end{proposition}
+\chapter{Roadmap II: `ModFourCriteria.lean` Refinements}
 
-\begin{proposition}[Planned: bridge between classification and non-isomorphism]\label{prop:plan_classification_noniso_bridge}
-Connect the completed classification theorem with field-rigidity lemmas to provide a coherent
-parameter-canonicalization story in one API layer.
+\begin{theorem}[Future theorem `same_parity_iff_exists_half_order_coordinates`]\label{thm:future_same_parity_iff_exists_half_order_coordinates}
+Extract a standalone parity-to-coordinates equivalence specialized to $d \equiv 1 \pmod 4$ for reuse in classification proofs.
 \notready
-\uses{thm:quadratic_fields_not_iso, thm:plan_global_classification, prop:plan_rescale_transport}
-\end{proposition}
-\chapter{Roadmap IV: API Strengthening and Project Polish}
+\uses{thm:mod4_dichotomy, thm:future_halfInt_mem_range_halfOrder_iff_same_parity}
+\end{theorem}
 
-\begin{proposition}[Planned: stronger norm/trace/minpoly API]\label{prop:plan_norm_trace_api}
-Add reusable lemmas around trace, norm, minimal-polynomial identities, and coercions so downstream
-proofs avoid repeated low-level rewrites.
+\begin{theorem}[Future theorem `dvd_four_sub_sq_iff_half_order_coordinate_condition`]\label{thm:future_dvd_four_sub_sq_iff_half_order_coordinate_condition}
+Package the mod-$4$ criterion in a form directly consumable by `ClassificationToZsqrtd.lean` without case-by-case rewrites.
 \notready
-\uses{thm:trace_eq_two_re, thm:norm_eq_sqr_minus_d_sqr, thm:plan_global_classification}
-\end{proposition}
+\uses{thm:future_same_parity_iff_exists_half_order_coordinates}
+\end{theorem}
 
-\begin{proposition}[Planned: module split and theorem indexing]\label{prop:plan_module_split}
-Refine file layout and theorem naming/indexing to make the library easier to extend and to align
-with blueprint chapter boundaries.
+\chapter{Roadmap III: `Base.lean` Transport and Normalization}
+
+\begin{theorem}[Future theorem `integrality_transport_via_rescale`]\label{thm:future_integrality_transport_via_rescale}
+Transport integrality predicates along `Qsqrtd.rescale` to compare equivalent square-class parameters.
 \notready
-\uses{prop:plan_norm_trace_api, cor:plan_explicit_basis}
-\end{proposition}
+\uses{thm:future_dvd_four_sub_sq_iff_exists_integral_model_image}
+\end{theorem}
+
+\begin{theorem}[Future theorem `classification_invariant_under_square_scaling`]\label{thm:future_classification_invariant_under_square_scaling}
+Show the classification theorem is invariant under replacing $d$ by $a^2 d$ (with $a \in \Q^\times$).
+\notready
+\uses{thm:future_integrality_transport_via_rescale}
+\end{theorem}
+
+\chapter{Roadmap IV: `NonIso.lean` and Canonical Parameter API}
+
+\begin{theorem}[Future theorem `quadratic_param_canonical_of_field_iso`]\label{thm:future_quadratic_param_canonical_of_field_iso}
+Combine rigidity with completed classification to expose a canonical-parameter interface for quadratic fields.
+\notready
+\uses{thm:quadratic_fields_not_iso, thm:future_dvd_four_sub_sq_iff_exists_integral_model_image}
+\end{theorem}
+
+\begin{theorem}[Future theorem `ring_of_integers_classification_isomorphism_invariant`]\label{thm:future_ring_of_integers_classification_isomorphism_invariant}
+State explicitly that the ring-of-integers classification API is preserved under field isomorphisms of quadratic fields.
+\notready
+\uses{thm:future_quadratic_param_canonical_of_field_iso, thm:future_classification_invariant_under_square_scaling}
+\end{theorem}
