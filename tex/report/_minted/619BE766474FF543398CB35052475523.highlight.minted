@@ -1,0 +1,28 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{Mathlib}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}\PYG{n+nb+bp}{.}\PYG{n}{Base}
+
+\PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}
+\PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{Qsqrtd}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} The trace of an element in `Q(√d)` is `2 * re`. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{trace\PYGZus{}eq\PYGZus{}two\PYGZus{}re}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{trace}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{star\PYGZus{}re}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{star}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{    }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{star}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{star}\PYG{o}{]}
+\PYG{+w}{  }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{trace}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{star\PYGZus{}re}\PYG{o}{]}
+\PYG{+w}{  }\PYG{n}{ring}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} The norm of an element in `Q(√d)` is `re² \PYGZhy{} d * im²`. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{norm\PYGZus{}eq\PYGZus{}sqr\PYGZus{}minus\PYGZus{}d\PYGZus{}sqr}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{n}{norm\PYGZsq{}}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZhy{}}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{norm\PYGZsq{}}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{norm}\PYG{o}{]}
+\PYG{+w}{  }\PYG{n}{ring}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Quadratic identity: `x` is a root of `X² \PYGZhy{} trace(x) X + norm(x)`. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{aeval\PYGZus{}eq\PYGZus{}zero\PYGZus{}of\PYGZus{}quadratic}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZhy{}}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{algebraMap}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{trace}\PYG{o}{))}\PYG{+w}{ }\PYG{n+nb+bp}{•}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{+}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{algebraMap}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{norm\PYGZsq{}}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{))}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{trace}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{norm\PYGZsq{}}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{norm}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{star}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{smul\PYGZus{}eq\PYGZus{}mul}\PYG{o}{]}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{ring}
+
+\PYG{k+kn}{end}\PYG{+w}{ }\PYG{n}{Qsqrtd}
+\PYG{k+kn}{end}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}
+\end{MintedVerbatim}

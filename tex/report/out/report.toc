@@ -1,0 +1,42 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {section}{\numberline {2}Quadratic setup and basic structures (Base.lean)}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Definition 2.1 (quadratic parameter package)}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Definition 2.2 (ambient type)}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Definition 2.3 (rescaling equivalence)}{3}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Definition 2.4 (trace and norm abbreviations)}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Definition 2.5 (rational embedding)}{4}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Definition 2.6 (nonsquare rational condition)}{4}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Proposition 2.7 (squarefree nontrivial implies nonsquare in $\mathbb {Z}$)}{5}{subsection.2.7}%
+\contentsline {subsection}{\numberline {2.8}Proposition 2.8 (parameter hypothesis gives rational nonsquare)}{5}{subsection.2.8}%
+\contentsline {subsection}{\numberline {2.9}Proposition 2.9 (field structure)}{5}{subsection.2.9}%
+\contentsline {section}{\numberline {3}Trace, norm, and quadratic identity (MinimalPolynomial.lean)}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Theorem 3.1 (trace formula)}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Theorem 3.2 (norm formula)}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Theorem 3.3 (quadratic polynomial annihilation)}{6}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Non-isomorphism of distinct quadratic fields (NonIso.lean)}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Lemma 4.1}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Lemma 4.2}{7}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Lemma 4.3}{7}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Theorem 4.4 (distinct parameters give non-isomorphic fields)}{8}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Half-integral normal form (HalfInt.lean)}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Definition 5.1}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Theorem 5.2 (trace of half-integral element)}{10}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Theorem 5.3 (norm of half-integral element)}{10}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Mod-4 analysis and parity classification (ModFourCriteria.lean)}{10}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Lemma 6.1}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Lemma 6.2}{11}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Lemma 6.3}{11}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Lemma 6.4}{11}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Lemma 6.5 (internal equivalence)}{11}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}Theorem 6.6 (main mod-4 criterion)}{11}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.7}Theorem 6.7 (forcing even--even when $d\not \equiv 1\bmod 4$)}{13}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.8}Theorem 6.8 (equivalence in non-$1\bmod 4$ branch)}{13}{subsection.6.8}%
+\contentsline {subsection}{\numberline {6.9}Theorem 6.9 (equivalence in $1\bmod 4$ branch)}{13}{subsection.6.9}%
+\contentsline {section}{\numberline {7}Embedding into $\mathbb {Q}(\sqrt d)$ and image characterization (ClassificationToZsqrtd.lean)}{14}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Definition 7.1 (canonical embedding)}{14}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Theorem 7.2 (injectivity)}{14}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Definition 7.3 (equivalence with image)}{15}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Theorem 7.4 (half-integral image criterion)}{15}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Theorem 7.5 (classification in $d\not \equiv 1\bmod 4$ branch)}{15}{subsection.7.5}%
+\contentsline {section}{\numberline {8}Progress and remaining work}{16}{section.8}%

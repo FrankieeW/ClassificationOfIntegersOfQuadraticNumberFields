@@ -152,23 +152,35 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
   have hd : Squarefree d := IsQuadraticParam.squarefree (d := d)
   have hd0 : d ≠ 0 := IsQuadraticParam.ne_zero (d := d)
   have hd0Q : (d : ℚ) ≠ 0 := by exact_mod_cast hd0
+  let cHom : ℚ →+* Qsqrtd d :=
+    { toFun := QuadraticAlgebra.C (a := (d : ℚ)) (b := (0 : ℚ))
+      map_one' := by
+        simp [QuadraticAlgebra.C_one]
+      map_mul' := by
+        intro r s
+        simp [QuadraticAlgebra.C_mul]
+      map_zero' := by
+        simp [QuadraticAlgebra.C_zero]
+      map_add' := by
+        intro r s
+        simp [QuadraticAlgebra.C_add] }
+  have hc_inj : Function.Injective cHom := by
+    intro r s hrs
+    exact (QuadraticAlgebra.C_inj (R := ℚ) (a := (d : ℚ)) (b := (0 : ℚ))).1 hrs
 
   have hstar : IsIntegral ℤ (star x) := map_isIntegral_int (starRingEnd (Qsqrtd d)) hx
 
-  have htraceAlg : IsIntegral ℤ (algebraMap ℚ (Qsqrtd d) (Qsqrtd.trace x)) := by
+  have htraceAlg :
+      IsIntegral ℤ (QuadraticAlgebra.C (a := (d : ℚ)) (b := (0 : ℚ)) (Qsqrtd.trace x)) := by
     have hsum : IsIntegral ℤ (x + star x) := hx.add hstar
-    have hsum_eq : x + star x = algebraMap ℚ (Qsqrtd d) (Qsqrtd.trace x) := by
-      calc
-        x + star x = algebraMap ℚ (Qsqrtd d) (2 * x.re) := by
-          -- ext <;> simp [star]
-          sorry
-        _ = algebraMap ℚ (Qsqrtd d) (Qsqrtd.trace x) := by
-          congr 1
-          exact (Qsqrtd.trace_eq_two_re x).symm
+    have hsum_eq :
+        x + star x = QuadraticAlgebra.C (a := (d : ℚ)) (b := (0 : ℚ)) (Qsqrtd.trace x) := by
+      ext
+      · simp [Qsqrtd.trace, star, QuadraticAlgebra.C]
+      · simp [star, QuadraticAlgebra.C]
     simpa [hsum_eq] using hsum
   have htraceRat : IsIntegral ℤ (Qsqrtd.trace x) :=
-    (isIntegral_algHom_iff (algebraMap ℚ (Qsqrtd d)).toIntAlgHom
-      (algebraMap ℚ (Qsqrtd d)).injective).1 htraceAlg
+    (isIntegral_algHom_iff cHom.toIntAlgHom hc_inj).1 htraceAlg
   obtain ⟨a', ha'⟩ := (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 htraceRat
   have ha'trace : (a' : ℚ) = Qsqrtd.trace x := by simpa using ha'
 
@@ -219,7 +231,7 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
   have hqratio : q ^ 2 = (m : ℚ) / (d : ℚ) := by
     calc
       q ^ 2 = ((d : ℚ) * q ^ 2) / (d : ℚ) := by field_simp [hd0Q]
-      _ = (m : ℚ) / (d : ℚ) := by simpa [hqmul]
+      _ = (m : ℚ) / (d : ℚ) := by simp [hqmul]
 
   have hsqratio : IsSquare ((m : ℚ) / (d : ℚ)) := ⟨q, by simpa [pow_two] using hqratio.symm⟩
   have hdm : d ∣ m := Qsqrtd.int_dvd_of_ratio_square m d hd0 hd hsqratio
@@ -235,8 +247,14 @@ lemma exists_zquad_of_isIntegral_of_ne_one_mod_four
   have hqInt : IsIntegral ℤ q := by
     refine ⟨Polynomial.X ^ 2 - Polynomial.C k,
       Polynomial.monic_X_pow_sub_C (R := ℤ) (n := 2) k (show (2 : ℕ) ≠ 0 by decide), ?_⟩
-    -- simpa [Polynomial.eval₂_sub, hq2]
-    sorry
+    have hC : Polynomial.eval₂ (Int.castRingHom ℚ) q (Polynomial.C k) = (k : ℚ) := by
+      simpa using (Polynomial.eval₂_C (f := Int.castRingHom ℚ) (x := q) (a := k))
+    calc
+      Polynomial.eval₂ (Int.castRingHom ℚ) q (Polynomial.X ^ 2 - Polynomial.C k)
+          = q ^ 2 - Polynomial.eval₂ (Int.castRingHom ℚ) q (Polynomial.C k) := by
+            simp [Polynomial.eval₂_sub]
+      _ = q ^ 2 - (k : ℚ) := by simpa [hC]
+      _ = 0 := by simp [hq2]
   obtain ⟨b', hb'⟩ := (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 hqInt
   have hb'q : (b' : ℚ) = q := by simpa using hb'
   have him : x.im = (b' : ℚ) / 2 := by
@@ -270,7 +288,24 @@ lemma ringOfIntegers_equiv_zquad_of_mod_four_ne_one
     (d : ℤ) [IsQuadraticParam d] [NumberField (Qsqrtd d)]
     (hd4 : d % 4 ≠ 1) :
     Nonempty (𝓞 (Qsqrtd d) ≃+* ZQuad d) := by
-  sorry
+  letI : Algebra (ZQuad d) (Qsqrtd d) := (toQsqrtd d).toAlgebra
+  let hIC : IsIntegralClosure (ZQuad d) ℤ (Qsqrtd d) :=
+    { algebraMap_injective := by
+        simpa [RingHom.toAlgebra] using (toQsqrtd_injective d)
+      isIntegral_iff := by
+        intro x
+        constructor
+        · intro hx
+          rcases exists_zquad_of_isIntegral_of_ne_one_mod_four d hd4 hx with ⟨z, hz⟩
+          exact ⟨z, by simpa [RingHom.toAlgebra] using hz⟩
+        · rintro ⟨z, rfl⟩
+          simpa [RingHom.toAlgebra] using (isIntegral_toQsqrtd d z) }
+  exact ⟨@NumberField.RingOfIntegers.equiv (Qsqrtd d)
+    (inferInstance : Field (Qsqrtd d))
+    (ZQuad d)
+    (inferInstance : CommRing (ZQuad d))
+    ((toQsqrtd d).toAlgebra)
+    hIC⟩
 
 end ZQuad
 

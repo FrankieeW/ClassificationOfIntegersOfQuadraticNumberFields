@@ -1,0 +1,140 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{Mathlib}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}\PYG{n+nb+bp}{.}\PYG{n}{HalfInt}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}\PYG{n+nb+bp}{.}\PYG{n}{ModFourCriteria}
+
+\PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}
+
+\PYG{k+kn}{open}\PYG{+w}{ }\PYG{k+kn}{scoped}\PYG{+w}{ }\PYG{n}{NumberField}
+
+\PYG{k+kn}{section}\PYG{+w}{ }\PYG{n}{ClassificationToZsqrtd}
+
+\PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{Qsqrtd}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} The canonical embedding `ℤ√d → Q(√d)` into the rational quadratic algebra model. \PYGZhy{}/}
+\PYG{k+kn}{def}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{→+*}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{k+kn}{where}
+\PYG{+w}{  }\PYG{n}{toFun}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{fun}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{o}{(}\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{),}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{n}{map\PYGZus{}one\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{    }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{rfl}
+\PYG{+w}{  }\PYG{n}{map\PYGZus{}mul\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{    }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n}{w}
+\PYG{+w}{    }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{mul\PYGZus{}assoc}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}comm}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}left\PYGZus{}comm}\PYG{o}{]}
+\PYG{+w}{  }\PYG{n}{map\PYGZus{}zero\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}
+\PYG{+w}{  }\PYG{n}{map\PYGZus{}add\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n}{w}\PYG{n+nb+bp}{;}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} The canonical embedding `ℤ√d → Q(√d)` is injective. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd\PYGZus{}injective}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Function}\PYG{n+nb+bp}{.}\PYG{n}{Injective}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n}{w}\PYG{+w}{ }\PYG{n}{hzw}
+\PYG{+w}{  }\PYG{n}{ext}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{zsqrtdToQsqrtd}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{congrArg}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n}{hzw}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{zsqrtdToQsqrtd}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{congrArg}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n}{hzw}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} `ℤ√d` is ring\PYGZhy{}isomorphic to its image in `Q(√d)`. \PYGZhy{}/}
+\PYG{k+kn}{noncomputable}\PYG{+w}{ }\PYG{k+kn}{def}\PYG{+w}{ }\PYG{n}{zsqrtdEquivRangeQsqrtd}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{≃+*}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{range}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{refine}\PYG{+w}{ }\PYG{n}{RingEquiv}\PYG{n+nb+bp}{.}\PYG{n}{ofBijective}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{rangeRestrict}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}}
+\PYG{+w}{  }\PYG{n}{constructor}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n}{w}\PYG{+w}{ }\PYG{n}{hzw}
+\PYG{+w}{    }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd\PYGZus{}injective}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Subtype}\PYG{n+nb+bp}{.}\PYG{n}{ext\PYGZus{}iff}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{hzw}\PYG{o}{)}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{x}
+\PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{property}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{z}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hz}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{    }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{z}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}⟩}
+\PYG{+w}{    }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{Subtype}\PYG{n+nb+bp}{.}\PYG{n}{ext}\PYG{+w}{ }\PYG{n}{hz}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} A half\PYGZhy{}integral element is in the image of `ℤ√d` iff both numerators are even. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{halfInt\PYGZus{}mem\PYGZus{}range\PYGZus{}zsqrtdToQsqrtd\PYGZus{}iff\PYGZus{}even\PYGZus{}even}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n+nb+bp}{∃}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{halfInt}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{↔}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n+nb+bp}{∧}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{constructor}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{rintro}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{z}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hz}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hm}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{      }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{halfInt}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{congrArg}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n}{hz}\PYG{n+nb+bp}{.}\PYG{n}{symm}
+\PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hn}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{/}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{      }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{halfInt}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{congrArg}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n}{hz}\PYG{n+nb+bp}{.}\PYG{n}{symm}
+\PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{ha}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{      }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}⟩}
+\PYG{+w}{      }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hq}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{nlinarith}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hm}\PYG{o}{]}
+\PYG{+w}{      }\PYG{n}{exact\PYGZus{}mod\PYGZus{}cast}\PYG{+w}{ }\PYG{n}{hq}
+\PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hb}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{      }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}⟩}
+\PYG{+w}{      }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hq}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{z}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{nlinarith}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hn}\PYG{o}{]}
+\PYG{+w}{      }\PYG{n}{exact\PYGZus{}mod\PYGZus{}cast}\PYG{+w}{ }\PYG{n}{hq}
+\PYG{+w}{    }\PYG{n}{exact}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{ha}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hb}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{rintro}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{ha}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hb}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{ha}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{m}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hm}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{    }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{hb}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{n}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hn}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{    }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨⟨}\PYG{n}{m}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{n}\PYG{n+nb+bp}{⟩}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nb+bp}{?\PYGZus{}⟩}
+\PYG{+w}{    }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{halfInt}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hm}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hn}\PYG{o}{]}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Classification (`d \PYGZpc{} 4 ≠ 1` branch): the mod\PYGZhy{}4 condition is exactly representability}
+\PYG{l+s+sd}{as an element of mathlib\PYGZsq{}s `ℤ√d` inside `Q(√d)`. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{dvd\PYGZus{}four\PYGZus{}sub\PYGZus{}sq\PYGZus{}iff\PYGZus{}exists\PYGZus{}zsqrtd\PYGZus{}image\PYGZus{}of\PYGZus{}ne\PYGZus{}one\PYGZus{}mod\PYGZus{}four}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hd}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hd4}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZpc{}}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{↔}\PYG{+w}{ }\PYG{n+nb+bp}{∃}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{halfInt}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{rw}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{dvd\PYGZus{}four\PYGZus{}sub\PYGZus{}sq\PYGZus{}iff\PYGZus{}even\PYGZus{}even\PYGZus{}of\PYGZus{}ne\PYGZus{}one\PYGZus{}mod\PYGZus{}four}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{n}{hd}\PYG{+w}{ }\PYG{n}{hd4}\PYG{o}{]}
+\PYG{+w}{  }\PYG{n}{rw}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{halfInt\PYGZus{}mem\PYGZus{}range\PYGZus{}zsqrtdToQsqrtd\PYGZus{}iff\PYGZus{}even\PYGZus{}even}\PYG{o}{]}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Forward branch criterion (`d \PYGZpc{} 4 ≠ 1`): divisibility implies representability in `ℤ√d`. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{exists\PYGZus{}zsqrtd\PYGZus{}image\PYGZus{}of\PYGZus{}dvd\PYGZus{}four\PYGZus{}sub\PYGZus{}sq\PYGZus{}of\PYGZus{}ne\PYGZus{}one\PYGZus{}mod\PYGZus{}four}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hd}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hd4}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZpc{}}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{o}{)}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{hdiv}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{n+nb+bp}{∃}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{halfInt}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}
+\PYG{+w}{  }\PYG{o}{(}\PYG{n}{dvd\PYGZus{}four\PYGZus{}sub\PYGZus{}sq\PYGZus{}iff\PYGZus{}exists\PYGZus{}zsqrtd\PYGZus{}image\PYGZus{}of\PYGZus{}ne\PYGZus{}one\PYGZus{}mod\PYGZus{}four}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{n}{hd}\PYG{+w}{ }\PYG{n}{hd4}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{l+m}{1}\PYG{+w}{ }\PYG{n}{hdiv}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Reverse branch criterion (`d \PYGZpc{} 4 ≠ 1`): representability in `ℤ√d` implies divisibility. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{dvd\PYGZus{}four\PYGZus{}sub\PYGZus{}sq\PYGZus{}of\PYGZus{}exists\PYGZus{}zsqrtd\PYGZus{}image\PYGZus{}of\PYGZus{}ne\PYGZus{}one\PYGZus{}mod\PYGZus{}four}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hd}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{hd4}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZpc{}}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{o}{)}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{hz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n+nb+bp}{∃}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n}{halfInt}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{∣}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}
+\PYG{+w}{  }\PYG{o}{(}\PYG{n}{dvd\PYGZus{}four\PYGZus{}sub\PYGZus{}sq\PYGZus{}iff\PYGZus{}exists\PYGZus{}zsqrtd\PYGZus{}image\PYGZus{}of\PYGZus{}ne\PYGZus{}one\PYGZus{}mod\PYGZus{}four}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n}{a\PYGZsq{}}\PYG{+w}{ }\PYG{n}{b\PYGZsq{}}\PYG{+w}{ }\PYG{n}{hd}\PYG{+w}{ }\PYG{n}{hd4}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{l+m}{2}\PYG{+w}{ }\PYG{n}{hz}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Generic fact: the ring of integers is ring\PYGZhy{}isomorphic to any integral closure model. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{ringOfIntegers\PYGZus{}equiv\PYGZus{}of\PYGZus{}integralClosure}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{K}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Type}\PYG{n+nb+bp}{*}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Field}\PYG{+w}{ }\PYG{n}{K}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{NumberField}\PYG{+w}{ }\PYG{n}{K}\PYG{o}{]}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{R}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Type}\PYG{n+nb+bp}{*}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{CommRing}\PYG{+w}{ }\PYG{n}{R}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{Algebra}\PYG{+w}{ }\PYG{n}{R}\PYG{+w}{ }\PYG{n}{K}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsIntegralClosure}\PYG{+w}{ }\PYG{n}{R}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{+w}{ }\PYG{n}{K}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{n}{Nonempty}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{𝓞}\PYG{+w}{ }\PYG{n}{K}\PYG{+w}{ }\PYG{n+nb+bp}{≃+*}\PYG{+w}{ }\PYG{n}{R}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{exact}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{NumberField}\PYG{n+nb+bp}{.}\PYG{n}{RingOfIntegers}\PYG{n+nb+bp}{.}\PYG{n}{equiv}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{K}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{K}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{R}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{R}\PYG{o}{)}\PYG{n+nb+bp}{⟩}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} The image type of `zsqrtdToQsqrtd`. \PYGZhy{}/}
+\PYG{k+kn}{abbrev}\PYG{+w}{ }\PYG{n}{zsqrtdRange}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Type}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{zsqrtdToQsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{range}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Forward direction: if `d \PYGZpc{} 4 ≠ 1`, then `𝓞 (Q(√d))` is ring\PYGZhy{}isomorphic to `ℤ√d`. \PYGZhy{}/}
+\PYG{k+kn}{lemma}\PYG{+w}{ }\PYG{n}{ringOfIntegers\PYGZus{}equiv\PYGZus{}zsqrtd\PYGZus{}of\PYGZus{}mod\PYGZus{}four\PYGZus{}ne\PYGZus{}one}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{NumberField}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)]}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{hd4}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZpc{}}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{n}{Nonempty}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{𝓞}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{≃+*}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{g+gr}{sorry}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Reverse direction: if `𝓞 (Q(√d))` is ring\PYGZhy{}isomorphic to `ℤ√d`, then `d \PYGZpc{} 4 ≠ 1`. \PYGZhy{}/}
+\PYG{k+kn}{lemma}\PYG{+w}{ }\PYG{n}{mod\PYGZus{}four\PYGZus{}ne\PYGZus{}one\PYGZus{}of\PYGZus{}ringOfIntegers\PYGZus{}equiv\PYGZus{}zsqrtd}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{NumberField}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)]}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{hiso}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Nonempty}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{𝓞}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{≃+*}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZpc{}}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Planned route:}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 1) Assume `d \PYGZpc{} 4 = 1`.}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 2) Show `(1 + √d) / 2` is integral in `Qsqrtd d`.}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 3) Show this element is not in the canonical `ℤ√d` image.}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 4) Contradict `hiso` by transferring integrally\PYGZhy{}closedness / integral\PYGZhy{}closure characterization.}
+\PYG{+w}{  }\PYG{g+gr}{sorry}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Classification target (isomorphism form):}
+\PYG{l+s+sd}{`𝓞 (Q(√d)) ≃+* ℤ√d` iff `d \PYGZpc{} 4 ≠ 1`.}
+
+\PYG{l+s+sd}{This is the formal replacement of the informal equality}
+\PYG{l+s+sd}{`𝓞 (Q(√d)) = ℤ√d`. \PYGZhy{}/}
+\PYG{k+kn}{theorem}\PYG{+w}{ }\PYG{n}{ringOfIntegers\PYGZus{}equiv\PYGZus{}zsqrtd\PYGZus{}iff\PYGZus{}mod\PYGZus{}four\PYGZus{}ne\PYGZus{}one}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{NumberField}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)]}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZpc{}}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{↔}\PYG{+w}{ }\PYG{n}{Nonempty}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{𝓞}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{≃+*}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{n+nb+bp}{√}\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{constructor}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{ringOfIntegers\PYGZus{}equiv\PYGZus{}zsqrtd\PYGZus{}of\PYGZus{}mod\PYGZus{}four\PYGZus{}ne\PYGZus{}one}\PYG{+w}{ }\PYG{n}{d}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{mod\PYGZus{}four\PYGZus{}ne\PYGZus{}one\PYGZus{}of\PYGZus{}ringOfIntegers\PYGZus{}equiv\PYGZus{}zsqrtd}\PYG{+w}{ }\PYG{n}{d}
+
+
+
+\PYG{c}{/\PYGZhy{}}\PYG{c+cm}{ NOTE:}
+\PYG{c+cm}{The `d \PYGZpc{} 4 = 1` branch should classify integral elements via `ℤ[(1+√d)/2]`.}
+\PYG{c+cm}{We leave that branch for future work. \PYGZhy{}/}
+
+\PYG{k+kn}{end}\PYG{+w}{ }\PYG{n}{Qsqrtd}
+
+\PYG{k+kn}{end}\PYG{+w}{ }\PYG{n}{ClassificationToZsqrtd}
+\PYG{k+kn}{end}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}
+\end{MintedVerbatim}
