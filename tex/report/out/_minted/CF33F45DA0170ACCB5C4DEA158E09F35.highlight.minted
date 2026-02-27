@@ -1,0 +1,99 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n}{Mathlib}
+
+\PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}
+
+\PYG{c}{/\PYGZhy{}}\PYG{c+cm}{!}
+\PYG{c+cm}{\PYGZsh{}\PYGZsh{} §2.1 Quadratic integer rings — canonical parameters}
+
+\PYG{c+cm}{A quadratic field is `ℚ(√d) = \PYGZob{}a + b√d | a, b ∈ ℚ\PYGZcb{}` for some `d ∈ ℚ×`.}
+\PYG{c+cm}{We restrict `d` to **squarefree integers ≠ 0, 1** for three reasons:}
+
+\PYG{c+cm}{1. **`d ≠ 0`**: otherwise `√d = 0` and `ℚ(√0) = ℚ`, not a quadratic extension.}
+\PYG{c+cm}{2. **`d ≠ 1`**: otherwise `√1 = 1 ∈ ℚ` and `ℚ(√1) = ℚ`, again trivial.}
+\PYG{c+cm}{3. **`Squarefree d`**: for any `a ∈ ℚ×` we have `ℚ(√d) = ℚ(√(a²d))`, so every}
+\PYG{c+cm}{   quadratic field has a unique squarefree integer representative.}
+
+\PYG{c+cm}{Together these conditions make `IsQuadraticParam d` exactly the standard}
+\PYG{c+cm}{canonical form for quadratic field parameters.}
+\PYG{c+cm}{\PYGZhy{}/}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Parameters for quadratic fields `ℚ(√d)`: nonzero, nontrivial, and squarefree. \PYGZhy{}/}
+\PYG{k+kn}{class}\PYG{+w}{ }\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Prop}\PYG{+w}{ }\PYG{k+kn}{where}
+\PYG{+w}{  }\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} `d ≠ 0` and `d ≠ 1` ensure `ℚ(√d)` is not just `ℚ`. \PYGZhy{}/}
+\PYG{+w}{  }\PYG{n}{ne\PYGZus{}zero}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{0}
+\PYG{+w}{  }\PYG{n}{ne\PYGZus{}one}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{1}
+\PYG{+w}{  }\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} `Squarefree d` gives a canonical representative for the field. \PYGZhy{}/}
+\PYG{+w}{  }\PYG{n}{squarefree}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{n}{d}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} The ambient type `Q(√d)`. \PYGZhy{}/}
+\PYG{k+kn}{abbrev}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Type}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{l+m+mi}{0}
+
+\PYG{k+kn}{open}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}
+\PYG{k+kn}{namespace}\PYG{+w}{ }\PYG{n}{Qsqrtd}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} `ℚ(√d) ≃ₐ[ℚ] ℚ(√(a²d))` via `⟨r, s⟩ ↦ ⟨r, s·a⁻¹⟩`. \PYGZhy{}/}
+\PYG{k+kn}{def}\PYG{+w}{ }\PYG{n}{rescale}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{ha}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}
+\PYG{+w}{    }\PYG{n}{QuadraticAlgebra}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n+nb+bp}{≃ₐ}\PYG{o}{[}\PYG{n}{ℚ}\PYG{o}{]}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{h1d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{n+nb+bp}{⟩}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{rfl}
+\PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{h1a}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{a}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{n+nb+bp}{⟩}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{    }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{rfl}
+\PYG{+w}{  }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{AlgEquiv}\PYG{n+nb+bp}{.}\PYG{n}{ofLinearEquiv}
+\PYG{+w}{    }\PYG{o}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{toFun}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{fun}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n+nb+bp}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{a}\PYG{n+nb+bp}{⁻¹⟩}
+\PYG{+w}{      }\PYG{n}{invFun}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{fun}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n+nb+bp}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{y}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{n+nb+bp}{.}\PYG{n}{im}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{a}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{      }\PYG{n}{map\PYGZus{}add\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{n+nb+bp}{;}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{add\PYGZus{}mul}\PYG{o}{]}
+\PYG{+w}{      }\PYG{n}{map\PYGZus{}smul\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{;}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{mul\PYGZus{}assoc}\PYG{o}{]}
+\PYG{+w}{      }\PYG{n}{left\PYGZus{}inv}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{        }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{;}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{mul\PYGZus{}assoc}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{inv\PYGZus{}mul\PYGZus{}cancel₀}\PYG{+w}{ }\PYG{n}{ha}\PYG{o}{]}
+\PYG{+w}{      }\PYG{n}{right\PYGZus{}inv}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{        }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{y}\PYG{n+nb+bp}{;}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{mul\PYGZus{}assoc}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{mul\PYGZus{}inv\PYGZus{}cancel₀}\PYG{+w}{ }\PYG{n}{ha}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{o}{(}\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{h1d}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{h1a}\PYG{o}{])}
+\PYG{+w}{    }\PYG{o}{(}\PYG{k}{by}\PYG{+w}{ }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{n+nb+bp}{;}\PYG{+w}{ }\PYG{n}{ext}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{simp}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZlt{};\PYGZgt{}}\PYG{+w}{ }\PYG{n}{field\PYGZus{}simp}\PYG{o}{)}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Trace on `Qsqrtd d` with dot notation `x.trace`. \PYGZhy{}/}
+\PYG{k+kn}{abbrev}\PYG{+w}{ }\PYG{n}{trace}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{x}\PYG{n+nb+bp}{.}\PYG{n}{re}\PYG{+w}{ }\PYG{n+nb+bp}{+}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{star}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{re}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Norm on `Qsqrtd d`. \PYGZhy{}/}
+\PYG{k+kn}{abbrev}\PYG{+w}{ }\PYG{n}{norm\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{QuadraticAlgebra}\PYG{n+nb+bp}{.}\PYG{n}{norm}\PYG{+w}{ }\PYG{n}{x}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Embedding of `ℚ` into `Qsqrtd d`. \PYGZhy{}/}
+\PYG{k+kn}{abbrev}\PYG{+w}{ }\PYG{n}{embed}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{r}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{algebraMap}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{n}{r}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} Rational nonsquare condition for integer parameter `d`. \PYGZhy{}/}
+\PYG{k+kn}{class}\PYG{+w}{ }\PYG{n}{IsNonsquareRat}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Prop}\PYG{+w}{ }\PYG{k+kn}{where}
+\PYG{+w}{  }\PYG{n}{nonsquare}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n+nb+bp}{∀}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}
+
+\PYG{l+s+sd}{/\PYGZhy{}\PYGZhy{} A squarefree nontrivial integer parameter is not a square in `ℤ`. \PYGZhy{}/}
+\PYG{k+kn}{lemma}\PYG{+w}{ }\PYG{n}{not\PYGZus{}isSquare\PYGZus{}int}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n+nb+bp}{¬}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{hdSq}
+\PYG{+w}{  }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{hdSq}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{z}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hz}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{n}{by\PYGZus{}cases}\PYG{+w}{ }\PYG{n}{huz}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsUnit}\PYG{+w}{ }\PYG{n}{z}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{n}{rcases}\PYG{+w}{ }\PYG{n}{Int}\PYG{n+nb+bp}{.}\PYG{n}{isUnit\PYGZus{}iff}\PYG{n+nb+bp}{.}\PYG{n}{mp}\PYG{+w}{ }\PYG{n}{huz}\PYG{+w}{ }\PYG{k}{with}\PYG{+w}{ }\PYG{n}{hz1}\PYG{+w}{ }\PYG{n+nb+bp}{|}\PYG{+w}{ }\PYG{n}{hz1}
+\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz1}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hz}
+\PYG{+w}{      }\PYG{n}{exact}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{IsQuadraticParam}\PYG{n+nb+bp}{.}\PYG{n}{ne\PYGZus{}one}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{))}\PYG{+w}{ }\PYG{n}{this}
+\PYG{+w}{    }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz1}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hz}
+\PYG{+w}{      }\PYG{n}{exact}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{IsQuadraticParam}\PYG{n+nb+bp}{.}\PYG{n}{ne\PYGZus{}one}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{))}\PYG{+w}{ }\PYG{n}{this}
+\PYG{+w}{  }\PYG{n+nb+bp}{·}\PYG{+w}{ }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsqz2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Squarefree}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{z}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{      }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{hz}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{pow\PYGZus{}two}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{IsQuadraticParam}\PYG{n+nb+bp}{.}\PYG{n}{squarefree}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{))}
+\PYG{+w}{    }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{h01}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℕ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n+nb+bp}{∨}\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℕ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{:=}
+\PYG{+w}{      }\PYG{n}{Squarefree}\PYG{n+nb+bp}{.}\PYG{n}{eq\PYGZus{}zero\PYGZus{}or\PYGZus{}one\PYGZus{}of\PYGZus{}pow\PYGZus{}of\PYGZus{}not\PYGZus{}isUnit}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{z}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{)}\PYG{+w}{ }\PYG{n}{hsqz2}\PYG{+w}{ }\PYG{n}{huz}
+\PYG{+w}{    }\PYG{n}{norm\PYGZus{}num}\PYG{+w}{ }\PYG{k}{at}\PYG{+w}{ }\PYG{n}{h01}
+
+\PYG{k+kn}{instance}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsQuadraticParam}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsNonsquareRat}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{refine}\PYG{+w}{ }\PYG{n+nb+bp}{⟨?\PYGZus{}⟩}
+\PYG{+w}{  }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{n}{hr}
+\PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsqQ}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{o}{((}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{r}\PYG{o}{,}\PYG{+w}{ }\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{pow\PYGZus{}two}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hr}\PYG{n+nb+bp}{.}\PYG{n}{symm}\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{k}{have}\PYG{+w}{ }\PYG{n}{hsqZ}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{IsSquare}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Rat}\PYG{n+nb+bp}{.}\PYG{n}{isSquare\PYGZus{}intCast\PYGZus{}iff}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{l+m}{1}\PYG{+w}{ }\PYG{n}{hsqQ}
+\PYG{+w}{  }\PYG{n}{exact}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{not\PYGZus{}isSquare\PYGZus{}int}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{n}{hsqZ}
+
+\PYG{k+kn}{instance}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℤ}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{IsNonsquareRat}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{]}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Field}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{Qsqrtd}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{  }\PYG{n}{letI}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{Fact}\PYG{+w}{ }\PYG{o}{(}\PYG{n+nb+bp}{∀}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{n+nb+bp}{\PYGZca{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n+nb+bp}{≠}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{ℚ}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{+}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n+nb+bp}{*}\PYG{+w}{ }\PYG{n}{r}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{k}{by}
+\PYG{+w}{    }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{n}{hr}
+\PYG{+w}{    }\PYG{n}{exact}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{IsNonsquareRat}\PYG{n+nb+bp}{.}\PYG{n}{nonsquare}\PYG{+w}{ }\PYG{o}{(}\PYG{n}{d}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{d}\PYG{o}{)}\PYG{+w}{ }\PYG{n}{r}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{k}{by}\PYG{+w}{ }\PYG{n}{simpa}\PYG{+w}{ }\PYG{o}{[}\PYG{n}{zero\PYGZus{}mul}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{add\PYGZus{}zero}\PYG{o}{]}\PYG{+w}{ }\PYG{k+kn}{using}\PYG{+w}{ }\PYG{n}{hr}\PYG{o}{)}
+\PYG{+w}{  }\PYG{n+nb+bp}{⟩}
+\PYG{+w}{  }\PYG{n}{infer\PYGZus{}instance}
+
+\PYG{k+kn}{end}\PYG{+w}{ }\PYG{n}{Qsqrtd}
+
+\PYG{k+kn}{end}\PYG{+w}{ }\PYG{n}{ClassificationOfIntegersOfQuadraticNumberFields}
+\end{MintedVerbatim}

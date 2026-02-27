@@ -1,0 +1,486 @@
+% Copyright (c) 2026 Frankie Feng-Cheng WANG. All rights reserved.
+% Repository: https://github.com/FrankieeW/ClassificationOfIntegersOfQuadraticNumberFields
+
+\documentclass[
+  12pt,
+]{assignment}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+
+\usepackage{amsthm}
+\usepackage{fontspec}
+\usepackage{float}
+\setmonofont{FreeMono}
+\usepackage{hyperref}
+\usepackage{minted}
+\newmintinline[lean]{lean4}{bgcolor=white}
+\newminted[leancode]{lean4}{fontsize=\footnotesize,breaklines,breakanywhere,tabsize=4,showspaces=false}
+\renewcommand{\theFancyVerbLine}{\arabic{FancyVerbLine}}
+\renewcommand{\FancyVerbFormatLine}[1]{#1}
+\newcommand{\leancodefile}[2][]{%
+  \inputminted[fontsize=\footnotesize,breaklines,breakanywhere,tabsize=4,showspaces=false,linenos=true,#1]{lean4}{#2}%
+}
+\usemintedstyle{tango}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\newcommand\nb{\addtocounter{equation}{1}\tag{\theequation}}
+\pgfplotsset{compat=1.18}
+
+\setlength{\headheight}{29.34845pt}
+\addtolength{\topmargin}{-17.34845pt}
+
+\title{Quadratic Integer Rings in Lean 4\\\large A Chapter-2-Style Formalization Report}
+\author{Frankie Feng-Cheng WANG}
+\email{maths@frankie.wang}
+\github{https://github.com/FrankieeW/ClassificationOfIntegersOfQuadraticNumberFields}
+\date{\today}
+\institute{Department of Mathematics\\Imperial College London}
+\course{MATH70040-Formalising Mathematics}
+\lecturer{Dr Bhavik Mehta}
+
+\begin{document}
+\setcounter{tocdepth}{2}
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+This report is written in the style of the algebraic-integers chapter (Lecture 2) in
+George Boxer’s notes, with explicit mathematical statements for every definition,
+lemma, and theorem currently formalized in the Lean project.
+The mathematical scope is the quadratic field
+\[
+\mathbb{Q}(\sqrt d)=\{a+b\sqrt d\mid a,b\in\mathbb{Q}\},
+\]
+and the ring-of-integers prerequisites needed for the classification split by
+\(d\bmod 4\).
+
+\noindent\textbf{Build status (2026-02-27):}
+\texttt{lake build} succeeds; no \texttt{sorry} remains in
+\texttt{ClassificationOfIntegersOfQuadraticNumberFields/*.lean}.
+
+\subsection*{Development note (motivation and current strategy)}
+The current formalization strategy is intentionally pragmatic.
+Historically, while preparing and submitting PR work around \texttt{Zsqrtd},
+I noticed that \texttt{QuadraticAlgebra} provides a workable ambient path for this
+project stage.
+So for the half-integral classification workflow I currently use
+\texttt{QuadraticAlgebra} and define
+\[
+\texttt{Qsqrtd}(d):=\texttt{QuadraticAlgebra}\;\mathbb{Q}\;(d:\mathbb{Q})\;0.
+\]
+This is a coarse-grained but effective bridge for now.
+The reason is that the integral model needed for the
+\(d\equiv 1\pmod 4\) branch, especially the
+\(\mathbb{Z}[\frac{1+\sqrt{1+4k}}{2}]\)-style object, is not yet packaged as a ready
+drop-in component in the way this project needs; see the related discussion:
+\url{https://leanprover.zulipchat.com/#narrow/channel/217875-Is-there-code-for-X.3F/topic/Z.5B.281.2Bsqrt.281.2B4k.29.29.2F2.5D/near/520523635}.
+
+\section{Quadratic setup and basic structures (Base.lean)}
+
+\subsection{Definition 2.1 (quadratic parameter package)}
+\textbf{Lean name:} \texttt{IsQuadraticParam}.\newline
+For \(d\in\mathbb{Z}\), we define a proposition requiring
+\[
+d\neq 0,\qquad d\neq 1,\qquad \text{$d$ squarefree}.
+\]
+This is the standard canonical hypothesis for representing a quadratic field by an
+integer parameter.
+\leancodefile[firstline=21,lastline=26,firstnumber=21]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Definition 2.2 (ambient type)}
+\textbf{Lean name:} \texttt{Qsqrtd}.\newline
+The type
+\[
+\texttt{Qsqrtd}(d):=\texttt{QuadraticAlgebra}\;\mathbb{Q}\;(d: \mathbb{Q})\;0
+\]
+serves as the formal model of \(\mathbb{Q}(\sqrt d)\).
+\leancodefile[firstline=29,lastline=29,firstnumber=29]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Definition 2.3 (rescaling equivalence)}
+\textbf{Lean name:} \texttt{rescale}.\newline
+Given \(a\in\mathbb{Q}^{\times}\), there is an algebra isomorphism
+\[
+\mathbb{Q}(\sqrt d)\cong\mathbb{Q}(\sqrt{a^2d}).
+\]
+In coordinates this is
+\[
+(r,s)\longmapsto (r,s a^{-1}),\qquad (r,t)\longmapsto (r,ta).
+\]
+\leancodefile[firstline=35,lastline=50,firstnumber=35]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Definition 2.4 (trace and norm abbreviations)}
+\textbf{Lean names:} \texttt{trace}, \texttt{norm'}.\newline
+For \(x\in \texttt{Qsqrtd}(d)\), define
+\[
+\mathrm{tr}(x):=x+\bar x\in\mathbb{Q},\qquad N(x):=x\bar x\in\mathbb{Q}.
+\]
+Lean packages these as abbreviations of the real/star and quadratic-algebra norm formulas.
+\leancodefile[firstline=53,lastline=56,firstnumber=53]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Definition 2.5 (rational embedding)}
+\textbf{Lean name:} \texttt{embed}.\newline
+The canonical inclusion
+\[
+\mathbb{Q}\hookrightarrow \mathbb{Q}(\sqrt d)
+\]
+is implemented by the algebra map.
+\leancodefile[firstline=59,lastline=59,firstnumber=59]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Definition 2.6 (nonsquare rational condition)}
+\textbf{Lean name:} \texttt{IsNonsquareRat}.\newline
+For integer \(d\), define
+\[
+\forall r\in\mathbb{Q},\quad r^2\neq d.
+\]
+\leancodefile[firstline=62,lastline=63,firstnumber=62]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Proposition 2.7 (squarefree nontrivial implies nonsquare in \(\mathbb{Z}\))}
+\textbf{Lean name:} \texttt{not\_isSquare\_int}.\newline
+Under \texttt{IsQuadraticParam} hypotheses,
+\[
+\neg\,\mathrm{IsSquare}(d)\quad\text{in }\mathbb{Z}.
+\]
+This excludes degeneration of the quadratic extension.
+\leancodefile[firstline=66,lastline=79,firstnumber=66]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Proposition 2.8 (parameter hypothesis gives rational nonsquare)}
+\textbf{Lean instance:} \texttt{instance (d) [IsQuadraticParam d] : IsNonsquareRat d}.\newline
+From the integer nonsquare result and transfer lemmas between \(\mathbb{Z}\) and
+\(\mathbb{Q}\), one obtains
+\[
+\forall r\in\mathbb{Q},\;r^2\neq d.
+\]
+\leancodefile[firstline=81,lastline=86,firstnumber=81]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\subsection{Proposition 2.9 (field structure)}
+\textbf{Lean instance:} \texttt{Field (Qsqrtd d)} under \texttt{IsNonsquareRat d}.\newline
+If \(d\) is rationally nonsquare, then \(\mathbb{Q}(\sqrt d)\) is a field.
+\leancodefile[firstline=88,lastline=93,firstnumber=88]{../../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
+
+\section{Trace, norm, and quadratic identity (MinimalPolynomial.lean)}
+
+\subsection{Theorem 3.1 (trace formula)}
+\textbf{Lean name:} \texttt{trace\_eq\_two\_re}.\newline
+For \(x\in\mathbb{Q}(\sqrt d)\),
+\[
+\mathrm{tr}(x)=2\operatorname{Re}(x).
+\]
+\leancodefile[firstline=8,lastline=12,firstnumber=8]{../../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
+
+\subsection{Theorem 3.2 (norm formula)}
+\textbf{Lean name:} \texttt{norm\_eq\_sqr\_minus\_d\_sqr}.\newline
+Writing \(x=a+b\sqrt d\), one has
+\[
+N(x)=a^2-d b^2.
+\]
+\leancodefile[firstline=15,lastline=19,firstnumber=15]{../../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
+
+\subsection{Theorem 3.3 (quadratic polynomial annihilation)}
+\textbf{Lean name:} \texttt{aeval\_eq\_zero\_of\_quadratic}.\newline
+Each \(x\in\mathbb{Q}(\sqrt d)\) satisfies
+\[
+x^2-\mathrm{tr}(x)\,x+N(x)=0.
+\]
+This is the formal identity underlying the minimal-polynomial discussion in a quadratic
+extension.
+\leancodefile[firstline=8,lastline=25,firstnumber=8]{../../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
+
+\section{Half-integral normal form (HalfInt.lean)}
+
+\subsection{Definition 4.1}
+\textbf{Lean name:} \texttt{halfInt}.\newline
+For integers \(a',b',d\), define
+\[
+\operatorname{halfInt}(d,a',b'):=\frac{a'+b'\sqrt d}{2}\in\mathbb{Q}(\sqrt d).
+\]
+\leancodefile[firstline=8,lastline=9,firstnumber=8]{../../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
+
+\subsection{Theorem 4.2 (trace of half-integral element)}
+\textbf{Lean name:} \texttt{trace\_halfInt}.\newline
+\[
+\mathrm{tr}\!\left(\frac{a'+b'\sqrt d}{2}\right)=a'.
+\]
+\leancodefile[firstline=12,lastline=16,firstnumber=12]{../../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
+
+\subsection{Theorem 4.3 (norm of half-integral element)}
+\textbf{Lean name:} \texttt{norm\_halfInt}.\newline
+\[
+N\!\left(\frac{a'+b'\sqrt d}{2}\right)=\frac{a'^2-d b'^2}{4}.
+\]
+\leancodefile[firstline=18,lastline=24,firstnumber=18]{../../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
+
+\section{Mod-4 analysis and parity classification (ModFourCriteria.lean)}
+This section mirrors the key exercise pattern from Chapter 2: reduce integrality conditions
+to congruence constraints.
+
+\subsection{Lemma 5.1}
+\textbf{Lean name:} \texttt{squarefree\_int\_not\_dvd\_four}.\newline
+If \(d\in\mathbb{Z}\) is squarefree, then
+\[
+4\nmid d.
+\]
+\leancodefile[firstline=9,lastline=15,firstnumber=9]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Lemma 5.2}
+\textbf{Lean name:} \texttt{squarefree\_int\_emod\_four}.\newline
+If \(d\) is squarefree, then
+\[
+d\bmod 4\in\{1,2,3\}.
+\]
+\leancodefile[firstline=18,lastline=21,firstnumber=18]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Lemma 5.3}
+\textbf{Lean name:} \texttt{Int.sq\_emod\_four\_of\_even}.\newline
+If \(2\mid n\), then
+\[
+n^2\equiv 0\pmod 4.
+\]
+\leancodefile[firstline=24,lastline=27,firstnumber=24]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Lemma 5.4}
+\textbf{Lean name:} \texttt{Int.sq\_emod\_four\_of\_odd}.\newline
+If \(2\nmid n\), then
+\[
+n^2\equiv 1\pmod 4.
+\]
+\leancodefile[firstline=30,lastline=35,firstnumber=30]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Lemma 5.5 (internal equivalence)}
+\textbf{Lean name:} \texttt{div4\_iff\_mod} (private).\newline
+For integers \(a',b',d\),
+\[
+4\mid(a'^2-d b'^2)\iff (a'^2-d b'^2)\bmod 4=0.
+\]
+\leancodefile[firstline=37,lastline=39,firstnumber=37]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Theorem 5.6 (main mod-4 criterion)}
+\textbf{Lean name:} \texttt{dvd\_four\_sub\_sq\_iff\_even\_even\_or\_odd\_odd\_mod\_four\_one}.\newline
+Assume \(d\) squarefree. Then
+\[
+4\mid(a'^2-d b'^2)
+\iff
+\bigl(2\mid a'\ \&\ 2\mid b'\bigr)
+\;\vee\;
+\bigl(2\nmid a'\ \&\ 2\nmid b'\ \&\ d\equiv 1\pmod 4\bigr).
+\]
+\leancodefile[firstline=42,lastline=101,firstnumber=42]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Theorem 5.7 (forcing even-even when \(d\not\equiv 1\mod 4\))}
+\textbf{Lean name:} \texttt{even\_even\_of\_dvd\_four\_sub\_sq\_of\_ne\_one\_mod\_four}.\newline
+If \(d\) is squarefree and \(d\not\equiv 1\pmod 4\), then
+\[
+4\mid(a'^2-d b'^2)\implies 2\mid a'\ \text{and}\ 2\mid b'.
+\]
+\leancodefile[firstline=104,lastline=110,firstnumber=104]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Theorem 5.8 (equivalence in non-\(1\mod 4\) branch)}
+\textbf{Lean name:} \texttt{dvd\_four\_sub\_sq\_iff\_even\_even\_of\_ne\_one\_mod\_four}.\newline
+If \(d\) is squarefree and \(d\not\equiv 1\pmod 4\), then
+\[
+4\mid(a'^2-d b'^2)\iff \bigl(2\mid a'\ \&\ 2\mid b'\bigr).
+\]
+\leancodefile[firstline=113,lastline=120,firstnumber=113]{../../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
+
+\subsection{Theorem 5.9 (equivalence in \(1\mod 4\) branch)}
+\textbf{Lean name:} \texttt{dvd\_four\_sub\_sq\_iff\_same\_parity\_of\_one\_mod\_four}.\newline
+If \(d\) is squarefree and \(d\equiv 1\pmod 4\), then
+\[
+4\mid(a'^2-d b'^2)\iff a'\equiv b'\pmod 2.
+\]
+XV|
+JH|\section{Progress and remaining work}
+QK|The formalization up to this point (mod-4 classification criteria) is complete.
+NR|The following sections outline the short-term and long-term development goals.
+PY|
+VB|\subsection{Short-term goal: Embedding equivalence}
+PY|The immediate next step is to complete the embedding equivalence between
+ZC|$\mathbb{Z}[\sqrt{d}]$ and $\mathbb{Q}(\sqrt{d})$:
+MM|\begin{enumerate}
+MM|  \item \textbf{Current state:} Two theorems remain as \texttt{sorry}:
+MM|    \begin{itemize}
+MM|      \item \texttt{ringOfIntegers\_equiv\_zsqrtd\_of\_mod\_four\_ne\_one}
+MM|      \item \texttt{mod\_four\_ne\_one\_of\_ringOfIntegers\_equiv\_zsqrtd}
+MM|    \end{itemize}
+MM|  \item \textbf{Goal:} Prove both directions of the equivalence theorem
+MM|    establishing the classification for the $d \not\equiv 1 \pmod 4$ case.
+MM|  \item \textbf{Mathematical content:} Show that when $d \not\equiv 1 \pmod 4$,
+MM|    the ring of integers $O_K$ is isomorphic to $\mathbb{Z}[\sqrt{d}]$.
+MM|\end{enumerate}
+PY|
+NM|\subsection{Long-term goal: Refactoring and $1 \pmod 4$ classification}
+ZM|The ultimate target is a complete classification of rings of integers in quadratic
+ZW|fields, requiring both branches:
+SQ|\begin{enumerate}
+NM|  \item \textbf{Refactor \texttt{Zsqrtd} construction:}
+NM|    \begin{itemize}
+NM|      \item Leverage the existing \texttt{QuadraticAlgebra} infrastructure
+NM|      \item Create cleaner algebraic interfaces around \texttt{Zsqrtd}
+NM|      \item Improve interoperability with mathlib's quadratic field libraries
+NM|    \end{itemize}
+NM|  \item \textbf{Formalize $\mathbb{Z}[\frac{1+\sqrt{1+4k}}{2}]$:}
+NM|    \begin{itemize}
+NM|      \item Construct the integral model for the $d \equiv 1 \pmod 4$ branch
+NM|      \item This corresponds to $d = 1+4k$ for $k \in \mathbb{Z}$
+NM|      \item Define the ring $\mathbb{Z}[\frac{1+\sqrt{d}}{2}] \subset \mathbb{Q}(\sqrt{d})$
+NM|    \end{itemize}
+NM|  \item \textbf{Unified classification theorem:}
+NM|    \begin{itemize}
+NM|      \item Prove $O_K \cong \mathbb{Z}[\sqrt{d}]$ when $d \not\equiv 1 \pmod 4$
+NM|      \item Prove $O_K \cong \mathbb{Z}[\frac{1+\sqrt{d}}{2}]$ when $d \equiv 1 \pmod 4$
+NM|      \item Provide a single API-level theorem summarizing the classification
+NM|    \end{itemize}
+SQ|\end{enumerate}
+PY|
+VT|\section{Remaining (not yet formalized)}
+VT|The following components are planned but not yet implemented:
+NM|\begin{itemize}
+NM|  \item \textbf{ClassificationToZsqrtd.lean (partial):}
+NM|    \begin{itemize}
+NM|      \item Section 6.1-6.5: Embedding definitions and $d \not\equiv 1 \pmod 4$ branch \emph{(complete)}
+NM|      \item Section 6.6: $d \equiv 1 \pmod 4$ branch \emph{(pending)}
+NM|    \end{itemize}
+NM|  \item \textbf{Integral model for $d \equiv 1 \pmod 4$:}
+NM|    \begin{itemize}
+NM|      \item Definition of $\mathbb{Z}[\frac{1+\sqrt{d}}{2}]$
+NM|      \item Proof that this ring is integrally closed in $\mathbb{Q}(\sqrt{d})$
+NM|      \item Trace and norm calculations in this model
+NM|    \end{itemize}
+NM|  \item \textbf{Final classification theorem:}
+NM|    \begin{itemize}
+NM|      \item Unified statement covering both cases
+NM|      \item API-level theorem with clear documentation
+NM|    \end{itemize}
+VT|\end{itemize}
+VT|
+VT|\section{Reproducibility}
+KK|\begin{verbatim}
+PQ|lake exe cache get
+RB|lake build
+MP|cd tex/report
+RJ|latexmk -xelatex -shell-escape -interaction=nonstopmode -halt-on-error -output-directory=out report.tex
+RR|\end{verbatim}
+XY|
+PT|\end{document}
+
+\section{Embedding into \texorpdfstring{$\mathbb{Q}(\sqrt d)$}{Q(sqrt d)} and image characterization (ClassificationToZsqrtd.lean)}
+
+\subsection{Definition 6.1 (canonical embedding)}
+\textbf{Lean name:} \texttt{zsqrtdToQsqrtd}.\newline
+Define the ring map
+\[
+\iota_d:\mathbb{Z}[\sqrt d]\longrightarrow \mathbb{Q}(\sqrt d),
+\qquad m+n\sqrt d\longmapsto m+n\sqrt d,
+\]
+with coefficients interpreted in \(\mathbb{Q}\).
+\leancodefile[firstline=12,lastline=20,firstnumber=12]{../../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+
+\subsection{Theorem 6.2 (injectivity)}
+\textbf{Lean name:} \texttt{zsqrtdToQsqrtd\_injective}.\newline
+\[
+\iota_d(z_1)=\iota_d(z_2)\implies z_1=z_2.
+\]
+\leancodefile[firstline=23,lastline=27,firstnumber=23]{../../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+
+\subsection{Definition 6.3 (equivalence with image)}
+\textbf{Lean name:} \texttt{zsqrtdEquivRangeQsqrtd}.\newline
+There is a ring isomorphism
+\[
+\mathbb{Z}[\sqrt d]\cong \operatorname{im}(\iota_d).
+\]
+\leancodefile[firstline=30,lastline=38,firstnumber=30]{../../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+
+\subsection{Theorem 6.4 (half-integral image criterion)}
+\textbf{Lean name:} \texttt{halfInt\_mem\_range\_zsqrtdToQsqrtd\_iff\_even\_even}.\newline
+For integers \(a',b'\),
+\[
+\frac{a'+b'\sqrt d}{2}\in \operatorname{im}(\iota_d)
+\iff
+2\mid a'\ \text{and}\ 2\mid b'.
+\]
+\leancodefile[firstline=41,lastline=62,firstnumber=41]{../../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+
+\subsection{Theorem 6.5 (classification in \(d\not\equiv 1\mod 4\) branch)}
+\textbf{Lean name:} \texttt{dvd\_four\_sub\_sq\_iff\_exists\_zsqrtd\_image\_of\_ne\_one\_mod\_four}.\newline
+If \(d\) is squarefree and \(d\not\equiv 1\pmod 4\), then
+\[
+4\mid(a'^2-d b'^2)
+\iff
+\exists z\in\mathbb{Z}[\sqrt d],\;\iota_d(z)=\frac{a'+b'\sqrt d}{2}.
+\]
+This gives the completed branch of the quadratic-integer classification proof.
+\leancodefile[firstline=41,lastline=70,firstnumber=41]{../../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
+
+\section{Non-isomorphism of distinct quadratic fields (NonIso.lean)}
+
+\subsection{Lemma 7.1}
+\textbf{Lean name:} \texttt{not\_isSquare\_neg\_one\_rat}.\newline
+\[
+-1\ \text{is not a square in }\mathbb{Q}.
+\]
+\leancodefile[firstline=8,lastline=11,firstnumber=8]{../../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean}
+
+\subsection{Lemma 7.2}
+\textbf{Lean name:} \texttt{nat\_eq\_one\_of\_squarefree\_intcast\_of\_isSquare}.\newline
+If \(m\in\mathbb{N}\), \((m:\mathbb{Z})\) is squarefree, and \((m:\mathbb{Z})\) is a square,
+then
+\[
+m=1.
+\]
+\leancodefile[firstline=14,lastline=28,firstnumber=14]{../../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean}
+
+\subsection{Lemma 7.3}
+\textbf{Lean name:} \texttt{int\_dvd\_of\_ratio\_square}.\newline
+Let \(d_2\neq 0\), with \(d_2\) squarefree. If
+\[
+\frac{d_1}{d_2}\in\mathbb{Q}
+\]
+is a square in \(\mathbb{Q}\), then
+\[
+d_2\mid d_1.
+\]
+\leancodefile[firstline=31,lastline=44,firstnumber=31]{../../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean}
+
+\subsection{Theorem 7.4 (distinct parameters give non-isomorphic fields)}
+\textbf{Lean name:} \texttt{quadratic\_fields\_not\_iso}.\newline
+Assume \(d_1,d_2\) satisfy \texttt{IsQuadraticParam} and \(d_1\neq d_2\). Then
+\[
+\mathbb{Q}(\sqrt{d_1})\not\cong_{\mathbb{Q}}\mathbb{Q}(\sqrt{d_2}).
+\]
+The proof follows a standard reduction: an assumed isomorphism forces square-ratio
+conditions implying divisibility both ways; associatedness yields either equality or sign
+flip; the sign-flip branch reduces to \(-1\) being a rational square, contradiction.
+\leancodefile[firstline=46,lastline=117,firstnumber=46]{../../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean}
+
+\section{Progress and remaining branch}
+The formalization now fully covers the parity/divisibility mechanism and the
+\(d\not\equiv 1\pmod 4\) classification branch. The explicit open item in source is the
+\(d\equiv 1\pmod 4\) structural branch, expected to use
+\(\mathbb{Z}[\frac{1+\sqrt d}{2}]\) as the integral model.
+
+\subsection*{Planned refactor direction}
+The long-term plan is to reduce reliance on the coarse ambient path and move to a
+cleaner integral-first architecture:
+\begin{enumerate}
+  \item Refactor the bridge around \texttt{Zsqrtd}-centric algebraic interfaces where possible.
+  \item Add or formalize the missing
+  \(\mathbb{Z}\!\left[\frac{1+\sqrt{1+4k}}{2}\right]\)-style construction needed for
+  the \(1\pmod 4\) branch.
+  \item Unify both congruence branches into a final ring-of-integers classification theorem
+  with a single API-level statement.
+\end{enumerate}
+So the present report should be read as a robust intermediate stage: the core arithmetic
+lemmas are already in place, and the next phase is structural cleanup plus completion of
+the missing integral model.
+
+\section{Reproducibility}
+\begin{verbatim}
+lake exe cache get
+lake build
+cd tex/report
+latexmk -xelatex -shell-escape -interaction=nonstopmode -halt-on-error -output-directory=out report.tex
+\end{verbatim}
+
+\end{document}
