@@ -96,13 +96,12 @@ theorem quadratic_fields_not_iso
         ext <;> simp [Qsqrtd]
       _ = (d1 : Qsqrtd d2) := by simp
   -- Expanding x² = (a + b√d₂)² = (a² + b²d₂) + 2ab√d₂, the imaginary part gives 2ab = 0.
-  have him0 : (x * x).im = 0 := by
-    have him := congrArg QuadraticAlgebra.im hx
-    simpa [Qsqrtd] using him
-  have hsum : x.re * x.im + x.im * x.re = 0 := by
-    simpa [Qsqrtd, mul_assoc, mul_comm, mul_left_comm] using him0
   -- So either a = 0 or b = 0.
-  have hprod : x.re * x.im = 0 := by nlinarith [hsum]
+  have hprod : x.re * x.im = 0 := by
+    have him0 : (x * x).im = 0 := by
+      simpa [Qsqrtd] using congrArg QuadraticAlgebra.im hx
+    nlinarith [show x.re * x.im + x.im * x.re = 0 from by
+      simpa [Qsqrtd, mul_assoc, mul_comm, mul_left_comm] using him0]
   -- In either case, d₁/d₂ is a perfect square in ℚ.
   have hratio : IsSquare ((d1 : ℚ) / (d2 : ℚ)) := by
     rcases mul_eq_zero.mp hprod with hre | him
@@ -130,18 +129,11 @@ theorem quadratic_fields_not_iso
   -- Now use the squarefreeness argument to derive d₂ ∣ d₁ and d₁ ∣ d₂.
   have hd1 : d1 ≠ 0 := IsQuadraticParam.ne_zero (d := d1)
   have hd2 : d2 ≠ 0 := IsQuadraticParam.ne_zero (d := d2)
-  -- d₁/d₂ is a square ⟹ d₂/d₁ is also a square (take inverse of the witness).
+  -- d₁/d₂ is a square ⟹ d₂/d₁ is also a square (invert the witness).
   have hratio' : IsSquare ((d2 : ℚ) / (d1 : ℚ)) := by
-    rcases hratio with ⟨r, hr⟩
-    refine ⟨r⁻¹, ?_⟩
-    have hd1Q : (d1 : ℚ) ≠ 0 := by exact_mod_cast hd1
-    have hd2Q : (d2 : ℚ) ≠ 0 := by exact_mod_cast hd2
-    have h1 : (r⁻¹ * r⁻¹) = (((d1 : ℚ) / (d2 : ℚ)))⁻¹ := by
-      simp [hr]
-    calc
-      ((d2 : ℚ) / (d1 : ℚ)) = (((d1 : ℚ) / (d2 : ℚ)))⁻¹ := by
-        field_simp [hd1Q, hd2Q]
-      _ = r⁻¹ * r⁻¹ := h1.symm
+    rwa [show (d2 : ℚ) / d1 = ((d1 : ℚ) / d2)⁻¹ from by
+      field_simp [show (d1 : ℚ) ≠ 0 from by exact_mod_cast hd1,
+                  show (d2 : ℚ) ≠ 0 from by exact_mod_cast hd2], isSquare_inv]
   -- By the denominator lemma: d₂ ∣ d₁ and d₁ ∣ d₂.
   have hd21 : d2 ∣ d1 :=
     int_dvd_of_ratio_square d1 d2 hd2 (IsQuadraticParam.squarefree (d := d2)) hratio
@@ -153,13 +145,9 @@ theorem quadratic_fields_not_iso
   · -- d₁ = d₂ contradicts our hypothesis d₁ ≠ d₂.
     exact hneq hEq
   · -- d₁ = -d₂ means d₁/d₂ = -1, so -1 is a square in ℚ — contradiction.
-    have hd2Q : (d2 : ℚ) ≠ 0 := by exact_mod_cast hd2
-    have hratio_neg1 : ((d1 : ℚ) / (d2 : ℚ)) = (-1 : ℚ) := by
-      rw [hNeg]
-      simp
-      field_simp [hd2Q]
-    have hsq_neg1 : IsSquare (- (1 : ℚ)) := by rwa [hratio_neg1] at hratio
-    exact not_isSquare_neg_one_rat hsq_neg1
+    have : ((d1 : ℚ) / d2) = -1 := by
+      rw [hNeg]; push_cast; field_simp [show (d2 : ℚ) ≠ 0 from by exact_mod_cast hd2]
+    exact not_isSquare_neg_one_rat (by rwa [this] at hratio)
 
 end Qsqrtd
 end ClassificationOfIntegersOfQuadraticNumberFields
