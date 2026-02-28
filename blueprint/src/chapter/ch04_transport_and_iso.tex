@@ -1,15 +1,21 @@
-\chapter{Roadmap III: Transport, Normalization, and Isomorphism Interfaces}
+\chapter{Roadmap: Transport, Rescaling, and Canonical Parameters}
 
-\begin{proposition}[Planned: transport of integrality along rescaling]\label{prop:plan_rescale_transport}
-Use the existing rescaling equivalence $\Q(\sqrt d) \simeq \Q(\sqrt{a^2 d})$ to transport integrality
-and classification results to normalized representatives.
-\notready
-\uses{thm:plan_global_classification}
+\begin{proposition}[Transport of integrality along rescaling]\label{prop:plan_rescale_transport}
+  The existing algebra isomorphism
+  $\texttt{Qsqrtd.rescale} : \Q(\sqrt{d}) \xrightarrow{\sim} \Q(\sqrt{a^2 d})$
+  transports integrality: an element is integral in $\Q(\sqrt{d})$
+  iff its image under rescaling is integral in $\Q(\sqrt{a^2 d})$.
+  This allows reducing general parameters to their squarefree representative.
+  \notready
+  \uses{thm:plan_global_classification}
 \end{proposition}
 
-\begin{proposition}[Planned: bridge between classification and non-isomorphism]\label{prop:plan_classification_noniso_bridge}
-Connect the completed classification theorem with field-rigidity lemmas to provide a coherent
-parameter-canonicalization story in one API layer.
-\notready
-\uses{thm:quadratic_fields_not_iso, thm:plan_global_classification, prop:plan_rescale_transport}
+\begin{proposition}[Classification--rigidity bridge]\label{prop:plan_classification_noniso_bridge}
+  Combine the completed classification (\cref{thm:plan_global_classification})
+  with the non-isomorphism theorem (\cref{thm:quadratic_fields_not_iso})
+  to provide a coherent parameter-canonicalization API:
+  given any quadratic number field, extract its unique squarefree parameter
+  and classify its ring of integers.
+  \notready
+  \uses{thm:quadratic_fields_not_iso, thm:plan_global_classification, prop:plan_rescale_transport}
 \end{proposition}

@@ -1,15 +1,29 @@
-\chapter{Roadmap IV: API Strengthening and Project Polish}
+\chapter{Roadmap: API Strengthening and Project Polish}
 
-\begin{proposition}[Planned: stronger norm/trace/minpoly API]\label{prop:plan_norm_trace_api}
-Add reusable lemmas around trace, norm, minimal-polynomial identities, and coercions so downstream
-proofs avoid repeated low-level rewrites.
-\notready
-\uses{thm:trace_eq_two_re, thm:norm_eq_sqr_minus_d_sqr, thm:plan_global_classification}
+\begin{proposition}[Stronger norm/trace/minimal-polynomial API]\label{prop:plan_norm_trace_api}
+  Add reusable simp lemmas and coercion lemmas for trace, norm,
+  and minimal-polynomial identities, so that downstream proofs
+  avoid repeated low-level rewrites.
+  \notready
+  \uses{thm:trace_eq_two_re, thm:norm_eq_sqr_minus_d_sqr, thm:aeval_eq_zero, thm:plan_global_classification}
 \end{proposition}
 
-\begin{proposition}[Planned: module split and theorem indexing]\label{prop:plan_module_split}
-Refine file layout and theorem naming/indexing to make the library easier to extend and to align
-with blueprint chapter boundaries.
-\notready
-\uses{prop:plan_norm_trace_api, cor:plan_explicit_basis}
+\begin{proposition}[Resolve \texttt{ClassificationToZsqrtd.lean} sorries]\label{prop:plan_resolve_sorries}
+  The two remaining \texttt{sorry} declarations in
+  \texttt{ClassificationToZsqrtd.lean}
+  (\texttt{ringOfIntegers\_equiv\_zsqrtd\_of\_mod\_four\_ne\_one} and
+  \texttt{mod\_four\_ne\_one\_of\_ringOfIntegers\_equiv\_zsqrtd})
+  can now be filled using the completed $\texttt{ZQuad}$ path from
+  \cref{thm:ringOfIntegers_equiv_zquad}.
+  Alternatively, these declarations can be replaced by re-exports
+  of the \texttt{ZQuad} results composed with \cref{def:equivZsqrtd}.
+  \notready
+  \uses{thm:ringOfIntegers_equiv_zquad, def:equivZsqrtd}
+\end{proposition}
+
+\begin{proposition}[Module split and theorem indexing]\label{prop:plan_module_split}
+  Refine file layout and theorem naming to align with the blueprint
+  chapter structure, making the library easier to extend.
+  \notready
+  \uses{prop:plan_norm_trace_api, cor:plan_explicit_basis, prop:plan_resolve_sorries}
 \end{proposition}

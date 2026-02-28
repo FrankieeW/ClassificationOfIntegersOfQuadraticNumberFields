@@ -5,12 +5,8 @@
 \usepackage[capitalize]{cleveref}
 \usepackage[showmore,dep_graph, project=../..]{blueprint}
 
-% Shared macros (inlined for CI stability)
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\Qs}{\Q(\sqrt{d})}
-\DeclareMathOperator{\Tr}{Tr}
-\DeclareMathOperator{\Nm}{Nm}
+\input{macro/common}
+
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}

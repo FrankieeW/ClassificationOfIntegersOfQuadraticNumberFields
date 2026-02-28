@@ -1,97 +1,257 @@
-\chapter{Current Formalization (Completed)}
+\chapter{Foundations and Completed Results}
 
-\section{Parameterization and Ambient Field}
+This chapter records the definitions and theorems that are fully formalized
+in Lean~4 with no remaining \texttt{sorry}.
+
+% ────────────────────────────────────────────────
+\section{Quadratic Parameters and the Ambient Field}
+% ────────────────────────────────────────────────
 
 \begin{definition}[Quadratic parameter]\label{def:isQuadraticParam}
-A parameter $d \in \Z$ is admissible when $d \neq 0$, $d \neq 1$, and $d$ is squarefree.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
-\leanok
+  An integer $d \in \Z$ is an \emph{admissible quadratic parameter} when
+  $d \neq 0$, $d \neq 1$, and $d$ is squarefree.
+  \lean{IsQuadraticParam}
+  \leanok
 \end{definition}
 
 \begin{definition}[Ambient quadratic algebra]\label{def:Qsqrtd}
-For admissible $d$, we work in $\Q(\sqrt{d})$ modeled by `QuadraticAlgebra`.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
-\leanok
-\uses{def:isQuadraticParam}
+  For admissible~$d$, define $\Q(\sqrt{d})$ as
+  $\texttt{QuadraticAlgebra}\ \Q\ d\ 0$, the split
+  quaternion-free quadratic $\Q$-algebra with basis $\{1,\sqrt{d}\}$.
+  Every element is a pair $(\mathrm{re},\mathrm{im})$ with
+  $x = \mathrm{re}(x) + \mathrm{im}(x)\sqrt{d}$.
+  \lean{Qsqrtd}
+  \leanok
+  \uses{def:isQuadraticParam}
 \end{definition}
 
 \begin{lemma}[Nonsquare transfer]\label{lem:not_isSquare_int}
-Squarefree admissible parameters are not integer squares.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/Base.lean}
-\leanok
-\uses{def:isQuadraticParam}
+  If $d$ is squarefree with $d \neq 0,1$, then $d$ is not a perfect square
+  in $\Z$ (and hence not a perfect square in~$\Q$).
+  \lean{Qsqrtd.not_isSquare_int}
+  \leanok
+  \uses{def:isQuadraticParam}
 \end{lemma}
 
+% ────────────────────────────────────────────────
 \section{Trace, Norm, and Half-Integral Coordinates}
+% ────────────────────────────────────────────────
 
 \begin{theorem}[Trace formula]\label{thm:trace_eq_two_re}
-For $x \in \Q(\sqrt{d})$, $\Tr(x)=2\,\mathrm{re}(x)$.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
-\leanok
+  For $x \in \Q(\sqrt{d})$,
+  \[
+    \Tr(x) \;=\; 2\,\mathrm{re}(x).
+  \]
+  \lean{Qsqrtd.trace_eq_two_re}
+  \leanok
+  \uses{def:Qsqrtd}
 \end{theorem}
 
 \begin{theorem}[Norm formula]\label{thm:norm_eq_sqr_minus_d_sqr}
-For $x \in \Q(\sqrt{d})$, $\Nm(x)=\mathrm{re}(x)^2-d\,\mathrm{im}(x)^2$.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/MinimalPolynomial.lean}
-\leanok
+  For $x \in \Q(\sqrt{d})$,
+  \[
+    \Nm(x) \;=\; \mathrm{re}(x)^2 - d\,\mathrm{im}(x)^2.
+  \]
+  \lean{Qsqrtd.norm_eq_sqr_minus_d_sqr}
+  \leanok
+  \uses{def:Qsqrtd}
+\end{theorem}
+
+\begin{theorem}[Quadratic identity]\label{thm:aeval_eq_zero}
+  Every $x \in \Q(\sqrt{d})$ satisfies $x^2 - \Tr(x)\,x + \Nm(x) = 0$.
+  \lean{Qsqrtd.aeval_eq_zero_of_quadratic}
+  \leanok
+  \uses{thm:trace_eq_two_re, thm:norm_eq_sqr_minus_d_sqr}
 \end{theorem}
 
 \begin{definition}[Half-integral point]\label{def:halfInt}
-Define $\frac{a' + b'\sqrt d}{2}$ as an element of $\Q(\sqrt d)$.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
-\leanok
+  For integers $a', b'$, define
+  \[
+    \texttt{halfInt}(d, a', b') \;=\; \frac{a' + b'\sqrt{d}}{2}
+    \;=\; \Bigl(\frac{a'}{2},\;\frac{b'}{2}\Bigr) \in \Q(\sqrt{d}).
+  \]
+  \lean{Qsqrtd.halfInt}
+  \leanok
+  \uses{def:Qsqrtd}
 \end{definition}
 
-\begin{theorem}[Trace and norm of half-integral elements]\label{thm:trace_norm_halfInt}
-The project proves explicit trace and norm formulas for `halfInt`.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/HalfInt.lean}
-\leanok
-\uses{def:halfInt, thm:trace_eq_two_re, thm:norm_eq_sqr_minus_d_sqr}
+\begin{theorem}[Trace of half-integral elements]\label{thm:trace_halfInt}
+  $\Tr\!\bigl(\texttt{halfInt}(d,a',b')\bigr) = a'$.
+  \lean{Qsqrtd.trace_halfInt}
+  \leanok
+  \uses{def:halfInt, thm:trace_eq_two_re}
 \end{theorem}
 
-\section{Parity and Mod-$4$ Criteria}
+\begin{theorem}[Norm of half-integral elements]\label{thm:norm_halfInt}
+  $\Nm\!\bigl(\texttt{halfInt}(d,a',b')\bigr) = \dfrac{a'^2 - d\,b'^2}{4}$.
+  \lean{Qsqrtd.norm_halfInt}
+  \leanok
+  \uses{def:halfInt, thm:norm_eq_sqr_minus_d_sqr}
+\end{theorem}
+
+% ────────────────────────────────────────────────
+\section{Mod-$4$ Parity Criteria}
+% ────────────────────────────────────────────────
+
+\begin{lemma}[Squarefree mod~$4$ range]\label{lem:squarefree_emod_four}
+  A squarefree integer $d$ satisfies $d \bmod 4 \in \{1,2,3\}$.
+  \lean{squarefree_int_emod_four}
+  \leanok
+  \uses{def:isQuadraticParam}
+\end{lemma}
 
 \begin{theorem}[Main mod-$4$ dichotomy]\label{thm:mod4_dichotomy}
-$4 \mid a'^2 - d b'^2$ iff either both numerators are even, or both odd with $d \equiv 1 \pmod 4$.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
-\leanok
+  For integers $a', b'$ and squarefree~$d$,
+  \[
+    4 \mid (a'^2 - d\,b'^2)
+    \;\;\Longleftrightarrow\;\;
+    \bigl(2 \mid a' \;\wedge\; 2 \mid b'\bigr)
+    \;\vee\;
+    \bigl(2 \nmid a' \;\wedge\; 2 \nmid b' \;\wedge\; d \equiv 1\!\pmod{4}\bigr).
+  \]
+  The proof proceeds by exhaustive case analysis on the parities of $a'$
+  and~$b'$, using the facts that even squares vanish mod~$4$ and odd
+  squares are $1\pmod{4}$.
+  \lean{dvd_four_sub_sq_iff_even_even_or_odd_odd_mod_four_one}
+  \leanok
+  \uses{lem:squarefree_emod_four}
 \end{theorem}
 
-\begin{corollary}[Non-$1$ mod $4$ branch]\label{cor:mod4_ne_one}
-If $d \not\equiv 1 \pmod 4$, then $4 \mid a'^2 - d b'^2$ iff $a',b'$ are both even.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ModFourCriteria.lean}
-\leanok
-\uses{thm:mod4_dichotomy}
+\begin{corollary}[Non-$1$-mod-$4$ branch]\label{cor:mod4_ne_one}
+  If $d \not\equiv 1\!\pmod{4}$, then
+  $4 \mid (a'^2 - d\,b'^2)$ iff $a'$ and~$b'$ are both even.
+  \lean{dvd_four_sub_sq_iff_even_even_of_ne_one_mod_four}
+  \leanok
+  \uses{thm:mod4_dichotomy}
 \end{corollary}
 
-\section{Embedding from $\Z[\sqrt d]$ and Completed Classification Branch}
+\begin{corollary}[$1$-mod-$4$ branch parity criterion]\label{cor:mod4_same_parity}
+  If $d \equiv 1\!\pmod{4}$, then
+  $4 \mid (a'^2 - d\,b'^2)$ iff $a' \equiv b' \pmod{2}$.
+  \lean{dvd_four_sub_sq_iff_same_parity_of_one_mod_four}
+  \leanok
+  \uses{thm:mod4_dichotomy}
+\end{corollary}
 
-\begin{definition}[Canonical embedding]\label{def:zsqrtdToQsqrtd}
-The ring map $\Z[\sqrt d] \to \Q(\sqrt d)$ is defined and shown injective.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
-\leanok
+% ────────────────────────────────────────────────
+\section{The \texttt{ZQuad} Model and $d \not\equiv 1\pmod{4}$ Classification}
+% ────────────────────────────────────────────────
+
+\begin{definition}[Integer quadratic algebra]\label{def:ZQuad}
+  Define $\texttt{ZQuad}(d) := \texttt{QuadraticAlgebra}\ \Z\ d\ 0$,
+  the free $\Z$-module with basis $\{1,\sqrt{d}\}$ and multiplication
+  $\sqrt{d}^2 = d$.
+  \lean{ZQuad}
+  \leanok
 \end{definition}
 
-\begin{theorem}[Image criterion for `halfInt`]\label{thm:halfInt_range_even_even}
-A half-integral element lies in the image of $\Z[\sqrt d]$ iff both numerators are even.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
-\leanok
-\uses{def:halfInt, def:zsqrtdToQsqrtd}
+\begin{definition}[Isomorphism $\texttt{ZQuad}(d) \cong \Z[\sqrt{d}]$]\label{def:equivZsqrtd}
+  Construct a ring isomorphism $\texttt{ZQuad}(d) \cong \Z[\sqrt{d}]$
+  by matching coordinates.
+  The isomorphism is built from mutually inverse ring homomorphisms
+  $\texttt{toZsqrtd}$ and $\texttt{ofZsqrtd}$.
+  \lean{ZQuad.equivZsqrtd}
+  \leanok
+  \uses{def:ZQuad}
+\end{definition}
+
+\begin{definition}[Embedding into $\Q(\sqrt{d})$]\label{def:ZQuad_toQsqrtd}
+  The coordinate-wise cast $\Z \hookrightarrow \Q$ lifts to an
+  injective ring homomorphism $\texttt{ZQuad}(d) \hookrightarrow \Q(\sqrt{d})$.
+  \lean{ZQuad.toQsqrtd}
+  \leanok
+  \uses{def:ZQuad, def:Qsqrtd}
+\end{definition}
+
+\begin{lemma}[Injectivity of the embedding]\label{lem:ZQuad_toQsqrtd_injective}
+  The map $\texttt{toQsqrtd} : \texttt{ZQuad}(d) \to \Q(\sqrt{d})$ is injective.
+  \lean{ZQuad.toQsqrtd_injective}
+  \leanok
+  \uses{def:ZQuad_toQsqrtd}
+\end{lemma}
+
+\begin{lemma}[Integrality of $\texttt{ZQuad}$ elements]\label{lem:isIntegral_toQsqrtd}
+  Every element in the image of $\texttt{ZQuad}(d)$ inside $\Q(\sqrt{d})$
+  is integral over~$\Z$.
+  \lean{ZQuad.isIntegral_toQsqrtd}
+  \leanok
+  \uses{def:ZQuad_toQsqrtd, thm:aeval_eq_zero}
+\end{lemma}
+
+\begin{theorem}[Image criterion for half-integral elements]\label{thm:halfInt_mem_range_ZQuad}
+  The element $\texttt{halfInt}(d,a',b')$ lies in the image of
+  $\texttt{ZQuad}(d) \hookrightarrow \Q(\sqrt{d})$
+  if and only if $2 \mid a'$ and $2 \mid b'$.
+  \lean{ZQuad.halfInt_mem_range_toQsqrtd_iff_even_even}
+  \leanok
+  \uses{def:halfInt, def:ZQuad_toQsqrtd}
 \end{theorem}
 
-\begin{theorem}[Completed branch of integrality classification]\label{thm:classification_ne_one_mod_four}
-For squarefree $d \not\equiv 1 \pmod 4$, the divisibility condition is equivalent to representability from $\Z[\sqrt d]$.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/ClassificationToZsqrtd.lean}
-\leanok
-\uses{cor:mod4_ne_one, thm:halfInt_range_even_even}
+\begin{theorem}[$d \not\equiv 1\pmod{4}$: divisibility $\Leftrightarrow$ representability]\label{thm:classification_ne_one_mod_four_ZQuad}
+  For squarefree $d \not\equiv 1\!\pmod{4}$:
+  \[
+    4 \mid (a'^2 - d\,b'^2)
+    \;\Longleftrightarrow\;
+    \texttt{halfInt}(d,a',b') \in \operatorname{im}(\texttt{toQsqrtd}).
+  \]
+  \lean{ZQuad.dvd_four_sub_sq_iff_exists_zquad_image_of_ne_one_mod_four}
+  \leanok
+  \uses{cor:mod4_ne_one, thm:halfInt_mem_range_ZQuad}
 \end{theorem}
 
+\begin{theorem}[Integrality implies $\texttt{ZQuad}$ representability]\label{thm:exists_zquad_of_isIntegral}
+  Let $d$ be squarefree with $d \not\equiv 1\!\pmod{4}$.
+  If $x \in \Q(\sqrt{d})$ is integral over~$\Z$, then
+  $x \in \operatorname{im}(\texttt{toQsqrtd})$.
+
+  \textbf{Proof sketch.}
+  From integrality of $x$ and $\bar{x}$ (its conjugate), deduce that
+  $\Tr(x) = a' \in \Z$ and $\Nm(x) = n' \in \Z$.
+  Then $x = \texttt{halfInt}(d,a',b')$ for some $b'$ with
+  $d\,b'^2 = a'^2 - 4n'$.  The ratio $(a'^2 - 4n')/d$ is a perfect
+  rational square; squarefreeness of~$d$ forces $d \mid (a'^2 - 4n')$,
+  so $b' \in \Z$.  Finally, $4 \mid (a'^2 - d\,b'^2)$ and the
+  $d \not\equiv 1\!\pmod{4}$ criterion gives representability.
+  \lean{ZQuad.exists_zquad_of_isIntegral_of_ne_one_mod_four}
+  \leanok
+  \uses{thm:classification_ne_one_mod_four_ZQuad, thm:trace_halfInt, thm:norm_halfInt, lem:not_isSquare_int}
+\end{theorem}
+
+\begin{theorem}[$\mathcal{O}_{\Q(\sqrt{d})} \cong \texttt{ZQuad}(d)$ for $d \not\equiv 1\pmod{4}$]\label{thm:ringOfIntegers_equiv_zquad}
+  For squarefree $d \not\equiv 1\!\pmod{4}$, there exists a ring isomorphism
+  \[
+    \mathcal{O}_{\Q(\sqrt{d})} \;\cong\; \texttt{ZQuad}(d) \;\cong\; \Z[\sqrt{d}].
+  \]
+  The proof constructs an \texttt{IsIntegralClosure} instance for
+  $\texttt{ZQuad}(d)$ inside $\Q(\sqrt{d})$ by combining
+  \cref{thm:exists_zquad_of_isIntegral} (every integral element is representable)
+  with \cref{lem:isIntegral_toQsqrtd} (every $\texttt{ZQuad}$ element is integral),
+  then invokes \texttt{NumberField.RingOfIntegers.equiv}.
+  \lean{ZQuad.ringOfIntegers_equiv_zquad_of_mod_four_ne_one}
+  \leanok
+  \uses{thm:exists_zquad_of_isIntegral, lem:isIntegral_toQsqrtd, lem:ZQuad_toQsqrtd_injective, def:equivZsqrtd}
+\end{theorem}
+
+% ────────────────────────────────────────────────
 \section{Field Isomorphism Rigidity}
+% ────────────────────────────────────────────────
 
 \begin{theorem}[Distinct parameters give non-isomorphic fields]\label{thm:quadratic_fields_not_iso}
-For distinct admissible squarefree parameters $d_1 \neq d_2$, one has
-$\Q(\sqrt{d_1}) \not\simeq_{\Q} \Q(\sqrt{d_2})$.
-\lean{../ClassificationOfIntegersOfQuadraticNumberFields/NonIso.lean}
-\leanok
-\uses{def:isQuadraticParam}
+  For distinct admissible squarefree parameters $d_1 \neq d_2$,
+  \[
+    \Q(\sqrt{d_1}) \not\simeq_{\Q} \Q(\sqrt{d_2}).
+  \]
+  \textbf{Proof sketch.}
+  Suppose $e : \Q(\sqrt{d_1}) \xrightarrow{\sim} \Q(\sqrt{d_2})$ is
+  a $\Q$-algebra isomorphism.  Let $y = e(\sqrt{d_1})$, so $y^2 = d_1$
+  in $\Q(\sqrt{d_2})$.  Expanding $y = r + s\sqrt{d_2}$, the equation
+  $y^2 = d_1$ forces $2rs = 0$.  If $s = 0$ then $d_1$ is a rational
+  square, contradicting squarefreeness.  If $r = 0$ then $d_1 = d_2 s^2$,
+  so $d_1/d_2$ is a rational square; squarefreeness of both forces
+  $d_1 \mid d_2$ and $d_2 \mid d_1$, whence $d_1 = \pm d_2$.
+  The case $d_1 = d_2$ contradicts $d_1 \neq d_2$, while
+  $d_1 = -d_2$ would make $-1$ a rational square, which is absurd.
+  \lean{Qsqrtd.quadratic_fields_not_iso}
+  \leanok
+  \uses{def:isQuadraticParam, lem:not_isSquare_int}
 \end{theorem}

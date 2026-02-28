@@ -5,12 +5,8 @@
 \usepackage[pdfencoding=auto, psdextra]{hyperref}
 \usepackage[nameinlink, capitalize]{cleveref}
 
-% Shared macros (inlined for CI stability)
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\Qs}{\Q(\sqrt{d})}
-\DeclareMathOperator{\Tr}{Tr}
-\DeclareMathOperator{\Nm}{Nm}
+\input{macro/common}
+
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -19,6 +15,8 @@
 \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+
+% No-ops for blueprint-only commands
 \newcommand{\uses}[1]{}
 \newcommand{\proves}[1]{}
 \newcommand{\discussion}[1]{}
