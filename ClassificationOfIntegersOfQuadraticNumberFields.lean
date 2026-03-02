@@ -1,8 +1,0 @@
-import ClassificationOfIntegersOfQuadraticNumberFields.Base
-import ClassificationOfIntegersOfQuadraticNumberFields.NonIso
-import ClassificationOfIntegersOfQuadraticNumberFields.MinimalPolynomial
-import ClassificationOfIntegersOfQuadraticNumberFields.HalfInt
-import ClassificationOfIntegersOfQuadraticNumberFields.ModFourCriteria
--- not in submission ZIP:
--- import ClassificationOfIntegersOfQuadraticNumberFields.ZQuadPath
--- import ClassificationOfIntegersOfQuadraticNumberFields.ClassificationToZsqrtd

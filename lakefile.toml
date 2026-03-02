@@ -1,7 +1,7 @@
 name = "ClassificationOfIntegersOfQuadraticNumberFields"
 version = "0.1.0"
 keywords = ["math", "number-theory", "quadratic-fields"]
-defaultTargets = ["ClassificationOfIntegersOfQuadraticNumberFields"]
+defaultTargets = ["QuadNumberField"]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -18,9 +18,6 @@ rev = "v4.29.0-rc2"
 name = "repl"
 git = "https://github.com/leanprover-community/repl"
 rev = "v4.29.0-rc2"
-
-[[lean_lib]]
-name = "ClassificationOfIntegersOfQuadraticNumberFields"
 
 [[lean_lib]]
 name = "QuadNumberField"
