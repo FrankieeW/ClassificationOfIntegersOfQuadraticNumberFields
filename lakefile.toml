@@ -16,3 +16,6 @@ rev = "v4.29.0-rc2"
 
 [[lean_lib]]
 name = "ClassificationOfIntegersOfQuadraticNumberFields"
+
+[[lean_lib]]
+name = "QuadNumberField"
