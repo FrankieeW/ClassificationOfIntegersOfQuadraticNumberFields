@@ -130,7 +130,32 @@ theorem some_theorem
 
 - **Temporary `sorry`**: Allowed during development
 - **Final deliverables**: No `sorry` unless explicitly requested
-- ** Axiom checking**: Ensure proofs only use standard axioms (`propext`, `Classical.choice`, `Quot.sound`)
+- **Axiom checking**: Ensure proofs only use standard axioms (`propext`, `Classical.choice`, `Quot.sound`)
+
+### Development Markers (Found in Codebase)
+
+- **Temporary `sorry`**: Allowed during development
+- **Final deliverables**: No `sorry` unless explicitly requested
+### Error Handling / Proof Completeness
+
+- **Temporary `sorry`**: Allowed during development
+- **Final deliverables**: No `sorry` unless explicitly requested
+- **Axiom checking**: Ensure proofs only use standard axioms (`propext`, `Classical.choice`, `Quot.sound`)
+
+### Development Markers (Found in Codebase)
+
+| Marker | Usage | Example |
+|--------|-------|----------|
+| `TODO` | Structured checklists with checkboxes | `- [x] prove_lemma_name` |
+| `NOTE` | Explanatory comments for future work | `NOTE: The d % 4 = 1 branch...` |
+| `sorry` | Proof placeholders during development | In `ClassificationToZsqrtd.lean` |
+
+### Anti-Patterns (This Project)
+
+- **NEVER** leave `sorry` in final code (allowed during dev only)
+- **NEVER** use non-snake_case for theorem/definition names
+- **ALWAYS** provide docstrings for public definitions
+- **ALWAYS** put `Mathlib` imports before local imports
 
 ### Lean Options (from `lakefile.toml`)
 
@@ -178,6 +203,9 @@ A proof is complete when:
 - This project is extracted from `DedekindDomain`
 - **Current focus**: quadratic fields `Q(√d)` and ring-of-integers classification
 - **Core.lean**: Contains `IsQuadraticParam`, `Qsqrtd`, nonsquare facts, and Exercise 2.4 formalization
+- **Blueprint docs**: LaTeX-based documentation in `blueprint/` deployed to GitHub Pages
+
+### Module Dependencies
 
 ### Module Dependencies
 
@@ -233,4 +261,4 @@ lean_leanfinder("I have h : n < m and need n + 1 < m + 1")
 
 ---
 
-*Generated for AI agent consumption. Last updated: 2026-02-27*
+*Generated for AI agent consumption. Last updated: 2026-03-02*
