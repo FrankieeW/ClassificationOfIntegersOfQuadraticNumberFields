@@ -1,0 +1,98 @@
+\chapter{Ideals and Dedekind Domains}\label{ch:ideals}
+
+This chapter develops ideal theory in $\Od$,
+following Boxer Lectures~8--11 and~14--17.
+
+\textbf{Status: planned (long-term).}
+
+% ----------------------------------------------------------------
+\section{Dedekind Domain Structure}
+
+\begin{theorem}[$\Od$ is a Dedekind domain]
+  \label{thm:plan_dedekind}
+  \notready
+  \uses{thm:classification}
+  For every squarefree $d\notin\{0,1\}$, the ring $\Od$ is a
+  Dedekind domain: Noetherian, integrally closed, and every
+  nonzero prime ideal is maximal.
+\end{theorem}
+
+\begin{remark}
+  Mathlib already proves that $\OK$ is a Dedekind domain for any
+  number field $K$ (\texttt{NumberField.RingOfIntegers.isDedekindDomain}).
+  The formalization task is to transport this to the explicit
+  models $\Z[\sqrt{d}]$ and $\Z[(1+\sqrt{d})/2]$ via the ring
+  isomorphism.
+\end{remark}
+
+% ----------------------------------------------------------------
+\section{Unique Factorization of Ideals}
+
+\begin{theorem}[Unique factorization into prime ideals]
+  \label{thm:plan_ideal_factorization}
+  \notready
+  \uses{thm:plan_dedekind}
+  Every nonzero ideal $I\subseteq\Od$ factors uniquely as
+  $I = \mathfrak{p}_1^{e_1}\cdots\mathfrak{p}_r^{e_r}$
+  with $\mathfrak{p}_i$ prime ideals.
+\end{theorem}
+
+% ----------------------------------------------------------------
+\section{Splitting of Rational Primes}
+
+\begin{definition}[Splitting types]\label{def:plan_splitting}
+  \notready
+  A rational prime $p$ is:
+  \begin{itemize}
+    \item \emph{split} if $p\Od = \mathfrak{p}\bar{\mathfrak{p}}$
+      with $\mathfrak{p}\ne\bar{\mathfrak{p}}$;
+    \item \emph{inert} if $p\Od$ is prime;
+    \item \emph{ramified} if $p\Od = \mathfrak{p}^2$.
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}[Splitting criterion for quadratic fields]
+  \label{thm:plan_splitting_criterion}
+  \notready
+  \uses{thm:plan_disc_quadratic, def:plan_splitting}
+  Let $p$ be a rational prime, $d$ squarefree.
+  \begin{enumerate}
+    \item $p$ ramifies iff $p\mid\disc(\Od)$.
+    \item For $p\nmid\disc(\Od)$: $p$ splits iff
+      $\bigl(\frac{d}{p}\bigr) = 1$, and $p$ is inert iff
+      $\bigl(\frac{d}{p}\bigr) = -1$.
+  \end{enumerate}
+\end{theorem}
+
+% ----------------------------------------------------------------
+\section{Class Number}
+
+\begin{definition}[Ideal class group]\label{def:plan_class_group}
+  \notready
+  \uses{thm:plan_ideal_factorization}
+  The \emph{class group} $\mathrm{Cl}(\Od)$ is the quotient of
+  fractional ideals by principal ideals.  The \emph{class number}
+  is $h_d := |\mathrm{Cl}(\Od)|$.
+\end{definition}
+
+\begin{remark}
+  Computing $h_d$ for specific $d$ (e.g.\ showing $h_{-5}=2$,
+  $h_{-163}=1$) would be a natural verification target.
+  Mathlib provides \texttt{ClassGroup} infrastructure.
+\end{remark}
+
+% ----------------------------------------------------------------
+\section{Formalization Notes}
+
+\begin{remark}
+  This chapter is a longer-term goal.  The recommended path is:
+  \begin{enumerate}
+    \item Transport \texttt{IsDedekindDomain} from
+      $\OK$ to $\Z[\sqrt{d}]$ / $\Z[(1+\sqrt{d})/2]$.
+    \item Use Mathlib's
+      \texttt{IsDedekindDomain.exists\_prime\_ideal\_of\_dvd}
+      to exhibit factorizations.
+    \item For splitting, connect with
+      \texttt{NumberField.RingOfIntegers.splits\_iff}.
+  \end{enumerate}
+\end{remark}

@@ -1,0 +1,86 @@
+\chapter{Integrality Criteria}\label{ch:integrality}
+
+This chapter characterizes which elements of $\Qs$ are integral
+over $\Z$, via half-integer coordinates and mod-4 parity.
+All results are fully formalized.
+
+% ----------------------------------------------------------------
+\section{Half-Integer Normal Form}
+
+\begin{definition}[Half-integer element]\label{def:half_int}
+  \lean{QuadNumberField.RingOfIntegers.halfInt}
+  \leanok
+  For $a',b'\in\Z$, define
+  $\mathrm{halfInt}(d,a',b') := \frac{a'}{2} + \frac{b'}{2}\sqrt{d}
+  \in\Qs$.
+\end{definition}
+
+\begin{lemma}[Half-integer trace]\label{lem:trace_half_int}
+  \lean{QuadNumberField.RingOfIntegers.trace_halfInt}
+  \leanok
+  $\Tr(\mathrm{halfInt}(d,a',b')) = a'$.
+\end{lemma}
+
+\begin{lemma}[Half-integer norm]\label{lem:norm_half_int}
+  \lean{QuadNumberField.RingOfIntegers.norm_halfInt}
+  \leanok
+  $\Nm(\mathrm{halfInt}(d,a',b')) = \frac{a'^2 - d\,b'^2}{4}$.
+\end{lemma}
+
+\begin{theorem}[Integrality normal form]\label{thm:integral_half_int}
+  \lean{QuadNumberField.RingOfIntegers.exists_halfInt_with_div_four_of_isIntegral}
+  \leanok
+  \uses{def:half_int}
+  Every $x\in\Qs$ integral over $\Z$ can be written as
+  $x = \mathrm{halfInt}(d,a',b')$ with $4\mid(a'^2 - d\,b'^2)$.
+\end{theorem}
+
+% ----------------------------------------------------------------
+\section{Mod-4 Parity Criteria}
+
+\begin{theorem}[Mod-4 dichotomy]\label{thm:mod_four_dichotomy}
+  \lean{QuadNumberField.RingOfIntegers.dvd_four_sub_sq_iff_even_even_or_odd_odd_mod_four_one}
+  \leanok
+  For squarefree $d$,
+  \[
+    4\mid(a'^2 - d\,b'^2) \;\Longleftrightarrow\;
+    \bigl(2\mid a' \wedge 2\mid b'\bigr)
+    \;\lor\;
+    \bigl(2\nmid a' \wedge 2\nmid b' \wedge d\equiv 1\pmod{4}\bigr).
+  \]
+\end{theorem}
+
+\begin{corollary}[$d\not\equiv 1$: both even]\label{cor:ne_one_even}
+  \lean{QuadNumberField.RingOfIntegers.dvd_four_sub_sq_iff_even_even_of_ne_one_mod_four}
+  \leanok
+  \uses{thm:mod_four_dichotomy}
+  If $d\not\equiv 1\pmod{4}$, then
+  $4\mid(a'^2-d\,b'^2)$ iff $2\mid a'$ and $2\mid b'$.
+\end{corollary}
+
+\begin{corollary}[$d\equiv 1$: same parity]\label{cor:one_same_parity}
+  \lean{QuadNumberField.RingOfIntegers.dvd_four_sub_sq_iff_same_parity_of_one_mod_four}
+  \leanok
+  \uses{thm:mod_four_dichotomy}
+  If $d\equiv 1\pmod{4}$, then
+  $4\mid(a'^2-d\,b'^2)$ iff $a'\equiv b'\pmod{2}$.
+\end{corollary}
+
+% ----------------------------------------------------------------
+\section{Branch-Specific Integrality}
+
+\begin{lemma}[Non-$1\!\mod\!4$ branch]\label{lem:integral_zsqrtd}
+  \lean{QuadNumberField.RingOfIntegers.exists_zsqrtd_of_isIntegral_of_ne_one_mod_four}
+  \leanok
+  \uses{thm:integral_half_int, cor:ne_one_even}
+  If $d\not\equiv 1\pmod{4}$ and $x\in\Qs$ is integral, then
+  $x$ lies in the image of $\Z[\sqrt{d}]\hookrightarrow\Qs$.
+\end{lemma}
+
+\begin{lemma}[$1\!\mod\!4$ branch]\label{lem:integral_zhalf}
+  \lean{QuadNumberField.RingOfIntegers.exists_zOnePlusSqrtOverTwo_of_isIntegral_of_one_mod_four}
+  \leanok
+  \uses{thm:integral_half_int, cor:one_same_parity}
+  If $d = 1+4k$ and $x\in\Qs$ is integral, then
+  $x$ lies in the image of $\Z[(1+\sqrt{d})/2]\hookrightarrow\Qs$.
+\end{lemma}

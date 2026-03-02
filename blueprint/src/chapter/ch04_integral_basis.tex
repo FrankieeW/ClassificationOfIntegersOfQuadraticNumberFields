@@ -1,0 +1,63 @@
+\chapter{Integral Basis}\label{ch:integral-basis}
+
+This chapter extracts an explicit $\Z$-basis for $\Od$ from
+the classification theorem, following Boxer Lecture~5.
+
+\textbf{Status: planned.}
+
+% ----------------------------------------------------------------
+\section{Free Module Structure}
+
+\begin{theorem}[$\Od$ is a free $\Z$-module of rank $2$]
+  \label{thm:plan_free_module}
+  \notready
+  \uses{thm:classification}
+  $\Od$ is a free abelian group of rank $[\Qs:\Q] = 2$.
+\end{theorem}
+
+% ----------------------------------------------------------------
+\section{Explicit Bases}
+
+\begin{proposition}[Integral basis, $d\not\equiv 1$]
+  \label{prop:plan_basis_ne_one}
+  \notready
+  \uses{thm:branch_ne_one}
+  If $d\not\equiv 1\pmod{4}$, then $\{1,\;\sqrt{d}\}$ is
+  a $\Z$-basis of $\Od$.
+\end{proposition}
+
+\begin{proposition}[Integral basis, $d\equiv 1$]
+  \label{prop:plan_basis_one}
+  \notready
+  \uses{thm:branch_one}
+  If $d\equiv 1\pmod{4}$, then
+  $\bigl\{1,\;\frac{1+\sqrt{d}}{2}\bigr\}$ is a $\Z$-basis
+  of $\Od$.
+\end{proposition}
+
+\begin{corollary}[Unified integral basis]
+  \label{cor:plan_unified_basis}
+  \notready
+  \uses{prop:plan_basis_ne_one, prop:plan_basis_one}
+  For all squarefree $d\notin\{0,1\}$, $\Od$ has a $\Z$-basis
+  $\{1,\omega_d\}$ where
+  \[
+    \omega_d =
+    \begin{cases}
+      \sqrt{d} & \text{if } d\not\equiv 1\pmod{4},\\
+      \frac{1+\sqrt{d}}{2} & \text{if } d\equiv 1\pmod{4}.
+    \end{cases}
+  \]
+\end{corollary}
+
+% ----------------------------------------------------------------
+\section{Formalization Notes}
+
+\begin{remark}
+  The key Lean step is to exhibit an explicit
+  $\texttt{Basis}\;\Z\;\Od$ by transporting the canonical
+  basis of $\Z^2$ through the ring isomorphism from
+  \cref{thm:classification}.
+  Mathlib's \texttt{Basis.map} or \texttt{LinearEquiv.ofBijective}
+  should suffice.
+\end{remark}

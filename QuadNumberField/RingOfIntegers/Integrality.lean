@@ -17,19 +17,17 @@ and norm identities.
 ## TODO (Revised)
 
 1. Integrality normal form (port/adapt from old `ZQuadPath`)
-- [ ] Prove: integral `x` in `Qsqrtd (d : ℚ)` has half-integer coordinates.
-- [ ] Derive `4 ∣ (a'^2 - d * b'^2)` for those half-integer coordinates.
-- [ ] Provide a reusable wrapper theorem under `[QuadFieldParam d]`.
+- [x] Prove: integral `x` in `Qsqrtd (d : ℚ)` has half-integer coordinates.
+- [x] Derive `4 ∣ (a'^2 - d * b'^2)` for those half-integer coordinates.
+- [x] Provide a reusable wrapper theorem under `[QuadFieldParam d]`.
 
-2. Non-`1 mod 4` branch closure model
-- [x] Build `IsIntegralClosure (Zsqrtd d) ℤ (QuadNumberField d)` under `d % 4 ≠ 1`.
-- [x] Deduce `Nonempty (𝓞 (QuadNumberField d) ≃+* Zsqrtd d)`.
-- [x] Keep theorem names aligned with `Classification.lean`.
+2. Non-`1 mod 4` branch integrality
+- [x] Prove integral elements lie in `Zsqrtd d` image.
+- [x] `IsIntegralClosure` assembly moved to `Classification.lean`.
 
-3. `1 mod 4` branch closure model
-- [ ] Build `IsIntegralClosure (ZOnePlusSqrtOverTwo k) ℤ (Qsqrtd ((1 + 4 * k : ℤ) : ℚ))`.
-- [ ] Transport from `d = 1 + 4 * k` to a theorem about `QuadNumberField d`.
-- [ ] Deduce `Nonempty (𝓞 (QuadNumberField d) ≃+* ZOnePlusSqrtOverTwo k)`.
+3. `1 mod 4` branch integrality
+- [x] Prove integral elements lie in `ZOnePlusSqrtOverTwo k` image.
+- [x] `IsIntegralClosure` assembly moved to `Classification.lean`.
 -/
 
 namespace QuadNumberField
@@ -116,12 +114,14 @@ private theorem norm_eq_sqr_minus_d_sqr {d : ℤ} (x : Qsqrtd (d : ℚ)) :
   simp [Qsqrtd.norm, QuadraticAlgebra.norm]
   ring
 
-/-- Integrality classification in the `d % 4 ≠ 1` branch: integral elements of `Q(√d)`
-lie in the image of `Zsqrtd d`. -/
-lemma exists_zsqrtd_of_isIntegral_of_ne_one_mod_four
-    (d : ℤ) [QuadFieldParam d] (hd4 : d % 4 ≠ 1)
+/-- Any element of `Q(√d)` integral over `ℤ` has half-integer coordinates with
+`4 ∣ (a'^2 - d * b'^2)`. -/
+lemma exists_halfInt_with_div_four_of_isIntegral
+    (d : ℤ) [QuadFieldParam d]
     {x : Qsqrtd (d : ℚ)} (hx : IsIntegral ℤ x) :
-    ∃ z : Zsqrtd d, Zsqrtd.toQsqrtdHom d z = x := by
+    ∃ a' b' : ℤ,
+      x = Zsqrtd.halfInt (d := d) a' b' ∧
+      (4 : ℤ) ∣ (a' ^ 2 - d * b' ^ 2) := by
   have hd : Squarefree d := QuadFieldParam.squarefree (d := d)
   have hd0 : d ≠ 0 := QuadFieldParam.ne_zero (d := d)
   have hd0Q : (d : ℚ) ≠ 0 := by exact_mod_cast hd0
@@ -235,35 +235,40 @@ lemma exists_zsqrtd_of_isIntegral_of_ne_one_mod_four
     simp
   have hdiv : (4 : ℤ) ∣ (a' ^ 2 - d * b' ^ 2) :=
     (Rat.den_div_intCast_eq_one_iff (a' ^ 2 - d * b' ^ 2) 4 (by norm_num)).1 hden
+  exact ⟨a', b', hxHalf, hdiv⟩
+
+/-- Integrality classification in the `d % 4 ≠ 1` branch: integral elements of `Q(√d)`
+lie in the image of `Zsqrtd d`. -/
+lemma exists_zsqrtd_of_isIntegral_of_ne_one_mod_four
+    (d : ℤ) [QuadFieldParam d] (hd4 : d % 4 ≠ 1)
+    {x : Qsqrtd (d : ℚ)} (hx : IsIntegral ℤ x) :
+    ∃ z : Zsqrtd d, Zsqrtd.toQsqrtdHom d z = x := by
+  have hd : Squarefree d := QuadFieldParam.squarefree (d := d)
+  rcases exists_halfInt_with_div_four_of_isIntegral d (x := x) hx with
+    ⟨a', b', hxHalf, hdiv⟩
   rcases exists_zsqrtd_image_of_dvd_four_sub_sq_of_ne_one_mod_four d a' b' hd hd4 hdiv with ⟨z, hz⟩
   refine ⟨z, ?_⟩
   simpa [hxHalf] using hz
 
-/-- Forward branch target: if `d % 4 ≠ 1`, then `𝓞 (QuadNumberField d)` is isomorphic
-to `Zsqrtd d`. -/
-lemma ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one
-    (d : ℤ) [QuadFieldParam d] [NumberField (QuadNumberField d)]
-    (hd4 : d % 4 ≠ 1) :
-    Nonempty (𝓞 (QuadNumberField d) ≃+* Zsqrtd d) := by
-  letI : Algebra (Zsqrtd d) (QuadNumberField d) := (Zsqrtd.toQsqrtdHom d).toAlgebra
-  let hIC : IsIntegralClosure (Zsqrtd d) ℤ (QuadNumberField d) :=
-    { algebraMap_injective := by
-        simpa [RingHom.toAlgebra, QuadNumberField] using (Zsqrtd.toQsqrtdHom_injective d)
-      isIntegral_iff := by
-        intro x
-        constructor
-        · intro hx
-          rcases exists_zsqrtd_of_isIntegral_of_ne_one_mod_four d hd4 (x := x) hx with ⟨z, hz⟩
-          exact ⟨z, by simpa [RingHom.toAlgebra, QuadNumberField] using hz⟩
-        · rintro ⟨z, rfl⟩
-          simpa [RingHom.toAlgebra, QuadNumberField] using (isIntegral_toQsqrtd d z) }
-  exact ⟨@NumberField.RingOfIntegers.equiv
-    (QuadNumberField d)
-    (inferInstance : Field (QuadNumberField d))
-    (Zsqrtd d)
-    (inferInstance : CommRing (Zsqrtd d))
-    ((Zsqrtd.toQsqrtdHom d).toAlgebra)
-    hIC⟩
+/-- Every element in the image of `ZOnePlusSqrtOverTwo k → Q(√(1 + 4k))` is integral over `ℤ`. -/
+lemma isIntegral_toQsqrtd_of_zOnePlusSqrtOverTwo (k : ℤ) (z : ZOnePlusSqrtOverTwo k) :
+    IsIntegral ℤ (_root_.ZOnePlusSqrtOverTwo.toQsqrtdHom k z) := by
+  have hz : IsIntegral ℤ z := Algebra.IsIntegral.isIntegral z
+  exact map_isIntegral_int (_root_.ZOnePlusSqrtOverTwo.toQsqrtdHom k) hz
+
+/-- Integrality classification in the `1 mod 4` branch model (`d = 1 + 4k`):
+integral elements of `Q(√(1 + 4k))` lie in the image of `ZOnePlusSqrtOverTwo k`. -/
+lemma exists_zOnePlusSqrtOverTwo_of_isIntegral_of_one_mod_four
+    (k : ℤ) [QuadFieldParam (1 + 4 * k)]
+    {x : Qsqrtd (((1 + 4 * k : ℤ) : ℚ))} (hx : IsIntegral ℤ x) :
+    ∃ z : ZOnePlusSqrtOverTwo k, _root_.ZOnePlusSqrtOverTwo.toQsqrtdHom k z = x := by
+  have hd : Squarefree (1 + 4 * k) := QuadFieldParam.squarefree (d := 1 + 4 * k)
+  rcases exists_halfInt_with_div_four_of_isIntegral (d := 1 + 4 * k) (x := x) hx with
+    ⟨a', b', hxHalf, hdiv⟩
+  rcases exists_zOnePlusSqrtOverTwo_image_of_dvd_four_sub_sq_of_one_mod_four k a' b' hd hdiv with
+    ⟨z, hz⟩
+  refine ⟨z, ?_⟩
+  simpa [_root_.ZOnePlusSqrtOverTwo.toQsqrtdHom_apply, hxHalf] using hz
 
 end RingOfIntegers
 end QuadNumberField

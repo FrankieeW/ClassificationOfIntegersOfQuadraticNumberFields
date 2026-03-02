@@ -1,0 +1,64 @@
+\chapter{Ring of Integers Classification}\label{ch:classification}
+
+This chapter assembles the two branch results into the main
+classification theorem.  All results are fully formalized.
+
+% ----------------------------------------------------------------
+\section{Ring Models}
+
+\begin{definition}[$\Z[\sqrt{d}]$ model]\label{def:zsqrtd}
+  \lean{Zsqrtd}
+  \leanok
+  $\texttt{Zsqrtd}\;d := \texttt{QuadraticAlgebra}\;\Z\;d\;0$,
+  with embedding
+  $\texttt{toQsqrtdHom} : \Z[\sqrt{d}] \hookrightarrow \Qs$.
+\end{definition}
+
+\begin{definition}[$\Z[(1+\sqrt{d})/2]$ model]\label{def:zhalf}
+  \lean{ZOnePlusSqrtOverTwo}
+  \leanok
+  For $d=1+4k$, define
+  $\texttt{ZOnePlusSqrtOverTwo}\;k :=
+  \texttt{QuadraticAlgebra}\;\Z\;k\;1$
+  (so $\omega^2 = \omega + k$), with embedding
+  $\texttt{toQsqrtdHom} : \Z[(1+\sqrt{1+4k})/2]
+  \hookrightarrow \Q(\sqrt{1+4k})$.
+\end{definition}
+
+% ----------------------------------------------------------------
+\section{Branch Theorems}
+
+\begin{theorem}[Non-$1\!\mod\!4$ branch]\label{thm:branch_ne_one}
+  \lean{QuadNumberField.RingOfIntegers.ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one}
+  \leanok
+  \uses{def:zsqrtd, lem:integral_zsqrtd}
+  If $d\not\equiv 1\pmod{4}$, then
+  $\Od \;\cong\; \Z[\sqrt{d}]$ as rings.
+\end{theorem}
+
+\begin{theorem}[$1\!\mod\!4$ branch]\label{thm:branch_one}
+  \lean{QuadNumberField.RingOfIntegers.ringOfIntegers_equiv_zOnePlusSqrtOverTwo_of_mod_four_eq_one}
+  \leanok
+  \uses{def:zhalf, lem:integral_zhalf}
+  If $d\equiv 1\pmod{4}$, write $d = 1+4k$.  Then
+  $\Od \;\cong\; \Z\!\bigl[\tfrac{1+\sqrt{d}}{2}\bigr]$ as rings.
+\end{theorem}
+
+% ----------------------------------------------------------------
+\section{Main Classification}
+
+\begin{theorem}[Classification of $\Od$]\label{thm:classification}
+  \lean{QuadNumberField.RingOfIntegers.ringOfIntegers_classification}
+  \leanok
+  \uses{thm:branch_ne_one, thm:branch_one}
+  \proves{thm:classification}
+  Let $d$ be a squarefree integer, $d\notin\{0,1\}$.  Then
+  \[
+    \Od \;\cong\;
+    \begin{cases}
+      \Z[\sqrt{d}] & \text{if } d\not\equiv 1\pmod{4},\\[4pt]
+      \Z\!\bigl[\tfrac{1+\sqrt{d}}{2}\bigr] & \text{if }
+      d\equiv 1\pmod{4}.
+    \end{cases}
+  \]
+\end{theorem}

@@ -15,9 +15,9 @@ This file packages the standard order candidate in the `d ≡ 1 [ZMOD 4]` branch
 
 1. Parameter semantics and core embedding
 - [x] Keep the model
-  `ZOnePlusSqrtOverTwo k := QuadraticAlgebra ℤ 1 k` (`ω^2 = ω + k`).
-- [ ] Treat argument as `k`; ambient field parameter is `d = 1 + 4 * k`.
-- [ ] Upgrade `toQsqrtdFun` to a ring hom into `Q(√(1 + 4*k))`.
+  `ZOnePlusSqrtOverTwo k := QuadraticAlgebra ℤ k 1` (`ω^2 = ω + k`).
+- [x] Treat argument as `k`; ambient field parameter is `d = 1 + 4 * k`.
+- [x] Upgrade `toQsqrtdFun` to a ring hom into `Q(√(1 + 4*k))`.
 
 2. Generator and defining equation
 - [ ] Define canonical generator `ω : ZOnePlusSqrtOverTwo k`.
@@ -27,7 +27,7 @@ This file packages the standard order candidate in the `d ≡ 1 [ZMOD 4]` branch
 3. Classification interfaces
 - [ ] Package a branch target carrier (`Subring`/`Subalgebra`) for `d % 4 = 1`.
 - [x] Add bridge lemmas to half-integer normal form with same-parity criterion.
-- [ ] Expose theorem names consumed by `Integrality.lean` and `Classification.lean`.
+- [x] Expose theorem names consumed by `Integrality.lean` and `Classification.lean`.
 -/
 
 namespace Qsqrtd
@@ -47,8 +47,10 @@ lemma omega_mem_Zomega (k : ℤ) : omega k ∈ Zomega k := by
 
 end Qsqrtd
 
-/-- Algebraic model of `ℤ[(1 + √(1 + 4d))/2]` via `ω^2 = ω + d`. -/
-abbrev ZOnePlusSqrtOverTwo (d : ℤ) : Type := QuadraticAlgebra ℤ 1 d
+/-- Algebraic model of `ℤ[(1 + √(1 + 4d))/2]` via `ω^2 = ω + d`.
+In `QuadraticAlgebra R a b`, one has `ω^2 = a + b * ω`, so this is
+`QuadraticAlgebra ℤ d 1` (not `QuadraticAlgebra ℤ 1 d`). -/
+abbrev ZOnePlusSqrtOverTwo (d : ℤ) : Type := QuadraticAlgebra ℤ d 1
 
 namespace ZOnePlusSqrtOverTwo
 
@@ -57,26 +59,42 @@ abbrev qParam (d : ℤ) : ℚ := Qsqrtd.d_of_k d
 
 /-- Coordinate-level embedding candidate into `Q(√(1 + 4d))`. -/
 def toQsqrtdFun (d : ℤ) : ZOnePlusSqrtOverTwo d → Qsqrtd (qParam d) :=
-  fun x => ⟨x.re + x.im / 2, x.im / 2⟩
+  fun x => ⟨(x.re : ℚ) + (x.im : ℚ) / 2, (x.im : ℚ) / 2⟩
 
 /-- Coordinate-level embedding as a ring hom into `Q(√(1 + 4d))`. -/
 def toQsqrtdHom (d : ℤ) : ZOnePlusSqrtOverTwo d →+* Qsqrtd (qParam d) where
   toFun := toQsqrtdFun d
   map_one' := by
-    have hre : (1 : ZOnePlusSqrtOverTwo d).re = 1 := rfl
-    have him : (1 : ZOnePlusSqrtOverTwo d).im = 0 := rfl
-    ext <;> simp [toQsqrtdFun, hre, him]
+    ext <;> simp [toQsqrtdFun, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
   map_mul' := by
     intro x y
-    ext <;> simp [toQsqrtdFun, qParam, Qsqrtd.d_of_k, QuadraticAlgebra.mk_mul_mk] <;>
-      norm_num <;> ring_nf
+    ext <;>
+      simp [toQsqrtdFun, qParam, Qsqrtd.d_of_k,
+        QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul] <;>
+      ring
   map_zero' := by
-    have hre : (0 : ZOnePlusSqrtOverTwo d).re = 0 := rfl
-    have him : (0 : ZOnePlusSqrtOverTwo d).im = 0 := rfl
-    ext <;> simp [toQsqrtdFun, hre, him]
+    ext <;> simp [toQsqrtdFun, QuadraticAlgebra.re_zero, QuadraticAlgebra.im_zero]
   map_add' := by
     intro x y
-    ext <;> simp [toQsqrtdFun] <;> norm_num <;> ring_nf
+    ext <;> simp [toQsqrtdFun, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add] <;> ring
+
+@[simp] theorem toQsqrtdHom_apply (d : ℤ) (z : ZOnePlusSqrtOverTwo d) :
+    toQsqrtdHom d z = toQsqrtdFun d z := rfl
+
+/-- The canonical map `toQsqrtdHom` is injective. -/
+theorem toQsqrtdHom_injective (d : ℤ) : Function.Injective (toQsqrtdHom d) := by
+  intro x y hxy
+  have himHalf : (x.im : ℚ) / 2 = (y.im : ℚ) / 2 := by
+    simpa [toQsqrtdHom, toQsqrtdFun] using congrArg QuadraticAlgebra.im hxy
+  have himQ : (x.im : ℚ) = (y.im : ℚ) := by
+    nlinarith [himHalf]
+  have hreHalf : (x.re : ℚ) + (x.im : ℚ) / 2 = (y.re : ℚ) + (y.im : ℚ) / 2 := by
+    simpa [toQsqrtdHom, toQsqrtdFun] using congrArg QuadraticAlgebra.re hxy
+  have hreQ : (x.re : ℚ) = (y.re : ℚ) := by
+    nlinarith [hreHalf, himQ]
+  ext
+  · exact_mod_cast hreQ
+  · exact_mod_cast himQ
 
 /-- Candidate carrier set of `ℤ[(1 + √(1 + 4d))/2]` inside `Q(√(1 + 4d))`. -/
 def carrierSet (d : ℤ) : Set (Qsqrtd (qParam d)) := Set.range (toQsqrtdFun d)

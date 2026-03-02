@@ -1,0 +1,66 @@
+\chapter{Quadratic Number Fields}\label{ch:quadratic-field}
+
+This chapter establishes the ambient quadratic number field $\Qs$
+and its basic algebraic structure.  All results are fully formalized.
+
+% ----------------------------------------------------------------
+\section{Quadratic Parameters}
+
+\begin{definition}[Quadratic field parameter]\label{def:quad_field_param}
+  \lean{QuadFieldParam}
+  \leanok
+  A \emph{quadratic field parameter} is a squarefree integer
+  $d\in\Z\setminus\{0,1\}$.
+  The type class \texttt{QuadFieldParam\,d} bundles:
+  $d\ne 0$, $d\ne 1$, and $d$ is squarefree.
+\end{definition}
+
+\begin{definition}[Quadratic algebra]\label{def:qsqrtd}
+  \lean{Qsqrtd}
+  \leanok
+  For $d\in\Z$, the \emph{quadratic algebra} $\Qs$ is the
+  $\Q$-algebra $\Q[X]/(X^2-d)$, represented as
+  $\texttt{QuadraticAlgebra}\;\Q\;d\;0$.
+  Elements are pairs $(a,b)\in\Q^2$ with multiplication
+  $(a_1,b_1)\cdot(a_2,b_2) = (a_1 a_2 + d\,b_1 b_2,\;
+  a_1 b_2 + a_2 b_1)$.
+\end{definition}
+
+\begin{definition}[Quadratic number field]\label{def:quad_number_field}
+  \lean{QuadNumberField}
+  \leanok
+  $\texttt{QuadNumberField}\;d := \texttt{Qsqrtd}\;(d:\Q)$,
+  equipped with a \texttt{Field} instance.
+\end{definition}
+
+% ----------------------------------------------------------------
+\section{Trace and Norm}
+
+\begin{lemma}[Trace formula]\label{lem:trace_eq_two_re}
+  \lean{QuadNumberField.RingOfIntegers.trace_eq_two_re}
+  \leanok
+  For $x = (a,b)\in\Qs$, $\Tr(x) = 2a$.
+\end{lemma}
+
+\begin{lemma}[Norm formula]\label{lem:norm_eq_sqr}
+  \lean{QuadNumberField.RingOfIntegers.norm_eq_sqr_minus_d_sqr}
+  \leanok
+  For $x=(a,b)\in\Qs$, $\Nm(x) = a^2 - d\,b^2$.
+\end{lemma}
+
+% ----------------------------------------------------------------
+\section{Rescaling and Parameter Uniqueness}
+
+\begin{proposition}[Rescaling isomorphism]\label{prop:rescale}
+  \lean{Qsqrtd.rescale}
+  \leanok
+  For $a\ne 0$, there is a $\Q$-algebra isomorphism
+  $\Q(\sqrt{d}) \cong \Q(\sqrt{a^2 d})$.
+\end{proposition}
+
+\begin{theorem}[Parameter rigidity]\label{thm:param_unique}
+  \lean{QuadNumberField.quadratic_field_param_unique}
+  \leanok
+  If $d_1,d_2$ are distinct squarefree integers, then
+  $\Q(\sqrt{d_1}) \not\cong \Q(\sqrt{d_2})$ as $\Q$-algebras.
+\end{theorem}

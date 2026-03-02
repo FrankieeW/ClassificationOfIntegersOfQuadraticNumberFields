@@ -10,68 +10,123 @@ import QuadNumberField.RingOfIntegers.ZOnePlusSqrtOverTwo
 /-!
 # Ring Of Integers Classification
 
-This file should contain the final classification theorem for
+This file contains the final classification theorem for
 `𝓞 (QuadNumberField d)`.
 
-## TODO (Revised for Final Classification)
+## Main Results
 
-1. Lock target theorem signatures (per current project goal)
-- [x] Non-`1 mod 4` branch theorem:
-  `ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one
-    (d : ℤ) [QuadFieldParam d] [NumberField (QuadNumberField d)]
-    (hd4 : d % 4 ≠ 1) :
-    Nonempty (𝓞 (QuadNumberField d) ≃+* Zsqrtd d)`.
-- [ ] `1 mod 4` branch theorem (with explicit parameter extraction):
-  `ringOfIntegers_equiv_zOnePlusSqrtOverTwo_of_mod_four_eq_one
-    (d : ℤ) [QuadFieldParam d] [NumberField (QuadNumberField d)]
-    (hd4 : d % 4 = 1) :
-    ∃ k : ℤ, d = 1 + 4 * k ∧
-      Nonempty (𝓞 (QuadNumberField d) ≃+* ZOnePlusSqrtOverTwo k)`.
-- [ ] Final classification theorem combining the two branch theorems.
+* `ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one`:
+  if `d % 4 ≠ 1` then `𝓞 (Q(√d)) ≃+* ℤ√d`.
+* `ringOfIntegers_equiv_zOnePlusSqrtOverTwo_of_mod_four_eq_one`:
+  if `d % 4 = 1` then `𝓞 (Q(√d)) ≃+* ℤ[(1+√d)/2]`.
+* `ringOfIntegers_classification`:
+  combines both branches into a single disjunction.
 
-2. Dependency order from supporting files
-- [ ] `ModFour.lean`: produce `k` from `d % 4 = 1` and branch split lemmas.
-- [ ] `HalfInt.lean`: provide trace/norm formulas and parity normal form.
-- [ ] `Integrality.lean`: supply integral-closure transfer into branch targets.
-- [ ] `Zsqrtd.lean` / `ZOnePlusSqrtOverTwo.lean`: expose branch target APIs.
+## Design
 
-3. Acceptance checks (from PDF + old draft)
-- [ ] Non-`1 mod 4` branch matches `𝓞 = ℤ[√d]`.
-- [ ] `1 mod 4` branch matches `𝓞 = ℤ[(1 + √d)/2]`, represented via `d = 1 + 4*k`.
-- [ ] No theorem-statement drift from the locked signatures above.
+Integrality ingredients (`IsIntegralClosure` constructions,
+half-integer normal form, etc.) live in `Integrality.lean`.
+This file assembles the final `𝓞 ≃+* R` isomorphisms and the
+top-level classification.
 -/
 
 open scoped NumberField
 
 namespace QuadNumberField
 namespace RingOfIntegers
-namespace ClassificationAPI
 
-/-- API re-export for the non-`1 mod 4` branch.
-
-The full proof intentionally lives in `Integrality.lean` because it is an
-integral-closure construction argument.
-This wrapper keeps `Classification.lean` as the classification-entry layer
-without duplicating technical proof details. -/
+/-- If `d % 4 ≠ 1`, then `𝓞 (Q(√d)) ≃+* ℤ√d`. -/
 theorem ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one
-    (d : ℤ) [QuadFieldParam d] [NumberField (QuadNumberField d)]
+    (d : ℤ) [QuadFieldParam d]
+    [NumberField (QuadNumberField d)]
     (hd4 : d % 4 ≠ 1) :
     Nonempty (𝓞 (QuadNumberField d) ≃+* Zsqrtd d) := by
-  exact QuadNumberField.RingOfIntegers.ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one d hd4
+  letI : Algebra (Zsqrtd d) (QuadNumberField d) :=
+    (Zsqrtd.toQsqrtdHom d).toAlgebra
+  let hIC : IsIntegralClosure (Zsqrtd d) ℤ
+      (QuadNumberField d) :=
+    { algebraMap_injective := by
+        simpa [RingHom.toAlgebra, QuadNumberField] using
+          (Zsqrtd.toQsqrtdHom_injective d)
+      isIntegral_iff := by
+        intro x
+        constructor
+        · intro hx
+          rcases exists_zsqrtd_of_isIntegral_of_ne_one_mod_four
+            d hd4 (x := x) hx with ⟨z, hz⟩
+          exact ⟨z, by simpa [RingHom.toAlgebra,
+            QuadNumberField] using hz⟩
+        · rintro ⟨z, rfl⟩
+          simpa [RingHom.toAlgebra, QuadNumberField] using
+            (isIntegral_toQsqrtd d z) }
+  exact ⟨@NumberField.RingOfIntegers.equiv
+    (QuadNumberField d)
+    (inferInstance : Field (QuadNumberField d))
+    (Zsqrtd d)
+    (inferInstance : CommRing (Zsqrtd d))
+    ((Zsqrtd.toQsqrtdHom d).toAlgebra)
+    hIC⟩
 
-/-- API re-export for the arithmetic bridge in the `d = 1 + 4k` branch.
+/-- If `d % 4 = 1`, writing `d = 1 + 4k`,
+then `𝓞 (Q(√d)) ≃+* ZOnePlusSqrtOverTwo k`. -/
+theorem ringOfIntegers_equiv_zOnePlusSqrtOverTwo_of_mod_four_eq_one
+    (d : ℤ) [QuadFieldParam d]
+    [NumberField (QuadNumberField d)]
+    (hd4 : d % 4 = 1) :
+    ∃ k : ℤ, d = 1 + 4 * k ∧
+      Nonempty (𝓞 (QuadNumberField d) ≃+*
+        ZOnePlusSqrtOverTwo k) := by
+  rcases exists_k_of_mod_four_eq_one (d := d) hd4 with ⟨k, hk⟩
+  refine ⟨k, hk, ?_⟩
+  subst hk
+  letI : Algebra (ZOnePlusSqrtOverTwo k)
+      (QuadNumberField (1 + 4 * k)) :=
+    (_root_.ZOnePlusSqrtOverTwo.toQsqrtdHom k).toAlgebra
+  let hIC : IsIntegralClosure (ZOnePlusSqrtOverTwo k) ℤ
+      (QuadNumberField (1 + 4 * k)) :=
+    { algebraMap_injective := by
+        simpa [RingHom.toAlgebra, QuadNumberField] using
+          (_root_.ZOnePlusSqrtOverTwo.toQsqrtdHom_injective k)
+      isIntegral_iff := by
+        intro x
+        constructor
+        · intro hx
+          rcases exists_zOnePlusSqrtOverTwo_of_isIntegral_of_one_mod_four
+            k (x := x) hx with ⟨z, hz⟩
+          exact ⟨z, by simpa [RingHom.toAlgebra,
+            QuadNumberField] using hz⟩
+        · rintro ⟨z, rfl⟩
+          simpa [RingHom.toAlgebra, QuadNumberField] using
+            (isIntegral_toQsqrtd_of_zOnePlusSqrtOverTwo k z) }
+  exact ⟨@NumberField.RingOfIntegers.equiv
+    (QuadNumberField (1 + 4 * k))
+    (inferInstance : Field (QuadNumberField (1 + 4 * k)))
+    (ZOnePlusSqrtOverTwo k)
+    (inferInstance : CommRing (ZOnePlusSqrtOverTwo k))
+    ((_root_.ZOnePlusSqrtOverTwo.toQsqrtdHom k).toAlgebra)
+    hIC⟩
 
-The proof is in `Integrality.lean`; this theorem keeps branch-facing access in
-`Classification.lean` without duplicating internals. -/
-theorem dvd_four_sub_sq_iff_exists_zOnePlusSqrtOverTwo_image_of_one_mod_four
-      (k a' b' : ℤ) (hd : Squarefree (1 + 4 * k)) :
-      4 ∣ (a' ^ 2 - (1 + 4 * k) * b' ^ 2) ↔
-        ∃ z : ZOnePlusSqrtOverTwo k,
-        ZOnePlusSqrtOverTwo.toQsqrtdFun k z =
-          QuadNumberField.RingOfIntegers.halfInt (1 + 4 * k) a' b' := by
-  exact RingOfIntegers.dvd_four_sub_sq_iff_exists_zOnePlusSqrtOverTwo_image_of_one_mod_four
-    k a' b' hd
+/-- **Classification of the ring of integers of `Q(√d)`.**
 
-end ClassificationAPI
+For squarefree `d`, exactly one of the following holds:
+* If `d % 4 ≠ 1`, then `𝓞 (Q(√d)) ≃+* ℤ√d`.
+* If `d % 4 = 1`, then writing `d = 1 + 4k`,
+  `𝓞 (Q(√d)) ≃+* ℤ[(1+√d)/2]`. -/
+theorem ringOfIntegers_classification
+    (d : ℤ) [QuadFieldParam d]
+    [NumberField (QuadNumberField d)] :
+    (d % 4 ≠ 1 ∧
+      Nonempty (𝓞 (QuadNumberField d) ≃+* Zsqrtd d)) ∨
+    (∃ k : ℤ, d = 1 + 4 * k ∧
+      Nonempty (𝓞 (QuadNumberField d) ≃+*
+        ZOnePlusSqrtOverTwo k)) := by
+  by_cases hd4 : d % 4 = 1
+  · right
+    exact ringOfIntegers_equiv_zOnePlusSqrtOverTwo_of_mod_four_eq_one
+      d hd4
+  · left
+    exact ⟨hd4,
+      ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one d hd4⟩
+
 end RingOfIntegers
 end QuadNumberField

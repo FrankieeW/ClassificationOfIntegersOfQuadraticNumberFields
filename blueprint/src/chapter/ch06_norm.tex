@@ -1,0 +1,73 @@
+\chapter{Norm Multiplicativity}\label{ch:norm}
+
+This chapter formalizes properties of the field norm
+$\Nm_{\Qs/\Q}$ restricted to $\Od$,
+following Boxer Lecture~3.
+
+\textbf{Status: planned.}
+
+% ----------------------------------------------------------------
+\section{Field Norm}
+
+\begin{definition}[Field norm on $\Qs$]
+  \label{def:plan_field_norm}
+  \notready
+  For $x = a + b\sqrt{d}\in\Qs$,
+  $\Nm(x) := x\cdot\bar{x} = a^2 - d\,b^2$.
+\end{definition}
+
+\begin{theorem}[Multiplicativity]\label{thm:plan_norm_mul}
+  \notready
+  \uses{def:plan_field_norm}
+  For all $x,y\in\Qs$,
+  $\Nm(xy) = \Nm(x)\,\Nm(y)$.
+\end{theorem}
+
+\begin{corollary}[Integrality of norm]\label{cor:plan_norm_int}
+  \notready
+  \uses{thm:plan_norm_mul, thm:classification}
+  If $\alpha\in\Od$, then $\Nm(\alpha)\in\Z$.
+\end{corollary}
+
+% ----------------------------------------------------------------
+\section{Units and Norm}
+
+\begin{proposition}[Unit criterion]\label{prop:plan_unit_norm}
+  \notready
+  \uses{cor:plan_norm_int}
+  $\alpha\in\Od^\times$ if and only if $\Nm(\alpha) = \pm 1$.
+\end{proposition}
+
+% ----------------------------------------------------------------
+\section{Norm in Each Branch}
+
+\begin{proposition}[Norm on $\Z[\sqrt{d}]$]
+  \label{prop:plan_norm_zsqrtd}
+  \notready
+  For $z = a + b\sqrt{d}\in\Z[\sqrt{d}]$,
+  $\Nm(z) = a^2 - d\,b^2$.
+\end{proposition}
+
+\begin{proposition}[Norm on $\Z[(1+\sqrt{d})/2]$]
+  \label{prop:plan_norm_zhalf}
+  \notready
+  For $z = a + b\omega \in \Z[(1+\sqrt{d})/2]$ where
+  $\omega = (1+\sqrt{d})/2$,
+  \[
+    \Nm(z) = a^2 + ab - \frac{d-1}{4}\,b^2
+    = a^2 + ab - k\,b^2
+  \]
+  where $d = 1 + 4k$.
+\end{proposition}
+
+% ----------------------------------------------------------------
+\section{Formalization Notes}
+
+\begin{remark}
+  Multiplicativity of \texttt{Qsqrtd.norm} can be proved by
+  \texttt{ext} + \texttt{ring}.  The restriction to $\Od$ then
+  follows from the ring isomorphism in \cref{thm:classification}
+  and \texttt{map\_isIntegral\_int}.
+  Mathlib's \texttt{Algebra.norm\_eq\_prod\_automorphisms} may
+  provide an alternative route.
+\end{remark}

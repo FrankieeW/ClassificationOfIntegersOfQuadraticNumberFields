@@ -1,0 +1,70 @@
+\chapter{Discriminant}\label{ch:discriminant}
+
+This chapter computes the discriminant of $\Od$,
+following Boxer Lecture~6.
+
+\textbf{Status: planned.}
+
+% ----------------------------------------------------------------
+\section{Definition and General Formula}
+
+\begin{definition}[Discriminant of an integral basis]
+  \label{def:plan_disc}
+  \notready
+  Given a $\Z$-basis $\{\alpha_1,\alpha_2\}$ of $\Od$,
+  \[
+    \disc(\Od) :=
+    \det\!\begin{pmatrix}
+      \Tr(\alpha_1\alpha_1) & \Tr(\alpha_1\alpha_2)\\
+      \Tr(\alpha_2\alpha_1) & \Tr(\alpha_2\alpha_2)
+    \end{pmatrix}.
+  \]
+  Equivalently, $\disc(\Od) =
+  \det(\sigma_i(\alpha_j))^2$ where $\sigma_1,\sigma_2$
+  are the two embeddings.
+\end{definition}
+
+% ----------------------------------------------------------------
+\section{Quadratic Case}
+
+\begin{theorem}[Discriminant of $\Q(\sqrt{d})$]
+  \label{thm:plan_disc_quadratic}
+  \notready
+  \uses{cor:plan_unified_basis, def:plan_disc}
+  For squarefree $d$,
+  \[
+    \disc(\Od) =
+    \begin{cases}
+      4d  & \text{if } d\not\equiv 1\pmod{4},\\
+      d   & \text{if } d\equiv 1\pmod{4}.
+    \end{cases}
+  \]
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+  \textbf{Case $d\not\equiv 1\pmod{4}$:}
+  Basis $\{1,\sqrt{d}\}$.
+  \[
+    \det\!\begin{pmatrix}1&\sqrt{d}\\1&-\sqrt{d}\end{pmatrix}^2
+    = (-2\sqrt{d})^2 = 4d.
+  \]
+  \textbf{Case $d\equiv 1\pmod{4}$:}
+  Basis $\{1,\frac{1+\sqrt{d}}{2}\}$.
+  \[
+    \det\!\begin{pmatrix}1&\frac{1+\sqrt{d}}{2}\\
+    1&\frac{1-\sqrt{d}}{2}\end{pmatrix}^2
+    = (-\sqrt{d})^2 = d.
+  \]
+\end{proof}
+
+% ----------------------------------------------------------------
+\section{Formalization Notes}
+
+\begin{remark}
+  Mathlib provides \texttt{NumberField.discr} and
+  \texttt{Algebra.discr}.  The strategy is to evaluate
+  $\texttt{Algebra.discr}\;\Z\;\mathcal{B}$ for the explicit
+  basis $\mathcal{B}$ from \cref{ch:integral-basis}, reducing
+  the determinant to an arithmetic identity provable by
+  \texttt{ring} or \texttt{norm\_num}.
+\end{remark}
