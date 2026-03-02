@@ -14,13 +14,13 @@ structural lemmas.
 ## TODO (Revised)
 
 1. Canonical half-integer API (reuse existing `Zsqrtd` definitions)
-- [ ] Expose `halfInt` here as a thin wrapper/alias of `Zsqrtd.halfInt`.
-- [ ] Add `omegaHalf (d : ℤ) : Qsqrtd (d : ℚ) := halfInt d 1 1`.
-- [ ] Add coordinate simp lemmas for `halfInt` and `omegaHalf`.
+- [x] Expose `halfInt` here as a thin wrapper/alias of `Zsqrtd.halfInt`.
+- [x] Add `omegaHalf (d : ℤ) : Qsqrtd (d : ℚ) := halfInt d 1 1`.
+- [x] Add coordinate simp lemmas for `halfInt` and `omegaHalf`.
 
 2. Port formulas from old draft
-- [ ] Port `trace_halfInt`.
-- [ ] Port `norm_halfInt`.
+- [x] Port `trace_halfInt`.
+- [x] Port `norm_halfInt`.
 - [ ] Keep theorem names and statement shape compatible with `Integrality.lean`.
 
 3. Classification-facing lemmas

@@ -26,7 +26,7 @@ This file packages the standard order candidate in the `d ≡ 1 [ZMOD 4]` branch
 
 3. Classification interfaces
 - [ ] Package a branch target carrier (`Subring`/`Subalgebra`) for `d % 4 = 1`.
-- [ ] Add bridge lemmas to half-integer normal form with same-parity criterion.
+- [x] Add bridge lemmas to half-integer normal form with same-parity criterion.
 - [ ] Expose theorem names consumed by `Integrality.lean` and `Classification.lean`.
 -/
 
@@ -59,7 +59,67 @@ abbrev qParam (d : ℤ) : ℚ := Qsqrtd.d_of_k d
 def toQsqrtdFun (d : ℤ) : ZOnePlusSqrtOverTwo d → Qsqrtd (qParam d) :=
   fun x => ⟨x.re + x.im / 2, x.im / 2⟩
 
+/-- Coordinate-level embedding as a ring hom into `Q(√(1 + 4d))`. -/
+def toQsqrtdHom (d : ℤ) : ZOnePlusSqrtOverTwo d →+* Qsqrtd (qParam d) where
+  toFun := toQsqrtdFun d
+  map_one' := by
+    have hre : (1 : ZOnePlusSqrtOverTwo d).re = 1 := rfl
+    have him : (1 : ZOnePlusSqrtOverTwo d).im = 0 := rfl
+    ext <;> simp [toQsqrtdFun, hre, him]
+  map_mul' := by
+    intro x y
+    ext <;> simp [toQsqrtdFun, qParam, Qsqrtd.d_of_k, QuadraticAlgebra.mk_mul_mk] <;>
+      norm_num <;> ring_nf
+  map_zero' := by
+    have hre : (0 : ZOnePlusSqrtOverTwo d).re = 0 := rfl
+    have him : (0 : ZOnePlusSqrtOverTwo d).im = 0 := rfl
+    ext <;> simp [toQsqrtdFun, hre, him]
+  map_add' := by
+    intro x y
+    ext <;> simp [toQsqrtdFun] <;> norm_num <;> ring_nf
+
 /-- Candidate carrier set of `ℤ[(1 + √(1 + 4d))/2]` inside `Q(√(1 + 4d))`. -/
 def carrierSet (d : ℤ) : Set (Qsqrtd (qParam d)) := Set.range (toQsqrtdFun d)
+
+/-- A half-integer element belongs to the `ℤ[(1 + √(1+4k))/2]` carrier iff the two
+numerators have the same parity. -/
+theorem halfInt_mem_carrierSet_iff_same_parity (k a' b' : ℤ) :
+    (∃ z : ZOnePlusSqrtOverTwo k,
+      toQsqrtdFun k z = QuadNumberField.RingOfIntegers.halfInt (1 + 4 * k) a' b') ↔
+      a' % 2 = b' % 2 := by
+  constructor
+  · rintro ⟨z, hz⟩
+    have him : z.im / 2 = (b' : ℚ) / 2 := by
+      simpa [toQsqrtdFun, QuadNumberField.RingOfIntegers.halfInt] using
+        congrArg QuadraticAlgebra.im hz
+    have hbq : z.im = (b' : ℚ) := by
+      nlinarith [him]
+    have hreq : z.re + z.im / 2 = (a' : ℚ) / 2 := by
+      simpa [toQsqrtdFun, QuadNumberField.RingOfIntegers.halfInt] using
+        congrArg QuadraticAlgebra.re hz
+    have haq : 2 * z.re + z.im = (a' : ℚ) := by
+      nlinarith [hreq]
+    have ha : 2 * z.re + z.im = a' := by exact_mod_cast haq
+    have hb : z.im = b' := by exact_mod_cast hbq
+    have ha' : 2 * z.re + b' = a' := by simpa [hb] using ha
+    omega
+  · intro hpar
+    have hmod : (a' - b') % 2 = 0 := by
+      omega
+    have hdiv : (2 : ℤ) ∣ (a' - b') := Int.dvd_iff_emod_eq_zero.mpr hmod
+    rcases hdiv with ⟨t, ht⟩
+    have hrepr : a' = 2 * t + b' := by
+      omega
+    refine ⟨⟨t, b'⟩, ?_⟩
+    ext
+    · simp [toQsqrtdFun, QuadNumberField.RingOfIntegers.halfInt, hrepr]
+      ring
+    · simp [toQsqrtdFun, QuadNumberField.RingOfIntegers.halfInt]
+
+/-- Equivalent set-membership form of `halfInt_mem_carrierSet_iff_same_parity`. -/
+theorem halfInt_mem_carrierSet_iff_same_parity_set (k a' b' : ℤ) :
+    QuadNumberField.RingOfIntegers.halfInt (1 + 4 * k) a' b' ∈ carrierSet k ↔
+      a' % 2 = b' % 2 := by
+  simpa [carrierSet] using (halfInt_mem_carrierSet_iff_same_parity k a' b')
 
 end ZOnePlusSqrtOverTwo

@@ -20,9 +20,9 @@ Current phase: API shape only; no property proofs.
 - [ ] Add transport lemmas for `trace`, `norm`, `conj`, and `sqrtd` across `equivMathlib`.
 
 2. Embedding into `Q(√d)`
-- [ ] Upgrade `toQsqrtd` from a function to a ring hom
+- [x] Upgrade `toQsqrtd` from a function to a ring hom
   `toQsqrtdHom : Zsqrtd d →+* Qsqrtd (d : ℚ)`.
-- [ ] Prove injectivity for the embedding and add cast-coordinate simp lemmas.
+- [x] Prove injectivity for the embedding and add cast-coordinate simp lemmas.
 - [ ] Replace `Set.range` placeholders by carrier APIs built from the ring hom.
 
 3. Classification support
