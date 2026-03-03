@@ -123,7 +123,7 @@ lemma exists_halfInt_with_div_four_of_isIntegral
       x = Zsqrtd.halfInt (d := d) a' b' ∧
       (4 : ℤ) ∣ (a' ^ 2 - d * b' ^ 2) := by
   have hd : Squarefree d := QuadFieldParam.squarefree (d := d)
-  have hd0 : d ≠ 0 := QuadFieldParam.ne_zero (d := d)
+  have hd0 : d ≠ 0 := hd.ne_zero
   have hd0Q : (d : ℚ) ≠ 0 := by exact_mod_cast hd0
   let cHom : ℚ →+* Qsqrtd (d : ℚ) :=
     { toFun := QuadraticAlgebra.C (a := (d : ℚ)) (b := (0 : ℚ))

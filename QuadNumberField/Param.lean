@@ -21,9 +21,11 @@ lemma Qsqrtd_zero_not_isField : ¬ IsField (Qsqrtd (0 : ℚ)) := by
   haveI := hF.isDomain
   exact Qsqrtd_zero_not_isReduced (inferInstance : IsReduced (Qsqrtd (0 : ℚ)))
 
+/-- Parameters for `Q(√d)`.
+`d ≠ 0` is not stored as a field, since it follows from `squarefree`
+via `Squarefree.ne_zero`. -/
 class QuadFieldParam (d : ℤ) : Prop where
   squarefree : Squarefree d
-  ne_zero : d ≠ 0
   ne_one : d ≠ 1
 
 lemma not_isSquare_int (d : ℤ) [QuadFieldParam d] : ¬ IsSquare d := by
@@ -56,14 +58,14 @@ lemma Qsqrtd_one_not_isField : ¬ IsField (Qsqrtd (1 : ℚ)) := by
 
 Instances for frequently used squarefree integers.
 -/
-def QuadFieldParam.mk' (d : ℤ) (hs : Squarefree d) (h0 : d ≠ 0) (h1 : d ≠ 1) :
+def QuadFieldParam.mk' (d : ℤ) (hs : Squarefree d) (h1 : d ≠ 1) :
     QuadFieldParam d :=
-{ squarefree := hs, ne_zero := h0, ne_one := h1 }
+{ squarefree := hs, ne_one := h1 }
 
 /-- A prime integer gives a valid quadratic-field parameter. -/
 @[simp]
 lemma quadFieldParam_of_prime (d : ℤ) (hd : Prime d) : QuadFieldParam d := by
-  refine QuadFieldParam.mk' d hd.squarefree hd.ne_zero ?_
+  refine QuadFieldParam.mk' d hd.squarefree ?_
   intro h1
   exact hd.not_unit (h1 ▸ isUnit_one)
 
@@ -76,8 +78,7 @@ lemma quadFieldParam_of_natAbs_prime (d : ℤ) (hd : Nat.Prime d.natAbs) :
 
 instance : QuadFieldParam (-1) where
   squarefree := by simp
-  ne_zero := by simp
   ne_one := by simp
 
-instance : QuadFieldParam (-3) := 
+instance : QuadFieldParam (-3) :=
   quadFieldParam_of_natAbs_prime (-3) Nat.prime_three
