@@ -28,6 +28,10 @@ class QuadFieldParam (d : ℤ) : Prop where
   squarefree : Squarefree d
   ne_one : d ≠ 1
 
+/-- For a quadratic parameter, nonzero follows from squarefreeness. -/
+lemma QuadFieldParam.ne_zero (d : ℤ) [QuadFieldParam d] : d ≠ 0 :=
+  (QuadFieldParam.squarefree (d := d)).ne_zero
+
 lemma not_isSquare_int (d : ℤ) [QuadFieldParam d] : ¬ IsSquare d := by
   intro hdSq
   rcases hdSq with ⟨z, hz⟩
@@ -47,7 +51,7 @@ lemma Qsqrtd_one_not_isField : ¬ IsField (Qsqrtd (1 : ℚ)) := by
   intro hF
   haveI := hF.isDomain
   have hprod : (⟨1, 1⟩ : Qsqrtd 1) * ⟨1, -1⟩ = 0 := by
-    ext <;> simp [QuadraticAlgebra.mk_mul_mk]
+    ext <;> simp
   have hne : (⟨1, 1⟩ : Qsqrtd 1) ≠ 0 := by
     intro h; exact one_ne_zero (congr_arg QuadraticAlgebra.re h)
   have hne' : (⟨1, -1⟩ : Qsqrtd 1) ≠ 0 := by
@@ -62,10 +66,16 @@ def QuadFieldParam.mk' (d : ℤ) (hs : Squarefree d) (h1 : d ≠ 1) :
     QuadFieldParam d :=
 { squarefree := hs, ne_one := h1 }
 
+/-- Any squarefree `d ≠ 1` is a valid quadratic-field parameter. -/
+@[simp]
+lemma quadFieldParam_of_squarefree_ne_one (d : ℤ) (hd : Squarefree d) (h1 : d ≠ 1) :
+    QuadFieldParam d :=
+  QuadFieldParam.mk' d hd h1
+
 /-- A prime integer gives a valid quadratic-field parameter. -/
 @[simp]
 lemma quadFieldParam_of_prime (d : ℤ) (hd : Prime d) : QuadFieldParam d := by
-  refine QuadFieldParam.mk' d hd.squarefree ?_
+  refine quadFieldParam_of_squarefree_ne_one d hd.squarefree ?_
   intro h1
   exact hd.not_unit (h1 ▸ isUnit_one)
 
@@ -75,10 +85,17 @@ lemma quadFieldParam_of_natAbs_prime (d : ℤ) (hd : Nat.Prime d.natAbs) :
     QuadFieldParam d :=
   quadFieldParam_of_prime d (Int.prime_iff_natAbs_prime.2 hd)
 
+instance (d : ℤ) [Fact (Nat.Prime d.natAbs)] : QuadFieldParam d :=
+  quadFieldParam_of_natAbs_prime d (Fact.out)
+
+instance (d : ℤ) [Fact (Squarefree d)] [Fact (d ≠ 1)] : QuadFieldParam d :=
+  quadFieldParam_of_squarefree_ne_one d (Fact.out) (Fact.out)
 
 instance : QuadFieldParam (-1) where
   squarefree := by simp
-  ne_one := by simp
+  ne_one := by decide
 
-instance : QuadFieldParam (-3) :=
-  quadFieldParam_of_natAbs_prime (-3) Nat.prime_three
+instance : QuadFieldParam (-3 : ℤ) := by
+  letI : Fact (Nat.Prime ((-3 : ℤ).natAbs)) := ⟨by decide⟩
+  exact inferInstance
+
