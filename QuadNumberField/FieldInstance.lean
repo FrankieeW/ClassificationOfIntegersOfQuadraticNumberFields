@@ -14,4 +14,3 @@ instance {d : ℤ} [QuadFieldParam d] : Field (QuadNumberField d) := by
     exact (not_isSquare_int d) (Rat.isSquare_intCast_iff.mp hsqQ)
   ⟩
   infer_instance
-

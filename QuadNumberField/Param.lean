@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Frankie Wang
 -/
 import Mathlib.Algebra.Squarefree.Basic
+import Mathlib.RingTheory.Int.Basic
 import Mathlib.Tactic
 import QuadNumberField.Basic
 
@@ -50,3 +51,33 @@ lemma Qsqrtd_one_not_isField : ¬ IsField (Qsqrtd (1 : ℚ)) := by
   have hne' : (⟨1, -1⟩ : Qsqrtd 1) ≠ 0 := by
     intro h; exact one_ne_zero (congr_arg QuadraticAlgebra.re h)
   rcases mul_eq_zero.mp hprod with h | h <;> contradiction
+
+/-! ## Common Quadratic Field Parameters
+
+Instances for frequently used squarefree integers.
+-/
+def QuadFieldParam.mk' (d : ℤ) (hs : Squarefree d) (h0 : d ≠ 0) (h1 : d ≠ 1) :
+    QuadFieldParam d :=
+{ squarefree := hs, ne_zero := h0, ne_one := h1 }
+
+/-- A prime integer gives a valid quadratic-field parameter. -/
+@[simp]
+lemma quadFieldParam_of_prime (d : ℤ) (hd : Prime d) : QuadFieldParam d := by
+  refine QuadFieldParam.mk' d hd.squarefree hd.ne_zero ?_
+  intro h1
+  exact hd.not_unit (h1 ▸ isUnit_one)
+
+/-- If `|d|` is prime, then `d` is a valid quadratic-field parameter. -/
+@[simp]
+lemma quadFieldParam_of_natAbs_prime (d : ℤ) (hd : Nat.Prime d.natAbs) :
+    QuadFieldParam d :=
+  quadFieldParam_of_prime d (Int.prime_iff_natAbs_prime.2 hd)
+
+
+instance : QuadFieldParam (-1) where
+  squarefree := by simp
+  ne_zero := by simp
+  ne_one := by simp
+
+instance : QuadFieldParam (-3) := 
+  quadFieldParam_of_natAbs_prime (-3) Nat.prime_three

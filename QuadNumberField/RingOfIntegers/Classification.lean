@@ -38,7 +38,6 @@ namespace RingOfIntegers
 /-- If `d % 4 ≠ 1`, then `𝓞 (Q(√d)) ≃+* ℤ√d`. -/
 theorem ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one
     (d : ℤ) [QuadFieldParam d]
-    [NumberField (QuadNumberField d)]
     (hd4 : d % 4 ≠ 1) :
     Nonempty (𝓞 (QuadNumberField d) ≃+* Zsqrtd d) := by
   letI : Algebra (Zsqrtd d) (QuadNumberField d) :=
@@ -71,7 +70,6 @@ theorem ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one
 then `𝓞 (Q(√d)) ≃+* ZOnePlusSqrtOverTwo k`. -/
 theorem ringOfIntegers_equiv_zOnePlusSqrtOverTwo_of_mod_four_eq_one
     (d : ℤ) [QuadFieldParam d]
-    [NumberField (QuadNumberField d)]
     (hd4 : d % 4 = 1) :
     ∃ k : ℤ, d = 1 + 4 * k ∧
       Nonempty (𝓞 (QuadNumberField d) ≃+*
@@ -114,7 +112,7 @@ For squarefree `d`, exactly one of the following holds:
   `𝓞 (Q(√d)) ≃+* ℤ[(1+√d)/2]`. -/
 theorem ringOfIntegers_classification
     (d : ℤ) [QuadFieldParam d]
-    [NumberField (QuadNumberField d)] :
+    :
     (d % 4 ≠ 1 ∧
       Nonempty (𝓞 (QuadNumberField d) ≃+* Zsqrtd d)) ∨
     (∃ k : ℤ, d = 1 + 4 * k ∧
@@ -127,6 +125,30 @@ theorem ringOfIntegers_classification
   · left
     exact ⟨hd4,
       ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one d hd4⟩
+
+/-! ## Example 2.8 (Boxer Notes): Gaussian and Eisenstein Integers
+
+These are classical examples of rings of integers in imaginary quadratic fields.
+
+* **Gaussian integers** `ℤ[i] = ℤ[√(-1)]`: d = -1, d % 4 = 3 ≢ 1
+* **Eisenstein integers** `ℤ[ω]` where `ω = (1+√(-3))/2`: d = -3, d % 4 = 1
+-/
+
+/-- **Gaussian integers**: `𝓞(Q(√(-1))) ≃ ℤ[i]`.
+
+Since -1 % 4 = 3 ≠ 1, we are in the non-1-mod-4 branch. -/
+example : Nonempty (𝓞 (QuadNumberField (-1)) ≃+* Zsqrtd (-1)) := by
+  have hd4 : (-1 : ℤ) % 4 ≠ 1 := by decide
+  exact ringOfIntegers_equiv_zsqrtd_of_mod_four_ne_one (-1) hd4
+
+/-- **Eisenstein integers**: `𝓞(Q(√(-3))) ≃ ℤ[ω]` where `ω = (1+√(-3))/2`.
+
+Since -3 % 4 = 1, we are in the 1-mod-4 branch with k = -1
+(since -3 = 1 + 4·(-1)). -/
+example : ∃ k : ℤ, (-3 : ℤ) = 1 + 4 * k ∧
+    Nonempty (𝓞 (QuadNumberField (-3)) ≃+* ZOnePlusSqrtOverTwo k) := by
+  have hd4 : (-3 : ℤ) % 4 = 1 := by decide
+  exact ringOfIntegers_equiv_zOnePlusSqrtOverTwo_of_mod_four_eq_one (-3) hd4
 
 end RingOfIntegers
 end QuadNumberField
