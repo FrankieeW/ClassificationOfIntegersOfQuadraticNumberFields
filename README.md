@@ -1,5 +1,7 @@
 # Classification Of Integers Of Quadratic Number Fields
 
+> **Note:** This project has moved to [FrankieeW/QuadraticNumberFields](https://github.com/FrankieeW/QuadraticNumberFields).
+
 Standalone Lean 4 project extracted from `DedekindDomain`, focused on quadratic fields `Q(√d)` and ring-of-integers classification prerequisites.
 
 ## Build
